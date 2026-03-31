@@ -1,27 +1,37 @@
 "use client";
 
-import { useRef, useEffect, forwardRef } from "react";
+import { useRef, useEffect } from "react";
 
 interface LiquidTextProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  isDark?: boolean;
 }
 
-const DARK_COLORS  = ["#A78BFA", "#C9A84C", "#F472B6", "#818CF8"];
-const LIGHT_COLORS = ["#7C3AED", "#EC4899", "#C9A84C", "#6366F1"];
+// Five vibrant blobs spread across the colour wheel.
+// hue-rotate() cycles them continuously so they feel alive.
+const BLOBS = [
+  { color: "#FF0080", sx: 60, sy: 75 }, // hot magenta
+  { color: "#7700FF", sx: 65, sy: 70 }, // electric violet
+  { color: "#0099FF", sx: 58, sy: 68 }, // electric blue
+  { color: "#FF5500", sx: 55, sy: 72 }, // vivid orange
+  { color: "#FF0044", sx: 50, sy: 65 }, // hot red-pink
+];
 
-export default forwardRef<HTMLSpanElement, LiquidTextProps>(function LiquidText(
-  { children, className = "", style, isDark = true },
-  forwardedRef
-) {
-  const innerRef = useRef<HTMLSpanElement>(null);
-  const ref = (forwardedRef as React.RefObject<HTMLSpanElement>) ?? innerRef;
+// Independent orbital parameters per blob
+const ORBITS = [
+  { bx: 22, by: 38, rx: 22, ry: 20, fx: 0.40, fy: 0.36, px: 0.0, py: 1.0, mx: 32, my: 24 },
+  { bx: 72, by: 52, rx: 20, ry: 24, fx: 0.33, fy: 0.48, px: 2.1, py: 0.6, mx: -28, my: -22 },
+  { bx: 82, by: 24, rx: 16, ry: 22, fx: 0.58, fy: 0.40, px: 1.4, py: 2.4, mx: 20, my: 26 },
+  { bx: 38, by: 72, rx: 18, ry: 16, fx: 0.43, fy: 0.54, px: 3.0, py: 1.3, mx: 22, my: -18 },
+  { bx: 56, by: 42, rx: 24, ry: 18, fx: 0.28, fy: 0.63, px: 0.9, py: 3.4, mx: -16, my: 20 },
+];
 
-  const mouse  = useRef({ x: 0.5, y: 0.5 });
-  const smooth = useRef({ x: 0.5, y: 0.5 });
-  const raf    = useRef<number>(0);
+export default function LiquidText({ children, className = "", style }: LiquidTextProps) {
+  const ref   = useRef<HTMLSpanElement>(null);
+  const mouse = useRef({ x: 0.5, y: 0.5 });
+  const lerped = useRef({ x: 0.5, y: 0.5 });
+  const raf   = useRef<number>(0);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -32,59 +42,51 @@ export default forwardRef<HTMLSpanElement, LiquidTextProps>(function LiquidText(
     };
     window.addEventListener("mousemove", onMove);
 
-    const colors = isDark ? DARK_COLORS : LIGHT_COLORS;
-
-    // helper: oscillate a value + mouse influence
-    const osc = (
-      base: number, amp: number, freq: number, phase: number,
-      mInfluence: number, mVal: number
-    ) => base + Math.sin(Date.now() * 0.001 * freq + phase) * amp + mVal * mInfluence;
-
-    const tick = () => {
+    const tick = (ts: number) => {
       const el = ref.current;
       if (!el) { raf.current = requestAnimationFrame(tick); return; }
 
-      // Smooth-follow mouse
-      smooth.current.x += (mouse.current.x - smooth.current.x) * 0.045;
-      smooth.current.y += (mouse.current.y - smooth.current.y) * 0.045;
-      const mx = smooth.current.x;
-      const my = smooth.current.y;
+      // Smooth-follow cursor
+      lerped.current.x += (mouse.current.x - lerped.current.x) * 0.04;
+      lerped.current.y += (mouse.current.y - lerped.current.y) * 0.04;
+      const mx = lerped.current.x;
+      const my = lerped.current.y;
 
-      // Four blobs — base position, oscillation, mouse push
-      const b1x = osc(20, 16, 0.50, 0.0,  32, mx);
-      const b1y = osc(35, 14, 0.38, 1.0,  22, my);
-      const b2x = osc(68, 18, 0.33, 2.0, -28, mx);
-      const b2y = osc(50, 16, 0.52, 0.5, -20, my);
-      const b3x = osc(78, 10, 0.62, 1.5,  18, mx);
-      const b3y = osc(22, 18, 0.44, 2.5,  26, my);
-      const b4x = osc(42, 14, 0.41, 3.0,  22, mx);
-      const b4y = osc(72, 12, 0.58, 1.2, -18, my);
+      const t = ts * 0.001;
 
-      el.style.backgroundImage = [
-        `radial-gradient(ellipse 55% 70% at ${b1x}% ${b1y}%, ${colors[0]}d0 0%, transparent 65%)`,
-        `radial-gradient(ellipse 50% 60% at ${b2x}% ${b2y}%, ${colors[1]}b0 0%, transparent 65%)`,
-        `radial-gradient(ellipse 60% 55% at ${b3x}% ${b3y}%, ${colors[2]}a0 0%, transparent 65%)`,
-        `radial-gradient(ellipse 48% 65% at ${b4x}% ${b4y}%, ${colors[3]}c0 0%, transparent 65%)`,
-      ].join(", ");
+      // Animate each blob along its independent orbit + mouse push
+      const gradients = ORBITS.map((o, i) => {
+        const x = o.bx + Math.sin(t * o.fx + o.px) * o.rx + mx * o.mx;
+        const y = o.by + Math.cos(t * o.fy + o.py) * o.ry + my * o.my;
+        const { color, sx, sy } = BLOBS[i];
+        return `radial-gradient(ellipse ${sx}% ${sy}% at ${x}% ${y}%, ${color} 0%, transparent 68%)`;
+      });
+
+      // Cycle hue slowly (full rotation ≈ 30 s) — drives the liquid colour shift
+      const hue = (t * 12) % 360;
+      // Mouse x subtly warps hue an extra ±25 deg for distortion feel
+      const hueShift = hue + (mx - 0.5) * 50;
+
+      el.style.backgroundImage = gradients.join(", ");
+      el.style.filter = `hue-rotate(${hueShift}deg) saturate(1.6) brightness(1.08)`;
 
       raf.current = requestAnimationFrame(tick);
     };
 
     raf.current = requestAnimationFrame(tick);
-
     return () => {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(raf.current);
     };
-  }, [isDark, ref]);
+  }, []);
 
   return (
     <span
       ref={ref}
-      className={`bg-clip-text text-transparent select-none ${className}`}
-      style={{ backgroundSize: "200% 200%", ...style }}
+      className={`bg-clip-text text-transparent ${className}`}
+      style={style}
     >
       {children}
     </span>
   );
-});
+}

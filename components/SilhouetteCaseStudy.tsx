@@ -5,6 +5,16 @@ import { motion, useInView, animate } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "@/components/ThemeProvider";
 import { caseStudies } from "@/data/caseStudies";
+import CaseStudyStepper from "@/components/CaseStudyStepper";
+
+const SILHOUETTE_STEPS = [
+  { id: "the-problem", label: "The Problem" },
+  { id: "the-solution", label: "The Solution" },
+  { id: "stress-test", label: "Stress Test" },
+  { id: "manual-vs-headless", label: "Manual vs. Headless" },
+  { id: "engineering-impact", label: "Engineering Impact" },
+  { id: "key-takeaways", label: "Key Takeaways" },
+];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -685,7 +695,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 01 THE PROBLEM ────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32">
+      <section id="the-problem" className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <Reveal>
           <SectionLabel number="01" label="The Problem" />
         </Reveal>
@@ -812,7 +822,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 02 THE SOLUTION ───────────────────────────────────────── */}
-      <section className="border-y border-surface-light bg-surface py-24 md:py-32">
+      <section id="the-solution" className="border-y border-surface-light bg-surface py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <Reveal>
             <SectionLabel number="02" label="The Solution" />
@@ -965,7 +975,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 03 THE STRESS TEST ────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32">
+      <section id="stress-test" className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <Reveal>
           <SectionLabel number="03" label="The Ultimate Stress Test" />
         </Reveal>
@@ -1022,7 +1032,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 04 THE NUMBERS ────────────────────────────────────────── */}
-      <section className="border-y border-surface-light bg-surface py-24 md:py-32">
+      <section id="manual-vs-headless" className="border-y border-surface-light bg-surface py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <Reveal>
             <SectionLabel number="04" label="Manual vs. Headless" />
@@ -1097,7 +1107,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 05 ENGINEERING IMPACT ─────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32">
+      <section id="engineering-impact" className="mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <Reveal>
           <SectionLabel number="05" label="Engineering Impact & Governance" />
         </Reveal>
@@ -1153,7 +1163,7 @@ export default function SilhouetteCaseStudy() {
       </section>
 
       {/* ── 06 KEY TAKEAWAYS ──────────────────────────────────────── */}
-      <section className="border-y border-surface-light bg-surface py-24 md:py-32">
+      <section id="key-takeaways" className="border-y border-surface-light bg-surface py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <Reveal>
             <SectionLabel number="06" label="Key Takeaways" />
@@ -1243,6 +1253,8 @@ export default function SilhouetteCaseStudy() {
           )}
         </div>
       </section>
+
+      <CaseStudyStepper steps={SILHOUETTE_STEPS} />
     </article>
   );
 }

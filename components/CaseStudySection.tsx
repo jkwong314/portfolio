@@ -5,6 +5,7 @@ import type { CaseStudySection as SectionType } from "@/data/types";
 
 interface Props {
   section: SectionType;
+  id?: string;
 }
 
 function ImagePlaceholder({ className = "" }: { className?: string }) {
@@ -173,7 +174,7 @@ function TextImage({ section }: Props) {
   );
 }
 
-export default function CaseStudySection({ section }: Props) {
+export default function CaseStudySection({ section, id }: Props) {
   const renderers: Record<string, React.FC<Props>> = {
     text: TextBlock,
     image: ImageBlock,
@@ -189,7 +190,7 @@ export default function CaseStudySection({ section }: Props) {
 
   return (
     <ScrollReveal>
-      <div className="py-12 md:py-16">
+      <div id={id} className="py-12 md:py-16" style={id ? { scrollMarginTop: "80px" } : undefined}>
         <Renderer section={section} />
       </div>
     </ScrollReveal>

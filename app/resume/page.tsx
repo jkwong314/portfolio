@@ -1,0 +1,99 @@
+import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedButton from "@/components/AnimatedButton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Resume | Jamie",
+  description: "View or download Jamie's resume.",
+};
+
+function DownloadIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
+export default function ResumePage() {
+  return (
+    <div className="pt-28">
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <ScrollReveal>
+          <h1 className="font-display text-5xl font-bold text-text-primary md:text-6xl">
+            Resume
+          </h1>
+          <p className="mt-4 text-lg text-text-secondary">
+            Download or view my full resume below.
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.1}>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <AnimatedButton
+              href="/resume.pdf"
+              variant="filled"
+              icon={<DownloadIcon />}
+            >
+              Download PDF
+            </AnimatedButton>
+          </div>
+        </ScrollReveal>
+
+        {/* PDF Embed — desktop only */}
+        <ScrollReveal delay={0.2}>
+          <div className="mt-12 hidden md:block">
+            <div className="overflow-hidden rounded-2xl border border-surface-light bg-surface">
+              <object
+                data="/resume.pdf"
+                type="application/pdf"
+                width="100%"
+                className="h-[80vh] w-full"
+                title="Jamie's Resume"
+              >
+                {/* Fallback if PDF can't be displayed */}
+                <div className="flex h-[60vh] flex-col items-center justify-center gap-4 p-8 text-center">
+                  <div className="rounded-xl bg-surface-light p-8">
+                    <p className="text-text-secondary">
+                      Unable to display PDF inline.
+                    </p>
+                    <p className="mt-2 text-sm text-text-secondary/70">
+                      Use the download button above to view the resume.
+                    </p>
+                  </div>
+                </div>
+              </object>
+            </div>
+          </div>
+
+          {/* Mobile note */}
+          <div className="mt-8 md:hidden">
+            <div className="rounded-xl border border-surface-light bg-surface p-6 text-center">
+              <p className="text-text-secondary">
+                View on desktop for inline preview, or use the download button
+                above.
+              </p>
+            </div>
+          </div>
+
+          {/* Placeholder notice */}
+          <p className="mt-4 text-center text-sm text-text-secondary/50">
+            [Upload your resume PDF to public/resume.pdf]
+          </p>
+        </ScrollReveal>
+      </section>
+    </div>
+  );
+}

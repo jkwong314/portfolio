@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loader — Tile Flip Variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0A0A0A; color: #F5F5F0;
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh; overflow: hidden;
+  }
+
+  #site {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #0A0A0A;
+    background-image:
+      radial-gradient(ellipse 60% 55% at -5% -8%, rgba(124,58,237,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 50% at 108% 108%, rgba(201,168,76,0.18) 0%, transparent 70%);
+    z-index: 1;
+  }
+  #site p {
+    font-family: 'Archivo', sans-serif; font-weight: 900;
+    font-size: clamp(2rem,5vw,4rem); letter-spacing: -0.04em;
+    color: #F5F5F0; opacity: 0.15; text-align: center; padding: 2rem;
+  }
+
+  #loader-top, #loader-bottom {
+    position: fixed; left: 0; right: 0;
+    background: #0A0A0A; z-index: 100;
+    transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  #loader-top    { top: 0;    height: 50%; transform: translateY(0); }
+  #loader-bottom { bottom: 0; height: 50%; transform: translateY(0); }
+  #loader-top.exit    { transform: translateY(-100%); }
+  #loader-bottom.exit { transform: translateY(100%); }
+
+  #loader-content {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    z-index: 101; pointer-events: none;
+  }
+
+  .tiles-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .loader-subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #444440;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .loader-subtitle.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* Var switcher */
+  #var-switcher {
+    position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 200; display: flex; gap: 8px; pointer-events: all;
+  }
+  .var-btn {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    color: #444440; padding: 0.4rem 1.1rem; border-radius: 999px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .var-btn:hover { border-color: rgba(255,255,255,0.25); color: #F5F5F0; }
+  .var-btn.active {
+    background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.45);
+    color: #A78BFA;
+  }
+
+  #replay {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
+    color: #A78BFA; padding: 0.5rem 1.25rem; border-radius: 999px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem;
+    letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s;
+    pointer-events: all;
+  }
+  #replay:hover { background: rgba(124,58,237,0.35); }
+</style>
+</head>
+<body>
+
+<div id="site">
+  <p>I own the full product lifecycle —<br>
+  <span style="background:linear-gradient(135deg,#A78BFA,#C9A84C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">from first insight to shipped experience.</span></p>
+</div>
+
+<div id="loader-top"></div>
+<div id="loader-bottom"></div>
+
+<div id="loader-content">
+  <div id="tiles-area"></div>
+  <p class="loader-subtitle" id="subtitle"></p>
+</div>
+
+<div id="var-switcher">
+  <button class="var-btn active" data-v="a">A — Name Reveal</button>
+  <button class="var-btn" data-v="b">B — Sequential</button>
+  <button class="var-btn" data-v="c">C — Role Split</button>
+</div>
+<button id="replay">↺ Replay</button>
+
+<script>
+let timers = [];
+let currentVar = 'a';
+
+function q(fn, ms) { const t = setTimeout(fn, ms); timers.push(t); return t; }
+
+function clearAll() { timers.forEach(clearTimeout); timers = []; }
+
+function resetState() {
+  clearAll();
+  document.getElementById('loader-top').classList.remove('exit');
+  document.getElementById('loader-bottom').classList.remove('exit');
+  const content = document.getElementById('loader-content');
+  content.style.transition = '';
+  content.style.opacity = '1';
+  const area = document.getElementById('tiles-area');
+  area.innerHTML = '';
+  area.style.cssText = '';
+  const sub = document.getElementById('subtitle');
+  sub.textContent = '';
+  sub.classList.remove('visible');
+}
+
+function curtainExit(delay) {
+  q(() => {
+    const content = document.getElementById('loader-content');
+    content.style.transition = 'opacity 0.35s ease';
+    content.style.opacity = '0';
+    q(() => {
+      document.getElementById('loader-top').classList.add('exit');
+      document.getElementById('loader-bottom').classList.add('exit');
+    }, 300);
+  }, delay);
+}
+
+// ─── Tile factory ────────────────────────────────────────────────────────────
+function makeTile({ letter, frontBg, borderColor, letterColor, tileSize = 72, enterFrom = 'top' }) {
+  const initY = enterFrom === 'bottom' ? 130 : -130;
+
+  const wrap = document.createElement('div');
+  Object.assign(wrap.style, {
+    width: tileSize + 'px',
+    height: tileSize + 'px',
+    perspective: '900px',
+    flexShrink: '0',
+    transform: `translateY(${initY}px)`,
+    opacity: '0',
+    transition: `transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease`,
+  });
+
+  const inner = document.createElement('div');
+  Object.assign(inner.style, {
+    width: '100%', height: '100%',
+    position: 'relative',
+    transformStyle: 'preserve-3d',
+    transform: 'rotateY(0deg)',
+    transition: 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+  });
+
+  const front = document.createElement('div');
+  Object.assign(front.style, {
+    position: 'absolute', inset: '0',
+    borderRadius: '10px',
+    backfaceVisibility: 'hidden',
+    background: frontBg,
+  });
+
+  const back = document.createElement('div');
+  Object.assign(back.style, {
+    position: 'absolute', inset: '0',
+    borderRadius: '10px',
+    backfaceVisibility: 'hidden',
+    transform: 'rotateY(180deg)',
+    background: '#0D0D0D',
+    border: `1.5px solid ${borderColor}`,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  });
+
+  const ltr = document.createElement('span');
+  Object.assign(ltr.style, {
+    fontFamily: "'Archivo', sans-serif",
+    fontWeight: '900',
+    fontSize: Math.round(tileSize * 0.52) + 'px',
+    letterSpacing: '-0.04em',
+    lineHeight: '1',
+    color: letterColor,
+    userSelect: 'none',
+  });
+  ltr.textContent = letter;
+
+  back.appendChild(ltr);
+  inner.appendChild(front);
+  inner.appendChild(back);
+  wrap.appendChild(inner);
+
+  return {
+    el: wrap,
+    land() {
+      wrap.style.transform = 'translateY(0)';
+      wrap.style.opacity = '1';
+    },
+    flip() {
+      inner.style.transform = 'rotateY(180deg)';
+    },
+    exitUp() {
+      wrap.style.transition = 'transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.32s ease';
+      wrap.style.transform = 'translateY(-150px)';
+      wrap.style.opacity = '0';
+    },
+    exitDown() {
+      wrap.style.transition = 'transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.32s ease';
+      wrap.style.transform = 'translateY(150px)';
+      wrap.style.opacity = '0';
+    },
+  };
+}
+
+function makeRow() {
+  const row = document.createElement('div');
+  row.className = 'tiles-row';
+  return row;
+}
+
+// ─── Variation A: Name Reveal ─────────────────────────────────────────────────
+// Violet tiles drop in → flip to gold letters → subtitle → exit
+function runVarA() {
+  const area = document.getElementById('tiles-area');
+  const row = makeRow();
+  area.appendChild(row);
+
+  const tiles = ['J','A','M','I','E'].map(l =>
+    makeTile({
+      letter: l,
+      frontBg: 'linear-gradient(145deg, #6D28D9, #7C3AED)',
+      borderColor: '#A78BFA',
+      letterColor: '#C9A84C',
+      tileSize: 76,
+    })
+  );
+  tiles.forEach(t => row.appendChild(t.el));
+
+  // Land together with light stagger
+  tiles.forEach((t, i) => q(() => t.land(), 120 + i * 85));
+
+  // Flip one by one after all landed
+  tiles.forEach((t, i) => q(() => t.flip(), 1000 + i * 100));
+
+  // Subtitle
+  q(() => {
+    const sub = document.getElementById('subtitle');
+    sub.textContent = 'Product Designer · ALDO Group';
+    sub.classList.add('visible');
+  }, 1900);
+
+  curtainExit(3100);
+}
+
+// ─── Variation B: Sequential Build ───────────────────────────────────────────
+// Each tile slides in one-by-one and immediately flips to show its letter
+// "I'M" in violet  |  gap  |  "JAMIE" in gold
+function runVarB() {
+  const area = document.getElementById('tiles-area');
+  const row = makeRow();
+  area.appendChild(row);
+
+  const word1 = ['I','M'];
+  const word2 = ['J','A','M','I','E'];
+
+  const t1 = word1.map(l =>
+    makeTile({ letter: l, frontBg: 'linear-gradient(145deg, #5B21B6, #7C3AED)', borderColor: '#A78BFA', letterColor: '#F5F5F0', tileSize: 72 })
+  );
+  const t2 = word2.map(l =>
+    makeTile({ letter: l, frontBg: 'linear-gradient(145deg, #92700A, #C9A84C)', borderColor: '#E5C97E', letterColor: '#F5F5F0', tileSize: 72 })
+  );
+
+  t1.forEach(t => row.appendChild(t.el));
+
+  // word gap
+  const gap = document.createElement('div');
+  Object.assign(gap.style, { width: '22px', flexShrink: '0' });
+  row.appendChild(gap);
+
+  t2.forEach(t => row.appendChild(t.el));
+
+  const all = [...t1, ...t2];
+
+  // Each tile: land, then flip 280ms later
+  all.forEach((t, i) => {
+    const arriveAt = 120 + i * 140;
+    q(() => t.land(), arriveAt);
+    q(() => t.flip(), arriveAt + 280);
+  });
+
+  const lastArrival = 120 + (all.length - 1) * 140 + 280;
+
+  // Subtitle
+  q(() => {
+    const sub = document.getElementById('subtitle');
+    sub.textContent = 'UX/UI Designer · End-to-end execution';
+    sub.classList.add('visible');
+  }, lastArrival + 200);
+
+  curtainExit(lastArrival + 1500);
+}
+
+// ─── Variation C: Role Split ──────────────────────────────────────────────────
+// "PRODUCT" slides in from top (gold tiles) + "DESIGNER" slides in from bottom (violet tiles)
+// Both rows flip to reveal white letters, then scatter apart on exit
+function runVarC() {
+  const area = document.getElementById('tiles-area');
+  area.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:10px;';
+
+  const row1 = makeRow();
+  const row2 = makeRow();
+  area.appendChild(row1);
+  area.appendChild(row2);
+
+  const sz = 62;
+
+  const r1tiles = ['P','R','O','D','U','C','T'].map(l =>
+    makeTile({ letter: l, frontBg: 'linear-gradient(145deg, #92700A, #C9A84C)', borderColor: '#E5C97E', letterColor: '#F5F5F0', tileSize: sz, enterFrom: 'top' })
+  );
+  const r2tiles = ['D','E','S','I','G','N','E','R'].map(l =>
+    makeTile({ letter: l, frontBg: 'linear-gradient(145deg, #5B21B6, #7C3AED)', borderColor: '#A78BFA', letterColor: '#F5F5F0', tileSize: sz, enterFrom: 'bottom' })
+  );
+
+  r1tiles.forEach(t => row1.appendChild(t.el));
+  r2tiles.forEach(t => row2.appendChild(t.el));
+
+  // Stagger land: row1 from top, row2 from bottom
+  r1tiles.forEach((t, i) => q(() => t.land(), 100 + i * 65));
+  r2tiles.forEach((t, i) => q(() => t.land(), 180 + i * 65));
+
+  // Row1 flips first, row2 shortly after
+  r1tiles.forEach((t, i) => q(() => t.flip(), 900 + i * 60));
+  r2tiles.forEach((t, i) => q(() => t.flip(), 1050 + i * 60));
+
+  const allDone = 1050 + (r2tiles.length - 1) * 60;
+
+  // Exit: rows scatter (row1 up, row2 down), then curtain
+  const exitAt = allDone + 900;
+  r1tiles.forEach((t, i) => q(() => t.exitUp(),   exitAt + i * 35));
+  r2tiles.forEach((t, i) => q(() => t.exitDown(), exitAt + i * 35));
+
+  curtainExit(exitAt + 350);
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+function runLoader() {
+  resetState();
+  if      (currentVar === 'a') runVarA();
+  else if (currentVar === 'b') runVarB();
+  else                          runVarC();
+}
+
+document.querySelectorAll('.var-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.var-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentVar = btn.dataset.v;
+    runLoader();
+  });
+});
+
+document.getElementById('replay').addEventListener('click', runLoader);
+runLoader();
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+/* Scope all hover: utilities to pointer devices only */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+/* Colors use @theme (no inline) so utilities emit var(--color-*) and respond to theme overrides */
+@theme {
+  --color-base: #0A0A0A;
+  --color-surface: #111111;
+  --color-surface-light: #1C1C1C;
+  --color-text-primary: #F5F5F0;
+  --color-text-secondary: #9A9A94;
+  --color-text-muted: #6B6B66;
+  --color-accent: #7C3AED;
+  --color-accent-light: #A78BFA;
+  --color-gold: #C9A84C;
+  --color-gold-light: #E5C97E;
+  --color-accent-glow: rgba(124, 58, 237, 0.25);
+  --color-gold-glow: rgba(201, 168, 76, 0.2);
+}
+
+@theme inline {
+  /* Typography — Bricolage Grotesque (display) + Space Grotesk (body) */
+  --font-display: var(--font-bricolage-grotesque);
+  --font-body: var(--font-space-grotesk);
+
+  /* Type scale — Exaggerated Minimalism */
+  --text-hero: clamp(4rem, 12vw, 10rem);
+  --text-display: clamp(2.5rem, 6vw, 5rem);
+  --text-heading: clamp(1.75rem, 3vw, 2.5rem);
+  --text-subheading: 1.25rem;
+  --text-body: 1rem;
+  --text-label: 0.75rem;
+
+  /* Spacing */
+  --section-gap: clamp(5rem, 10vw, 9rem);
+}
+
+/* ── Light theme overrides ── */
+[data-theme="light"] {
+  --color-base: #F4F4F5;
+  --color-surface: #FFFFFF;
+  --color-surface-light: #E4E4E7;
+  --color-text-primary: #18181B;
+  --color-text-secondary: #52525B;
+  --color-text-muted: #71717A;
+  --color-accent: #6D28D9;
+  --color-accent-light: #7C3AED;
+  --color-gold: #92670A;
+  --color-gold-light: #B8920A;
+  --color-accent-glow: rgba(109, 40, 217, 0.12);
+  --color-gold-glow: rgba(146, 103, 10, 0.12);
+}
+
+/* ── Nav theme variables ── */
+:root, [data-theme="dark"] {
+  --nav-bg-default: rgba(17,17,17,0.5);
+  --nav-bg-scrolled: rgba(17,17,17,0.85);
+  --nav-border-default: rgba(255,255,255,0.07);
+  --nav-border-scrolled: rgba(201,168,76,0.2);
+  --nav-shadow-default: 0 4px 24px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.07);
+  --nav-shadow-scrolled: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
+  --grain-opacity: 0.09;
+}
+
+[data-theme="light"] {
+  --nav-bg-default: rgba(244,244,245,0.75);
+  --nav-bg-scrolled: rgba(255,255,255,0.95);
+  --nav-border-default: rgba(0,0,0,0.08);
+  --nav-border-scrolled: rgba(109,40,217,0.2);
+  --nav-shadow-default: 0 4px 24px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.06);
+  --nav-shadow-scrolled: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(109,40,217,0.12);
+  --grain-opacity: 0.04;
+}
+
+/* ── Light mode utility overrides ──────────────────────────────────────────
+   Tailwind v4 bakes color values statically into utility classes at build
+   time, so CSS variable overrides alone don't reach them. These unlayered
+   rules beat @layer utilities via cascade (unlayered > layered).
+────────────────────────────────────────────────────────────────────────── */
+[data-theme="light"] .bg-base          { background-color: #F4F4F5; }
+[data-theme="light"] .bg-base\/40      { background-color: rgba(244,244,245,0.40); }
+[data-theme="light"] .bg-base\/60      { background-color: rgba(244,244,245,0.60); }
+[data-theme="light"] .bg-base\/97      { background-color: rgba(244,244,245,0.97); }
+[data-theme="light"] .bg-surface       { background-color: #FFFFFF; }
+[data-theme="light"] .bg-surface-light { background-color: #E4E4E7; }
+[data-theme="light"] .bg-surface-light\/80 { background-color: rgba(228,228,231,0.80); }
+
+[data-theme="light"] .bg-accent        { background-color: #6D28D9; }
+[data-theme="light"] .bg-accent\/5     { background-color: rgba(109,40,217,0.05); }
+[data-theme="light"] .bg-accent\/8     { background-color: rgba(109,40,217,0.08); }
+[data-theme="light"] .bg-accent\/0     { background-color: transparent; }
+[data-theme="light"] .bg-accent\/20    { background-color: rgba(109,40,217,0.20); }
+[data-theme="light"] .bg-accent\/30    { background-color: rgba(109,40,217,0.30); }
+[data-theme="light"] .bg-accent\/40    { background-color: rgba(109,40,217,0.40); }
+
+[data-theme="light"] .text-text-primary    { color: #18181B; }
+[data-theme="light"] .text-text-primary\/5 { color: rgba(24,24,27,0.05); }
+[data-theme="light"] .text-text-secondary      { color: #52525B; }
+[data-theme="light"] .text-text-secondary\/50  { color: rgba(82,82,91,0.50); }
+[data-theme="light"] .text-text-secondary\/60  { color: rgba(82,82,91,0.60); }
+[data-theme="light"] .text-text-secondary\/70  { color: rgba(82,82,91,0.70); }
+[data-theme="light"] .text-text-muted  { color: #71717A; }
+[data-theme="light"] .text-accent      { color: #6D28D9; }
+[data-theme="light"] .text-accent-light { color: #7C3AED; }
+[data-theme="light"] .text-gold        { color: #92670A; }
+[data-theme="light"] .text-gold-light  { color: #B8920A; }
+
+[data-theme="light"] .border-surface-light { border-color: #E4E4E7; }
+[data-theme="light"] .border-accent         { border-color: #6D28D9; }
+[data-theme="light"] .border-accent\/20     { border-color: rgba(109,40,217,0.20); }
+[data-theme="light"] .border-accent\/30     { border-color: rgba(109,40,217,0.30); }
+[data-theme="light"] .border-accent\/50     { border-color: rgba(109,40,217,0.50); }
+[data-theme="light"] .border-accent\/70     { border-color: rgba(109,40,217,0.70); }
+
+[data-theme="light"] .from-accent      { --tw-gradient-from: #6D28D9 var(--tw-gradient-from-position); }
+[data-theme="light"] .to-gold          { --tw-gradient-to: #92670A var(--tw-gradient-to-position); }
+[data-theme="light"] .via-gold         { --tw-gradient-via: #92670A var(--tw-gradient-via-position); }
+[data-theme="light"] .from-accent-light { --tw-gradient-from: #7C3AED var(--tw-gradient-from-position); }
+[data-theme="light"] .to-accent        { --tw-gradient-to: #6D28D9 var(--tw-gradient-to-position); }
+
+/* Selection */
+::selection {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.65;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ambient gradients now live in a fixed-position layer (AmbientBackground component)
+   so they stay viewport-relative while scrolling and never show section seams. */
+
+/* ── Cursor ping — CSS-only ── */
+@keyframes cursor-ping {
+  0%   { transform: scale(1); opacity: 0.55; }
+  75%  { transform: scale(3); opacity: 0; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.cursor-ping {
+  position: absolute;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  top: -12px; left: -12px;
+  animation: cursor-ping 2.2s ease-out infinite;
+  pointer-events: none;
+}
+[data-theme="light"] .cursor-ping {
+  border-color: rgba(109, 40, 217, 0.35);
+}
+
+/* Global grain texture */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--grain-opacity, 0.09);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-base); }
+::-webkit-scrollbar-thumb { background: var(--color-surface-light); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent);
+  color: white;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0; }
+
+/* Nav link underline */
+.navlink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background-color: var(--color-accent-light);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+@media (hover: hover) {
+  .navlink:hover::after { transform: scaleX(1); }
+}
+
+/* Form errors */
+.field-error {
+  color: #FCA5A5;
+  font-size: 0.8125rem;
+  margin-top: 0.25rem;
+}
+.input-error { border-color: #FCA5A5 !important; }
+
+[data-theme="light"] .field-error { color: #DC2626; }
+[data-theme="light"] .input-error { border-color: #DC2626 !important; }
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  animation: gradient-shift 6s ease infinite;
+  background-size: 200% auto;
+}
+
+/* Gold shimmer */
+@keyframes gold-shimmer {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+.animate-gold { animation: gold-shimmer 3s ease-in-out infinite; }
+
+/* Typewriter cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

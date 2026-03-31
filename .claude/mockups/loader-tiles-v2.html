@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loader — Welcome Tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0A0A0A; color: #F5F5F0;
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh; overflow: hidden;
+  }
+
+  #site {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #0A0A0A;
+    background-image:
+      radial-gradient(ellipse 60% 55% at -5% -8%, rgba(124,58,237,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 50% at 108% 108%, rgba(201,168,76,0.18) 0%, transparent 70%);
+    z-index: 1;
+  }
+  #site p {
+    font-family: 'Archivo', sans-serif; font-weight: 900;
+    font-size: clamp(2rem,5vw,4rem); letter-spacing: -0.04em;
+    color: #F5F5F0; opacity: 0.15; text-align: center; padding: 2rem;
+  }
+
+  #loader-top, #loader-bottom {
+    position: fixed; left: 0; right: 0;
+    background: #0A0A0A; z-index: 100;
+    transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  #loader-top    { top: 0;    height: 50%; transform: translateY(0); }
+  #loader-bottom { bottom: 0; height: 50%; transform: translateY(0); }
+  #loader-top.exit    { transform: translateY(-100%); }
+  #loader-bottom.exit { transform: translateY(100%); }
+
+  #loader-content {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 18px;
+    z-index: 101; pointer-events: none;
+  }
+
+  .tiles-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .loader-subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #444440;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .loader-subtitle.visible { opacity: 1; transform: translateY(0); }
+
+  #replay {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
+    color: #A78BFA; padding: 0.5rem 1.25rem; border-radius: 999px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem;
+    letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s;
+    pointer-events: all;
+  }
+  #replay:hover { background: rgba(124,58,237,0.35); }
+</style>
+</head>
+<body>
+
+<div id="site">
+  <p>I own the full product lifecycle —<br>
+  <span style="background:linear-gradient(135deg,#A78BFA,#C9A84C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">from first insight to shipped experience.</span></p>
+</div>
+
+<div id="loader-top"></div>
+<div id="loader-bottom"></div>
+
+<div id="loader-content">
+  <div id="tiles-area">
+    <div class="tiles-row" id="tile-row"></div>
+  </div>
+  <p class="loader-subtitle" id="subtitle">Product Designer · ALDO Group</p>
+</div>
+
+<button id="replay">↺ Replay</button>
+
+<script>
+  // Per-letter tile colors — front solid, border matches accent
+  const TILE_COLORS = [
+    { front: '#EC4899', border: '#F9A8D4' }, // W — pink
+    { front: '#06B6D4', border: '#67E8F9' }, // E — cyan
+    { front: '#EAB308', border: '#FDE047' }, // L — yellow
+    { front: '#7C3AED', border: '#A78BFA' }, // C — violet
+    { front: '#EC4899', border: '#F9A8D4' }, // O — pink
+    { front: '#06B6D4', border: '#67E8F9' }, // M — cyan
+    { front: '#EAB308', border: '#FDE047' }, // E — yellow
+    { front: '#7C3AED', border: '#A78BFA' }, // ! — violet
+  ];
+
+  const LETTERS = ['W','E','L','C','O','M','E','!'];
+
+  let timers = [];
+  function q(fn, ms) { const t = setTimeout(fn, ms); timers.push(t); return t; }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; }
+
+  function makeTile(letter, color, size = 74) {
+    const wrap = document.createElement('div');
+    Object.assign(wrap.style, {
+      width: size + 'px', height: size + 'px',
+      perspective: '900px', flexShrink: '0',
+      transform: 'translateY(-140px)',
+      opacity: '0',
+      transition: 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease',
+    });
+
+    const inner = document.createElement('div');
+    Object.assign(inner.style, {
+      width: '100%', height: '100%',
+      position: 'relative',
+      transformStyle: 'preserve-3d',
+      transform: 'rotateY(0deg)',
+      transition: 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+    });
+
+    // Front — solid color block
+    const front = document.createElement('div');
+    Object.assign(front.style, {
+      position: 'absolute', inset: '0',
+      borderRadius: '12px',
+      backfaceVisibility: 'hidden',
+      background: color.front,
+    });
+
+    // Back — dark with border + letter
+    const back = document.createElement('div');
+    Object.assign(back.style, {
+      position: 'absolute', inset: '0',
+      borderRadius: '12px',
+      backfaceVisibility: 'hidden',
+      transform: 'rotateY(180deg)',
+      background: '#111111',
+      border: `2px solid ${color.border}`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    });
+
+    const ltr = document.createElement('span');
+    Object.assign(ltr.style, {
+      fontFamily: "'Archivo', sans-serif",
+      fontWeight: '900',
+      fontSize: Math.round(size * 0.52) + 'px',
+      letterSpacing: '-0.04em',
+      lineHeight: '1',
+      color: '#F5F5F0',
+      userSelect: 'none',
+    });
+    ltr.textContent = letter;
+
+    back.appendChild(ltr);
+    inner.appendChild(front);
+    inner.appendChild(back);
+    wrap.appendChild(inner);
+
+    return {
+      el: wrap,
+      land()  { wrap.style.transform = 'translateY(0)'; wrap.style.opacity = '1'; },
+      flip()  { inner.style.transform = 'rotateY(180deg)'; },
+    };
+  }
+
+  function runLoader() {
+    clearAll();
+
+    document.getElementById('loader-top').classList.remove('exit');
+    document.getElementById('loader-bottom').classList.remove('exit');
+    const content = document.getElementById('loader-content');
+    content.style.transition = '';
+    content.style.opacity = '1';
+
+    const row = document.getElementById('tile-row');
+    row.innerHTML = '';
+    const sub = document.getElementById('subtitle');
+    sub.classList.remove('visible');
+
+    const tiles = LETTERS.map((l, i) => makeTile(l, TILE_COLORS[i]));
+    tiles.forEach(t => row.appendChild(t.el));
+
+    // Drop all tiles in together with a light stagger
+    tiles.forEach((t, i) => q(() => t.land(), 120 + i * 75));
+
+    // Flip each tile to reveal the letter
+    tiles.forEach((t, i) => q(() => t.flip(), 950 + i * 90));
+
+    // Subtitle fades in after all flipped
+    q(() => sub.classList.add('visible'), 1900);
+
+    // Curtain exit
+    q(() => {
+      content.style.transition = 'opacity 0.35s ease';
+      content.style.opacity = '0';
+      q(() => {
+        document.getElementById('loader-top').classList.add('exit');
+        document.getElementById('loader-bottom').classList.add('exit');
+      }, 300);
+    }, 3000);
+  }
+
+  document.getElementById('replay').addEventListener('click', runLoader);
+  runLoader();
+</script>
+</body>
+</html>

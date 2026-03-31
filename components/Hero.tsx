@@ -8,7 +8,8 @@ import { useTheme } from "@/components/ThemeProvider";
 
 const STATEMENT = {
   text: "Good design solves a problem.",
-  accent: "great design redesigns the system around it.",
+  accentLine1: "Great design",
+  accentLine2: "redesigns the system around it.",
 };
 
 export default function Hero() {
@@ -92,8 +93,8 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <span
-              className="block text-text-secondary font-light"
-              style={{ fontSize: "clamp(1.1rem, 2.2vw, 1.75rem)", letterSpacing: "-0.01em" }}
+              className="block text-text-primary font-light"
+              style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", letterSpacing: "-0.02em" }}
             >
               {STATEMENT.text}
             </span>
@@ -107,7 +108,9 @@ export default function Hero() {
                 fontSize: "clamp(3.6rem, 9vw, 8rem)",
               }}
             >
-              {STATEMENT.accent}
+              {STATEMENT.accentLine1}
+              <br />
+              {STATEMENT.accentLine2}
             </motion.span>
           </motion.h1>
         </div>

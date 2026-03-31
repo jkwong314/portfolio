@@ -7,8 +7,8 @@ import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
 
 const STATEMENT = {
-  text: "Good design solves a problem. Great design",
-  accent: "redesigns the system around it.",
+  text: "Good design solves a problem.",
+  accent: "great design redesigns the system around it.",
 };
 
 export default function Hero() {
@@ -92,8 +92,8 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <span
-              className="text-text-primary"
-              style={{ fontSize: "clamp(1.9rem, 3.8vw, 3.25rem)" }}
+              className="block text-text-secondary font-light"
+              style={{ fontSize: "clamp(1.1rem, 2.2vw, 1.75rem)", letterSpacing: "-0.01em" }}
             >
               {STATEMENT.text}
             </span>
@@ -104,7 +104,7 @@ export default function Hero() {
               className="block bg-clip-text text-transparent"
               style={{
                 backgroundImage: gradient,
-                fontSize: "clamp(3.4rem, 8vw, 7rem)",
+                fontSize: "clamp(3.6rem, 9vw, 8rem)",
               }}
             >
               {STATEMENT.accent}

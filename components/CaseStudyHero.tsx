@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { CaseStudy } from "@/data/types";
 
 interface CaseStudyHeroProps {
@@ -7,9 +8,17 @@ interface CaseStudyHeroProps {
 export default function CaseStudyHero({ study }: CaseStudyHeroProps) {
   return (
     <section className="relative">
-      {/* Hero image placeholder */}
-      <div className="h-[50vh] w-full bg-gradient-to-br from-accent/20 via-surface-light to-accent-hot/10 md:h-[60vh]">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/15 via-transparent to-accent-blue/10" />
+      {/* Hero image */}
+      <div className="relative h-[50vh] w-full overflow-hidden md:h-[60vh]">
+        <Image
+          src={study.heroImage}
+          alt={study.title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-surface-light/30 to-accent-hot/10" />
       </div>
 
       {/* Content overlay */}

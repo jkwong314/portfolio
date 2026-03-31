@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 import type { CaseStudySection as SectionType } from "@/data/types";
 
@@ -7,13 +8,33 @@ interface Props {
   section: SectionType;
 }
 
-function ImagePlaceholder({ className = "" }: { className?: string }) {
+function SectionImage({
+  src,
+  alt,
+  className = "",
+}: {
+  src?: string;
+  alt: string;
+  className?: string;
+}) {
+  if (!src) {
+    return (
+      <div
+        className={`rounded-xl bg-gradient-to-br from-surface-light to-surface ${className}`}
+      >
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent/5 to-accent-light/5" />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`rounded-xl bg-gradient-to-br from-surface-light to-surface ${className}`}
-    >
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent/5 to-accent-light/5" />
-    </div>
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={`object-cover rounded-xl ${className}`}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
+    />
   );
 }
 
@@ -35,6 +56,7 @@ function TextBlock({ section }: Props) {
 }
 
 function ImageBlock({ section }: Props) {
+  const imageSrc = section.images?.[0];
   return (
     <div className="mx-auto max-w-5xl">
       {section.heading && (
@@ -43,7 +65,7 @@ function ImageBlock({ section }: Props) {
         </h2>
       )}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-        <ImagePlaceholder className="absolute inset-0" />
+        <SectionImage src={imageSrc} alt={section.heading || "Case study image"} />
       </div>
       {section.caption && (
         <p className="mt-3 text-center text-sm text-text-secondary">
@@ -68,9 +90,9 @@ function ImageGridBlock({ section }: Props) {
         </p>
       )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {(section.images || []).map((_, i) => (
+        {(section.images || []).map((img, i) => (
           <div key={i} className="relative aspect-square overflow-hidden rounded-xl">
-            <ImagePlaceholder className="absolute inset-0" />
+            <SectionImage src={img} alt={`${section.heading || "Gallery"} ${i + 1}`} />
           </div>
         ))}
       </div>
@@ -113,6 +135,7 @@ function PullQuote({ section }: Props) {
 }
 
 function BeforeAfter({ section }: Props) {
+  const images = section.images || [];
   return (
     <div className="mx-auto max-w-5xl">
       {section.heading && (
@@ -126,7 +149,7 @@ function BeforeAfter({ section }: Props) {
             Before
           </span>
           <div className="relative aspect-video overflow-hidden rounded-xl">
-            <ImagePlaceholder className="absolute inset-0" />
+            <SectionImage src={images[0]} alt="Before" />
           </div>
         </div>
         <div>
@@ -134,7 +157,7 @@ function BeforeAfter({ section }: Props) {
             After
           </span>
           <div className="relative aspect-video overflow-hidden rounded-xl">
-            <ImagePlaceholder className="absolute inset-0" />
+            <SectionImage src={images[1] || images[0]} alt="After" />
           </div>
         </div>
       </div>
@@ -144,6 +167,7 @@ function BeforeAfter({ section }: Props) {
 
 function TextImage({ section }: Props) {
   const isRight = section.layout !== "left";
+  const imageSrc = section.images?.[0];
   return (
     <div className="mx-auto max-w-5xl">
       <div
@@ -165,7 +189,7 @@ function TextImage({ section }: Props) {
         </div>
         <div className="flex-1">
           <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-            <ImagePlaceholder className="absolute inset-0" />
+            <SectionImage src={imageSrc} alt={section.heading || "Section image"} />
           </div>
         </div>
       </div>

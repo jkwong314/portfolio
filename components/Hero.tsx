@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
+import LiquidText from "@/components/LiquidText";
 
 const STATEMENT = {
   text: "Good design solves a problem.",
@@ -17,10 +18,6 @@ export default function Hero() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const shouldReduceMotion = useReducedMotion();
-
-  const gradient = isDark
-    ? "linear-gradient(135deg, #A78BFA 0%, #C9A84C 100%)"
-    : "linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)";
 
   return (
     <section
@@ -98,21 +95,25 @@ export default function Hero() {
             >
               {STATEMENT.text}
             </span>
-            <motion.span
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.45 }}
-              className="block bg-clip-text text-transparent"
-              style={{
-                backgroundImage: gradient,
-                fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
-                lineHeight: 1.05,
-              }}
             >
-              {STATEMENT.accentLine1}
-              <br />
-              {STATEMENT.accentLine2}
-            </motion.span>
+              <LiquidText
+                isDark={isDark}
+                className="block font-display font-black"
+                style={{
+                  fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.035em",
+                }}
+              >
+                {STATEMENT.accentLine1}
+                <br />
+                {STATEMENT.accentLine2}
+              </LiquidText>
+            </motion.div>
           </motion.h1>
         </div>
 

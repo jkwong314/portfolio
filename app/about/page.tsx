@@ -1,24 +1,98 @@
+import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
+import FlipWords from "@/components/FlipWords";
+import Timeline from "@/components/Timeline";
+import type { TimelineItem } from "@/components/Timeline";
+import BentoGrid from "@/components/BentoGrid";
+import type { BentoItem } from "@/components/BentoGrid";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About | Jamie",
   description:
-    "From fine arts to digital product design — learn about my journey and passion for accessible design.",
+    "UX/UI and product designer passionate about making interfaces fully accessible to every user.",
 };
 
-const funFacts = [
+const careerTimeline: TimelineItem[] = [
+  {
+    year: "Sep 2024 – Present",
+    title: "UX/UI Designer",
+    company: "ALDO Group",
+    description:
+      "Spearheading UX/UI projects for Aldo, Call It Spring, Globo, and Sperry. Increased design efficiency by 300% through Figma migration and a headless design system. Led the design of a B2B expense management platform for internal teams.",
+  },
+  {
+    year: "Jun 2022 – Sep 2024",
+    title: "Associate UX/UI Designer",
+    company: "ALDO Group",
+    description:
+      "Built component libraries and design token systems. Prototyped end-to-end feature experiences for user testing using Framer, Principle, and UXPin. Collaborated with PMs and engineers on final design implementations.",
+  },
+  {
+    year: "Jul 2022 – Oct 2022",
+    title: "Design Consultant",
+    company: "Rally Cry",
+    description:
+      "Led design optimizations for the Rally Cry platform with a focus on user accessibility. Created visual graphics for brand promotion and designed content connecting eSports gaming communities.",
+  },
+  {
+    year: "Jul 2021 – Jun 2022",
+    title: "UX/UI Design Intern",
+    company: "ALDO Group",
+    description:
+      "Tackled UX solutions for all company brand eCommerce sites. Built the brand style guide and components library on Sketch. Composed a UX Playbook and conducted user testing sessions.",
+  },
+  {
+    year: "Jan 2021 – Aug 2021",
+    title: "Creative & Website Designer",
+    company: "YES Cafe",
+    description:
+      "Conceptualized a comprehensive UI/UX design strategy for online food ordering and event booking on Square CMS. Built brand assets and conducted weekly UI testing and refinements.",
+  },
+  {
+    year: "Sep 2016 – Sep 2020",
+    title: "Freelance Graphic Designer",
+    company: "Self-Employed",
+    description:
+      "Designed commissioned pieces for clients in the GTA area, including work for non-profit organizations and custom card templates for BHP (Business with Higher Purpose).",
+  },
+];
+
+const funFacts: BentoItem[] = [
   {
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
         <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
         <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
         <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
         <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
       </svg>
     ),
-    text: "[Placeholder] Studied oil painting for 6 years before touching a screen",
+    text: "Lifelong maker — never afraid to get my hands dirty to see a project through to the end",
+    size: "lg",
+    image: "/images/about-design.jpg",
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+      </svg>
+    ),
+    text: "New hobby collector — currently obsessed with the problem-solving nature of bouldering",
+    size: "sm",
+    image: "/images/about-bouldering.jpg",
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+      </svg>
+    ),
+    text: "Listening to 88Rising, NIKI, Dean & IU on repeat",
+    size: "sm",
   },
   {
     icon: (
@@ -31,7 +105,22 @@ const funFacts = [
         <path d="M16 21.5A10 10 0 0 0 21.5 16" />
       </svg>
     ),
-    text: "[Placeholder] Certified in WCAG accessibility guidelines",
+    text: "Early 2000s karaoke queen — my go-to strategy for team bonding",
+    size: "md",
+    image: "/images/about-karaoke.jpg",
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="2" y="6" width="20" height="12" rx="2" />
+        <path d="M12 12h.01" />
+        <path d="M17 12h.01" />
+        <path d="M7 12h.01" />
+      </svg>
+    ),
+    text: "Valorant, League of Legends & Monster Hunter World player",
+    size: "sm",
+    image: "/images/about-gaming.jpg",
   },
   {
     icon: (
@@ -41,35 +130,8 @@ const funFacts = [
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
       </svg>
     ),
-    text: "[Placeholder] Have designed for users in 12 countries",
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-        <line x1="6" x2="6" y1="2" y2="4" />
-        <line x1="10" x2="10" y1="2" y2="4" />
-        <line x1="14" x2="14" y1="2" y2="4" />
-      </svg>
-    ),
-    text: "[Placeholder] Fueled by oat milk lattes",
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-      </svg>
-    ),
-    text: "[Placeholder] Currently reading: Inclusive Design Patterns",
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-      </svg>
-    ),
-    text: "[Placeholder] Weekend hiker and landscape photographer",
+    text: "Dreams of traveling while doing what I love",
+    size: "sm",
   },
 ];
 
@@ -83,9 +145,8 @@ export default function AboutPage() {
             className="font-display font-black leading-none tracking-tight"
             style={{ fontSize: "clamp(3rem, 7vw, 5.5rem)", letterSpacing: "-0.04em" }}
           >
-            <span className="bg-gradient-to-r from-accent-light via-gold to-accent bg-clip-text text-transparent">
-              The Story So Far
-            </span>
+            <span className="text-text-primary">I am a </span>
+            <FlipWords words={["designer", "creator", "problem-solver", "maker"]} />
           </h1>
         </ScrollReveal>
 
@@ -95,17 +156,21 @@ export default function AboutPage() {
             <div
               className="relative h-72 w-72 overflow-hidden rounded-2xl md:h-80 md:w-80"
               style={{
-                background: "linear-gradient(135deg, var(--color-accent-glow) 0%, var(--color-surface-light) 50%, var(--color-gold-glow) 100%)",
                 boxShadow: "0 0 60px var(--color-accent-glow)",
               }}
             >
+              <Image
+                src="/images/about-portrait.jpg"
+                alt="Design workspace"
+                fill
+                className="object-cover"
+                sizes="320px"
+                priority
+              />
               <div
                 className="absolute inset-0"
-                style={{ background: "radial-gradient(circle at 30% 40%, var(--color-accent-glow) 0%, transparent 60%)" }}
+                style={{ background: "linear-gradient(135deg, var(--color-accent-glow) 0%, transparent 50%, var(--color-gold-glow) 100%)" }}
               />
-              <span className="absolute inset-0 flex items-center justify-center text-sm text-text-muted">
-                [Your photo here]
-              </span>
             </div>
           </ScrollReveal>
 
@@ -113,24 +178,24 @@ export default function AboutPage() {
           <ScrollReveal delay={0.2} className="flex-1">
             <div className="space-y-6 text-lg leading-relaxed text-text-secondary">
               <p>
-                [Placeholder] My journey into design started far from a screen — it
-                started with charcoal on paper, paint on canvas, and hours spent
-                studying how light, form, and composition shape the way we see the
-                world. I studied fine arts for years, developing an intuition for
-                visual storytelling that I carry into every digital product I touch.
+                I&apos;m a multifaceted product designer who believes that the best
+                solutions are born at the intersection of empathy and data. My
+                mission is simple: to create all-inclusive designs that make users
+                feel seen, heard, and valued.
               </p>
               <p>
-                [Placeholder] The transition to digital wasn&apos;t a departure from art — it
-                was an evolution. I realized that the same principles of hierarchy,
-                contrast, rhythm, and balance that make a painting compelling are
-                exactly what make a digital experience feel effortless. Product
-                design became my medium for creating work that doesn&apos;t just hang on
-                a wall — it lives in people&apos;s hands and solves real problems.
+                I treat every design challenge like a bouldering route — analyzing
+                the problem, testing the grip, and finding the most efficient path
+                to the goal. Whether I&apos;m crafting a complex user flow or a
+                hands-on DIY project, I lead with curiosity and a drive to deliver
+                holistic end-to-end experiences.
               </p>
               <p>
-                [Placeholder] Today, as a UX/UI Designer at ALDO Group, I bring that
-                artist&apos;s eye to every interaction, every flow, every pixel. I
-                believe the best design is invisible — it just works, for everyone.
+                With a Bachelor of Design (Honours) from the York/Sheridan joint
+                program, I bring a human-centred approach to every product I touch —
+                currently as a UX/UI Designer at ALDO Group, where I&apos;ve
+                increased design efficiency by 300% through Figma migration and
+                the development of a headless design system.
               </p>
             </div>
           </ScrollReveal>
@@ -141,13 +206,13 @@ export default function AboutPage() {
       <section className="bg-surface py-16">
         <ScrollReveal>
           <blockquote className="mx-auto max-w-3xl px-6 text-center font-display text-2xl font-medium italic text-accent-light md:text-3xl">
-            &ldquo;Design is not just what it looks like — it&apos;s how it works, and
-            who it works for.&rdquo;
+            &ldquo;The best solutions are born at the intersection of empathy and
+            data — design that makes users feel seen, heard, and valued.&rdquo;
           </blockquote>
         </ScrollReveal>
       </section>
 
-      {/* Accessible Design Passion */}
+      {/* Design Philosophy */}
       <section className="mx-auto max-w-4xl px-6 py-20">
         <ScrollReveal>
           <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl" style={{ letterSpacing: "-0.03em" }}>
@@ -159,48 +224,53 @@ export default function AboutPage() {
           <div className="mt-8 rounded-2xl border border-accent/20 bg-accent/5 p-8 md:p-10">
             <div className="space-y-6 text-lg leading-relaxed text-text-secondary">
               <p>
-                [Placeholder] Accessibility isn&apos;t a checklist item at the end of my
-                process — it&apos;s the foundation. I believe that truly great design is
+                Accessibility isn&apos;t a checklist item at the end of my process —
+                it&apos;s the foundation. I believe that truly great design is
                 universal: it works for the power user navigating with keyboard
-                shortcuts and the first-time user relying on a screen reader. It
-                works in bright sunlight and in dark mode. It works for people who
-                think differently, move differently, and see differently.
+                shortcuts and the first-time user relying on a screen reader. My
+                goal is to assess and provide design solutions that always ensure
+                the highest usability for any kind of user.
               </p>
               <p>
-                [Placeholder] This conviction comes from a simple truth I learned
-                early: when you design for the edges, you improve the experience
-                for everyone in the middle. Curb cuts help wheelchair users, but
-                they also help parents with strollers, travelers with luggage, and
-                delivery workers with carts. The same principle applies to digital
-                design — accessible design is better design, period.
+                I&apos;m always finding new opportunities to make a difference in
+                any given environment. I&apos;m proficient in Figma, Framer,
+                Sketch, Principle, UXPin, and the Adobe Creative Suite — and I
+                bring that same flexibility to collaboration, excelling across
+                cross-functional teams with PMs, engineers, and stakeholders.
               </p>
             </div>
           </div>
         </ScrollReveal>
       </section>
 
-      {/* Fun Facts */}
+      {/* Career Journey Timeline */}
+      <section className="mx-auto max-w-4xl px-6 py-20">
+        <ScrollReveal>
+          <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl" style={{ letterSpacing: "-0.03em" }}>
+            The Journey
+          </h2>
+          <p className="mt-3 text-text-secondary">
+            From freelance roots to leading design at a global brand.
+          </p>
+        </ScrollReveal>
+
+        <div className="mt-12 ml-2.5">
+          <Timeline items={careerTimeline} />
+        </div>
+      </section>
+
+      {/* Fun Facts — Bento Grid */}
       <section className="mx-auto max-w-4xl px-6 pb-24">
         <ScrollReveal>
           <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl" style={{ letterSpacing: "-0.03em" }}>
-            Fun Facts
+            Beyond the Pixels
           </h2>
+          <p className="mt-3 text-text-secondary">
+            A few things you won&apos;t find on my resume.
+          </p>
         </ScrollReveal>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {funFacts.map((fact, i) => (
-            <ScrollReveal key={i} delay={i * 0.08}>
-              <div className="group rounded-xl bg-surface p-6 transition-all duration-300 hover:bg-surface-light border border-surface-light hover:border-accent/30 hover:shadow-lg"
-                style={{ "--tw-shadow-color": "var(--color-accent-glow)" } as React.CSSProperties}
-              >
-                <div className="text-text-muted transition-colors duration-300 group-hover:text-accent-light">
-                  {fact.icon}
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-text-secondary">{fact.text}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        <BentoGrid items={funFacts} />
       </section>
     </div>
   );

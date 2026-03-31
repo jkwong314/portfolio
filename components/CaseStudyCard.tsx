@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import type { CaseStudy } from "@/data/types";
@@ -88,8 +89,17 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
         <div className={`${aspectMap[size]} relative w-full flex-shrink-0 overflow-hidden`}>
           <motion.div
             className="absolute inset-[-12px]"
-            style={{ x: springImgX, y: springImgY, background: gradient }}
-          />
+            style={{ x: springImgX, y: springImgY }}
+          >
+            <Image
+              src={study.thumbnail}
+              alt={study.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.6 }} />
+          </motion.div>
 
           {/* Index number — editorial touch */}
           <span

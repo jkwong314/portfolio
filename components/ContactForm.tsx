@@ -209,7 +209,7 @@ export default function ContactForm() {
                 className={`w-full resize-none rounded-xl border bg-surface px-4 py-3 text-text-primary placeholder:text-text-secondary/50 transition-colors focus:border-accent focus:outline-none ${
                   errors.message ? "input-error" : "border-surface-light"
                 }`}
-                placeholder="Tell me about your project..."
+                placeholder="Write your message here..."
               />
               {errors.message && (
                 <p id="message-error" role="alert" className="field-error">

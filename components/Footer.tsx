@@ -53,7 +53,7 @@ export default function Footer() {
 
           {/* Left — CTA copy */}
           <ScrollReveal>
-            <div className="flex flex-col justify-center lg:py-4">
+            <div className="flex flex-col">
               <p className="mb-5 text-sm uppercase tracking-[0.22em] text-text-muted">
                 Like what you see?
               </p>
@@ -64,21 +64,7 @@ export default function Footer() {
               >
                 let&apos;s start chatting
                 <span className="whitespace-nowrap text-accent-light">
-                  {" "}——
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "0.55em",
-                      height: "0.55em",
-                      marginLeft: "0.18em",
-                      marginBottom: "0.06em",
-                      verticalAlign: "middle",
-                      background: "currentColor",
-                      clipPath:
-                        "polygon(50% 0%, 55% 40%, 100% 50%, 55% 60%, 50% 100%, 45% 60%, 0% 50%, 45% 40%)",
-                    }}
-                    aria-hidden="true"
-                  />
+                  {" "}── .✦
                 </span>
               </h2>
 

@@ -47,33 +47,63 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="border-t border-surface-light bg-base">
-      {/* Contact Form Section */}
-      <div className="mx-auto max-w-7xl px-6 py-20">
-        <ScrollReveal>
-          <div className="text-center">
-            <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl">
-              Get in Touch
-            </h2>
-            <p className="mt-3 text-text-secondary">
-              Have a project in mind? Let&apos;s chat.
-            </p>
-          </div>
-        </ScrollReveal>
+      {/* ── Main: CTA copy + Contact form ── */}
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20 xl:gap-32">
 
-        <ScrollReveal delay={0.1}>
-          <div className="mt-10">
-            <ContactForm />
-          </div>
-        </ScrollReveal>
+          {/* Left — CTA copy */}
+          <ScrollReveal>
+            <div className="flex flex-col justify-center lg:py-4">
+              <p className="mb-5 text-sm uppercase tracking-[0.22em] text-text-muted">
+                Like what you see?
+              </p>
+
+              <h2
+                className="font-display font-bold leading-[1.08] text-text-primary"
+                style={{ fontSize: "clamp(2.6rem, 5vw, 4.5rem)" }}
+              >
+                let&apos;s start chatting
+                <span className="whitespace-nowrap text-accent-light">
+                  {" "}——
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: "0.55em",
+                      height: "0.55em",
+                      marginLeft: "0.18em",
+                      marginBottom: "0.06em",
+                      verticalAlign: "middle",
+                      background: "currentColor",
+                      clipPath:
+                        "polygon(50% 0%, 55% 40%, 100% 50%, 55% 60%, 50% 100%, 45% 60%, 0% 50%, 45% 40%)",
+                    }}
+                    aria-hidden="true"
+                  />
+                </span>
+              </h2>
+
+              <p className="mt-7 max-w-sm text-base leading-relaxed text-text-secondary">
+                Open to new projects, collaborations, and conversations. Drop me a line and I&apos;ll get back to you within a day.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Right — Contact form */}
+          <ScrollReveal delay={0.12}>
+            <div className="w-full">
+              <ContactForm />
+            </div>
+          </ScrollReveal>
+        </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom bar ── */}
       <div className="border-t border-surface-light">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 py-8 md:flex-row md:justify-between">
-          <p className="text-sm text-text-secondary">
-            Designed &amp; built by Jamie
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-7 sm:flex-row sm:justify-between">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+            Jamie Kwong ©2025
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-1">
             {socials.map((social) => (
               <motion.a
                 key={social.label}
@@ -84,7 +114,7 @@ export default function Footer() {
                     ? undefined
                     : "noopener noreferrer"
                 }
-                className="flex items-center justify-center min-w-[44px] min-h-[44px] text-text-secondary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded-lg"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-text-muted transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
                 aria-label={social.label}
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.95 }}

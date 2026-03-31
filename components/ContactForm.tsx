@@ -72,7 +72,7 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
       aria-label="Contact form"
       noValidate
-      className="mx-auto w-full max-w-xl"
+      className="w-full"
     >
       <AnimatePresence mode="wait">
         {submitted ? (

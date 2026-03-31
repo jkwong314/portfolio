@@ -6,16 +6,28 @@ interface LiquidTextProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  isDark?: boolean;
 }
 
-// Pure blues / violets only — no hue that rotates into warm territory
-const BLOBS = [
-  { color: "#6600FF", sx: 65, sy: 80 }, // electric violet
-  { color: "#0044FF", sx: 70, sy: 75 }, // electric blue
-  { color: "#9900FF", sx: 62, sy: 72 }, // vivid purple
-  { color: "#0088FF", sx: 68, sy: 78 }, // bright blue
-  { color: "#4400CC", sx: 60, sy: 70 }, // deep indigo
+// Dark mode: Fleurox-inspired — periwinkle, lavender, orange, coral, purple
+const DARK_BLOBS = [
+  { color: "#6B8FD8", sx: 70, sy: 85 }, // cornflower blue
+  { color: "#D4A0CC", sx: 65, sy: 78 }, // soft lavender/mauve
+  { color: "#FF8C35", sx: 60, sy: 75 }, // vivid orange
+  { color: "#FF6B80", sx: 68, sy: 80 }, // coral pink
+  { color: "#8866CC", sx: 62, sy: 72 }, // medium purple
 ];
+const DARK_BASE = "linear-gradient(135deg, #1a0f2e 0%, #0f0820 100%)";
+
+// Light mode: same hues, richer/deeper so they read on white
+const LIGHT_BLOBS = [
+  { color: "#4A70CC", sx: 70, sy: 85 }, // deeper blue
+  { color: "#B87AB0", sx: 65, sy: 78 }, // deeper mauve
+  { color: "#E86B10", sx: 60, sy: 75 }, // deep orange
+  { color: "#E04060", sx: 68, sy: 80 }, // deep coral
+  { color: "#6644AA", sx: 62, sy: 72 }, // deep purple
+];
+const LIGHT_BASE = "linear-gradient(135deg, #e8e0f4 0%, #f0eafa 100%)";
 
 // Resting orbital paths
 const ORBITS = [
@@ -26,8 +38,7 @@ const ORBITS = [
   { bx: 56, by: 42, rx: 22, ry: 16, fx: 0.28, fy: 0.63, px: 0.9, py: 3.4 },
 ];
 
-// Each blob reacts differently to brush velocity → creates swirl / mixing look
-// Positive = follows mouse direction, negative = counter-swirls
+// Asymmetric swirl responses — mix of follow / counter-swirl per blob
 const RESPONSE = [
   { vx:  3.2, vy:  2.0 },
   { vx: -2.8, vy: -2.4 },
@@ -36,15 +47,24 @@ const RESPONSE = [
   { vx:  2.8, vy:  3.2 },
 ];
 
-const MAX_DISP = 45; // clamp so blobs don't fly off-canvas
+const MAX_DISP = 45;
 
-export default function LiquidText({ children, className = "", style }: LiquidTextProps) {
-  const ref     = useRef<HTMLSpanElement>(null);
-  const vel     = useRef({ x: 0, y: 0 });
-  const prevPos = useRef<{ x: number; y: number } | null>(null);
-  const isOver  = useRef(false);
-  const disp    = useRef(BLOBS.map(() => ({ x: 0, y: 0 })));
-  const raf     = useRef<number>(0);
+export default function LiquidText({
+  children,
+  className = "",
+  style,
+  isDark = true,
+}: LiquidTextProps) {
+  const ref      = useRef<HTMLSpanElement>(null);
+  const vel      = useRef({ x: 0, y: 0 });
+  const prevPos  = useRef<{ x: number; y: number } | null>(null);
+  const isOver   = useRef(false);
+  const disp     = useRef(ORBITS.map(() => ({ x: 0, y: 0 })));
+  const raf      = useRef<number>(0);
+  const isDarkRef = useRef(isDark);
+
+  // Keep ref in sync without restarting the rAF loop
+  useEffect(() => { isDarkRef.current = isDark; }, [isDark]);
 
   useEffect(() => {
     const el = ref.current;
@@ -59,7 +79,6 @@ export default function LiquidText({ children, className = "", style }: LiquidTe
         e.clientY <= rect.bottom;
 
       if (isOver.current && prevPos.current) {
-        // Velocity as % of element dimensions — normalises across screen sizes
         vel.current.x = ((e.clientX - prevPos.current.x) / rect.width)  * 100;
         vel.current.y = ((e.clientY - prevPos.current.y) / rect.height) * 100;
       }
@@ -71,16 +90,17 @@ export default function LiquidText({ children, className = "", style }: LiquidTe
     const tick = (ts: number) => {
       if (!el) { raf.current = requestAnimationFrame(tick); return; }
 
-      const t = ts * 0.001;
-      const d = disp.current;
+      const t    = ts * 0.001;
+      const d    = disp.current;
+      const dark = isDarkRef.current;
+      const blobs = dark ? DARK_BLOBS : LIGHT_BLOBS;
+      const base  = dark ? DARK_BASE  : LIGHT_BASE;
 
-      // While hovering accumulate displacement; decay regardless
       const decay = 0.90;
       d.forEach((dp, i) => {
         if (isOver.current) {
           dp.x += vel.current.x * RESPONSE[i].vx;
           dp.y += vel.current.y * RESPONSE[i].vy;
-          // Clamp
           dp.x = Math.max(-MAX_DISP, Math.min(MAX_DISP, dp.x));
           dp.y = Math.max(-MAX_DISP, Math.min(MAX_DISP, dp.y));
         }
@@ -88,25 +108,20 @@ export default function LiquidText({ children, className = "", style }: LiquidTe
         dp.y *= decay;
       });
 
-      // Decay raw velocity each frame
       vel.current.x *= 0.72;
       vel.current.y *= 0.72;
 
       const gradients = ORBITS.map((o, i) => {
         const x = o.bx + Math.sin(t * o.fx + o.px) * o.rx + d[i].x;
         const y = o.by + Math.cos(t * o.fy + o.py) * o.ry + d[i].y;
-        const { color, sx, sy } = BLOBS[i];
+        const { color, sx, sy } = blobs[i];
         return `radial-gradient(ellipse ${sx}% ${sy}% at ${x}% ${y}%, ${color} 0%, transparent 68%)`;
       });
 
-      // Deep indigo base fill for contrast against dark background
-      gradients.push("linear-gradient(135deg, #140040 0%, #0a001e 100%)");
-
-      // Narrow hue oscillation: ±20 ° — stays firmly in blue-violet
-      const hue = Math.sin(t * 0.18) * 20;
+      gradients.push(base);
 
       el.style.backgroundImage = gradients.join(", ");
-      el.style.filter = `hue-rotate(${hue}deg) saturate(1.8) brightness(1.1)`;
+      el.style.filter = `saturate(1.6) brightness(${dark ? 1.05 : 1.0})`;
 
       raf.current = requestAnimationFrame(tick);
     };

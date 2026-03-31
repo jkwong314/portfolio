@@ -101,6 +101,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.45 }}
             >
               <LiquidText
+                isDark={isDark}
                 className="block font-display font-black"
                 style={{
                   fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",

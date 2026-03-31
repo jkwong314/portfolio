@@ -72,13 +72,13 @@ export default function Hero() {
 
           <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
 
-          <span className="text-sm font-medium tracking-tight text-text-secondary">
+          <span className="text-xs font-medium uppercase tracking-[0.18em] text-text-secondary">
             UX/UI Designer
           </span>
 
           <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
 
-          <span className="text-[11px] uppercase tracking-[0.22em] text-text-secondary">
+          <span className="text-xs font-medium uppercase tracking-[0.18em] text-text-secondary">
             ALDO Group
           </span>
         </motion.div>
@@ -94,7 +94,7 @@ export default function Hero() {
           >
             <span
               className="block text-text-primary font-light"
-              style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", letterSpacing: "-0.02em" }}
+              style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", letterSpacing: "-0.02em", marginBottom: "1.25rem" }}
             >
               {STATEMENT.text}
             </span>
@@ -105,7 +105,8 @@ export default function Hero() {
               className="block bg-clip-text text-transparent"
               style={{
                 backgroundImage: gradient,
-                fontSize: "clamp(3.6rem, 9vw, 8rem)",
+                fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
+                lineHeight: 1.05,
               }}
             >
               {STATEMENT.accentLine1}

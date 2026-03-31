@@ -8,9 +8,9 @@ import { useTheme } from "@/components/ThemeProvider";
 import LiquidText from "@/components/LiquidText";
 
 const STATEMENT = {
-  text: "Good design solves a problem.",
-  accentLine1: "Great design",
-  accentLine2: "redesigns the system around it.",
+  text: "Design that moves people forward.",
+  accentLine1: "Crafted with intention,",
+  accentLine2: "one click at a time.",
 };
 
 export default function Hero() {

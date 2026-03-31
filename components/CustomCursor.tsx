@@ -2,121 +2,112 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { useTheme } from "./ThemeProvider";
 
-// ── Pixel palette ─────────────────────────────────────────────────────────────
-const C = {
-  white:  "#FFFFFF",
-  body:   "#FFF4F7",
-  light:  "#FFE0EC",
-  mid:    "#FFB3C8",
-  petal:  "#FFB8CC",
-  deep:   "#FF85A8",
-  center: "#FFE866",
-  hi:     "#FFFACC",
-};
+// ── 4 palettes cycling with each page nav ─────────────────────────────────────
+// dark  = reads on dark bg   (lighter fill, brighter outline)
+// light = reads on light bg  (deeper fill,  darker outline)
+const PALETTES = [
+  { dark: { fill: "#FFE8F2", outline: "#FF66AA" }, light: { fill: "#FFAAD0", outline: "#CC0055" } }, // pink
+  { dark: { fill: "#EEE4FF", outline: "#AA66EE" }, light: { fill: "#CC99FF", outline: "#7711CC" } }, // purple
+  { dark: { fill: "#E4EAFF", outline: "#6688EE" }, light: { fill: "#8899EE", outline: "#2233AA" } }, // blue
+  { dark: { fill: "#DFFBFF", outline: "#33CCDD" }, light: { fill: "#66DDEE", outline: "#007788" } }, // cyan
+] as const;
 
-// ── Pixel-art hand SVG ────────────────────────────────────────────────────────
-// 14 × 25 grid → displayed at 28 × 50 px
-// Fingertip (hotspot) at col 4–6, row 0
-function PixelHand({ pressing }: { pressing: boolean }) {
+// ── Pixel-art hand (second column of reference) ───────────────────────────────
+// 13 × 17 grid → displayed 26 × 34 px
+// Hotspot (fingertip) at col ~4, row 0  →  translate(-8px, 0)
+function PixelHand({
+  fill, outline, pressing,
+}: { fill: string; outline: string; pressing: boolean }) {
   return (
     <motion.svg
-      width="28"
-      height="50"
-      viewBox="0 0 14 25"
+      width="26" height="34"
+      viewBox="0 0 13 17"
       shapeRendering="crispEdges"
-      animate={pressing ? { y: 3, scale: 0.9 } : { y: 0, scale: 1 }}
+      animate={pressing ? { y: 2, scale: 0.91 } : { y: 0, scale: 1 }}
       transition={{ duration: 0.08, ease: "easeOut" }}
     >
       {/* ── Index finger ── */}
-      <rect x="4" y="0" width="3" height="1" fill={C.white}  />
-      <rect x="4" y="1" width="3" height="6" fill={C.body}   />
-      <rect x="3" y="0" width="1" height="7" fill={C.mid}    />
-      <rect x="7" y="0" width="1" height="7" fill={C.mid}    />
-      <rect x="4" y="0" width="1" height="1" fill={C.light}  />
+      <rect x="4" y="0" width="2" height="1" fill={outline} />  {/* tip */}
+      <rect x="3" y="0" width="1" height="7" fill={outline} />  {/* left edge */}
+      <rect x="6" y="0" width="1" height="4" fill={outline} />  {/* right edge */}
+      <rect x="4" y="1" width="2" height="5" fill={fill}    />  {/* body */}
 
       {/* ── Middle finger ── */}
-      <rect x="7" y="2"  width="2" height="1" fill={C.mid}   />
-      <rect x="7" y="3"  width="2" height="4" fill={C.body}  />
-      <rect x="9" y="2"  width="1" height="5" fill={C.mid}   />
+      <rect x="6" y="3" width="1" height="1" fill={outline} />  {/* cap */}
+      <rect x="6" y="4" width="1" height="2" fill={fill}    />  {/* body */}
+      <rect x="7" y="3" width="1" height="4" fill={outline} />  {/* right edge */}
 
       {/* ── Ring finger ── */}
-      <rect x="9"  y="3"  width="2" height="1" fill={C.mid}  />
-      <rect x="9"  y="4"  width="2" height="3" fill={C.body} />
-      <rect x="11" y="3"  width="1" height="4" fill={C.mid}  />
+      <rect x="7" y="4" width="1" height="1" fill={outline} />  {/* cap */}
+      <rect x="7" y="5" width="1" height="1" fill={fill}    />  {/* body */}
+      <rect x="8" y="4" width="1" height="3" fill={outline} />  {/* right edge */}
 
       {/* ── Pinky ── */}
-      <rect x="11" y="4"  width="1" height="1" fill={C.mid}  />
-      <rect x="11" y="5"  width="1" height="2" fill={C.body} />
-      <rect x="12" y="4"  width="1" height="3" fill={C.mid}  />
+      <rect x="8" y="5" width="1" height="1" fill={outline} />  {/* cap */}
+      <rect x="9" y="5" width="1" height="2" fill={outline} />  {/* right edge */}
 
       {/* ── Palm ── */}
-      <rect x="1"  y="7"  width="1"  height="5" fill={C.mid}  />
-      <rect x="2"  y="7"  width="11" height="5" fill={C.body} />
-      <rect x="13" y="7"  width="1"  height="5" fill={C.mid}  />
-      <rect x="3"  y="12" width="9"  height="1" fill={C.mid}  />
+      <rect x="2"  y="7"  width="1"  height="7" fill={outline} />  {/* left */}
+      <rect x="3"  y="7"  width="7"  height="7" fill={fill}    />  {/* body */}
+      <rect x="10" y="5"  width="1"  height="9" fill={outline} />  {/* right (incl. pinky) */}
+      <rect x="3"  y="14" width="7"  height="1" fill={outline} />  {/* bottom */}
 
       {/* ── Thumb ── */}
-      <rect x="0" y="8"  width="2" height="1" fill={C.mid}   />
-      <rect x="0" y="9"  width="2" height="3" fill={C.body}  />
-
-      {/* ── Wrist ── */}
-      <rect x="3" y="13" width="8" height="1" fill={C.light} />
-      <rect x="4" y="14" width="6" height="1" fill={C.mid}   />
-
-      {/* ── Flower petals ── */}
-      <rect x="4" y="15" width="2" height="2" fill={C.petal} />
-      <rect x="8" y="15" width="2" height="2" fill={C.petal} />
-      <rect x="3" y="17" width="2" height="2" fill={C.petal} />
-      <rect x="9" y="17" width="2" height="2" fill={C.petal} />
-      <rect x="4" y="19" width="2" height="2" fill={C.petal} />
-      <rect x="8" y="19" width="2" height="2" fill={C.petal} />
-      {/* petal shadow ring */}
-      <rect x="5" y="15" width="4" height="1" fill={C.deep}  />
-      <rect x="5" y="21" width="4" height="1" fill={C.deep}  />
-
-      {/* ── Flower centre ── */}
-      <rect x="5"  y="16" width="4" height="5" fill={C.center} />
-      <rect x="6"  y="15" width="2" height="1" fill={C.center} />
-      <rect x="6"  y="21" width="2" height="1" fill={C.center} />
-      <rect x="6"  y="17" width="1" height="1" fill={C.hi}     />
+      <rect x="1" y="8"  width="1" height="1" fill={outline} />  {/* cap */}
+      <rect x="0" y="9"  width="1" height="4" fill={outline} />  {/* left edge */}
+      <rect x="1" y="9"  width="1" height="5" fill={fill}    />  {/* body */}
+      <rect x="1" y="14" width="1" height="1" fill={outline} />  {/* bottom cap */}
     </motion.svg>
   );
 }
 
-// ── Click-burst animation ─────────────────────────────────────────────────────
+// ── Click-burst ring ──────────────────────────────────────────────────────────
 interface Burst { id: number; x: number; y: number }
 
-function ClickBurst({ x, y, onDone }: { x: number; y: number; onDone(): void }) {
+function ClickBurst({
+  x, y, outline, fill, onDone,
+}: { x: number; y: number; outline: string; fill: string; onDone(): void }) {
+  const R = 30; // max radius
   return (
-    <motion.div
+    <motion.svg
       className="pointer-events-none fixed z-[9998]"
-      style={{ left: x, top: y }}
+      style={{ left: x - R, top: y - R }}
+      width={R * 2} height={R * 2}
+      viewBox={`0 0 ${R * 2} ${R * 2}`}
+      shapeRendering="crispEdges"
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      transition={{ duration: 0.5, delay: 0.12 }}
+      transition={{ duration: 0.55, delay: 0.08 }}
       onAnimationComplete={onDone}
     >
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
-        <motion.div
-          key={deg}
-          className="absolute"
-          style={{
-            width: 10,
-            height: 3,
-            background: "var(--color-accent-light, #A78BFA)",
-            borderRadius: 0,
-            top: -1.5,
-            left: 0,
-            transformOrigin: "0 50%",
-            transform: `rotate(${deg}deg)`,
-          }}
-          initial={{ scaleX: 0.2, x: 8  }}
-          animate={{ scaleX: 1.0, x: 26 }}
-          transition={{ duration: 0.36, ease: "easeOut" }}
-        />
-      ))}
-    </motion.div>
+      {/* Outer ring — outline colour, dashed pixel style */}
+      <motion.circle
+        cx={R} cy={R}
+        fill="none"
+        stroke={outline}
+        strokeWidth="3"
+        strokeDasharray="5 3"
+        strokeLinecap="square"
+        initial={{ r: 2 }}
+        animate={{ r: R - 3 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      />
+      {/* Inner ring — fill colour, offset phase */}
+      <motion.circle
+        cx={R} cy={R}
+        fill="none"
+        stroke={fill}
+        strokeWidth="2"
+        strokeDasharray="4 4"
+        strokeLinecap="square"
+        initial={{ r: 2 }}
+        animate={{ r: R - 10 }}
+        transition={{ duration: 0.32, ease: "easeOut", delay: 0.04 }}
+      />
+    </motion.svg>
   );
 }
 
@@ -126,7 +117,25 @@ export default function CustomCursor() {
   const [visible, setVisible]   = useState(false);
   const [pressing, setPressing] = useState(false);
   const [bursts, setBursts]     = useState<Burst[]>([]);
-  const burstId                 = useRef(0);
+  const [paletteIdx, setPaletteIdx] = useState(0);
+  const burstId  = useRef(0);
+  const prevPath = useRef<string | null>(null);
+
+  const pathname = usePathname();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  // Advance palette on every navigation
+  useEffect(() => {
+    if (prevPath.current !== null && prevPath.current !== pathname) {
+      setPaletteIdx((i) => (i + 1) % PALETTES.length);
+    }
+    prevPath.current = pathname;
+  }, [pathname]);
+
+  const { fill, outline } = isDark
+    ? PALETTES[paletteIdx].dark
+    : PALETTES[paletteIdx].light;
 
   const removeBurst = useCallback(
     (id: number) => setBursts((p) => p.filter((b) => b.id !== id)),
@@ -175,22 +184,26 @@ export default function CustomCursor() {
             style={{
               left: pos.x,
               top:  pos.y,
-              // Offset so the index fingertip maps to the exact mouse coordinate
-              transform: "translate(-11px, -1px)",
+              // col 4 of 13 grid at 26px wide = 8px; fingertip at row 0
+              transform: "translate(-8px, 0px)",
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.12 }}
+            transition={{ duration: 0.1 }}
           >
-            <PixelHand pressing={pressing} />
+            <PixelHand fill={fill} outline={outline} pressing={pressing} />
           </motion.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {bursts.map(({ id, x, y }) => (
-          <ClickBurst key={id} x={x} y={y} onDone={() => removeBurst(id)} />
+          <ClickBurst
+            key={id} x={x} y={y}
+            outline={outline} fill={fill}
+            onDone={() => removeBurst(id)}
+          />
         ))}
       </AnimatePresence>
     </>

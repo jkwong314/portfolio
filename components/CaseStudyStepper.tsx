@@ -12,6 +12,10 @@ interface Props {
   steps: StepperStep[];
 }
 
+// Fixed dot container size — connector margin is derived from this
+const DOT_BOX = 10; // px, the invisible wrapper that contains the animated dot
+const CONNECTOR_H = 22; // px
+
 export default function CaseStudyStepper({ steps }: Props) {
   const [activeId, setActiveId] = useState<string>(steps[0]?.id ?? "");
   const [hovered, setHovered] = useState(false);
@@ -19,11 +23,9 @@ export default function CaseStudyStepper({ steps }: Props) {
   useEffect(() => {
     if (steps.length === 0) return;
 
-    // Track which steps are currently intersecting
     const visible = new Set<string>();
 
     const updateActive = () => {
-      // Pick the first step (in DOM order) that is currently visible
       const first = steps.find((s) => visible.has(s.id));
       if (first) setActiveId(first.id);
     };
@@ -43,7 +45,6 @@ export default function CaseStudyStepper({ steps }: Props) {
           }
           updateActive();
         },
-        // Section is "active" when its top portion is in the upper-middle of the viewport
         { rootMargin: "-15% 0px -65% 0px", threshold: 0 },
       );
 
@@ -74,64 +75,82 @@ export default function CaseStudyStepper({ steps }: Props) {
         const isLast = i === steps.length - 1;
 
         return (
-          <button
-            key={step.id}
-            onClick={() => scrollTo(step.id)}
-            className="flex cursor-pointer items-center gap-3 py-0.5"
-            aria-label={`Go to ${step.label}`}
-            aria-current={isActive ? "true" : undefined}
-          >
-            {/* Label — slides in on hover */}
-            <motion.span
-              className="max-w-[140px] truncate text-right font-body text-[10px] uppercase tracking-[0.18em]"
-              animate={{
-                opacity: hovered ? (isActive ? 1 : 0.45) : isActive ? 0.55 : 0,
-                x: hovered ? 0 : 6,
-              }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-              style={{
-                color: isActive
-                  ? "var(--color-accent-light)"
-                  : "var(--color-text-muted)",
-                pointerEvents: "none",
-              }}
+          <div key={step.id} className="flex flex-col items-end">
+            {/* ── Row: label + dot ── */}
+            <button
+              onClick={() => scrollTo(step.id)}
+              className="flex cursor-pointer items-center gap-3"
+              style={{ height: `${DOT_BOX}px` }}
+              aria-label={`Go to ${step.label}`}
+              aria-current={isActive ? "true" : undefined}
             >
-              {step.label}
-            </motion.span>
-
-            {/* Dot + connector */}
-            <div className="flex flex-col items-center">
-              <motion.div
-                className="rounded-full flex-shrink-0"
+              {/* Label — always visible, opacity carries the state */}
+              <motion.span
+                className="max-w-[160px] truncate text-right font-body text-[11px] uppercase tracking-[0.16em]"
                 animate={{
-                  width: isActive ? 8 : 5,
-                  height: isActive ? 8 : 5,
-                  backgroundColor: isActive
-                    ? "var(--color-accent-light)"
-                    : hovered
-                      ? "var(--color-text-secondary)"
-                      : "var(--color-text-muted)",
-                  boxShadow: isActive
-                    ? "0 0 8px var(--color-accent-glow)"
-                    : "none",
+                  opacity: isActive ? 1 : hovered ? 0.7 : 0.45,
+                  fontWeight: isActive ? 600 : 400,
                 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-              />
-              {!isLast && (
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                style={{
+                  color: isActive
+                    ? "var(--color-text-primary)"
+                    : "var(--color-text-secondary)",
+                  pointerEvents: "none",
+                }}
+              >
+                {step.label}
+              </motion.span>
+
+              {/* Dot — fixed container keeps connector alignment stable */}
+              <div
+                style={{
+                  width: DOT_BOX,
+                  height: DOT_BOX,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
                 <motion.div
-                  className="w-px"
+                  className="rounded-full"
                   animate={{
+                    width: isActive ? 9 : 5,
+                    height: isActive ? 9 : 5,
                     backgroundColor: isActive
                       ? "var(--color-accent-light)"
-                      : "var(--color-surface-light)",
-                    opacity: isActive ? 0.4 : 1,
+                      : hovered
+                        ? "var(--color-text-secondary)"
+                        : "var(--color-text-muted)",
+                    boxShadow: isActive
+                      ? "0 0 10px var(--color-accent-glow)"
+                      : "none",
                   }}
-                  transition={{ duration: 0.2 }}
-                  style={{ height: 24 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 />
-              )}
-            </div>
-          </button>
+              </div>
+            </button>
+
+            {/* ── Connector line — separate from button, aligned to dot center ── */}
+            {!isLast && (
+              <motion.div
+                style={{
+                  width: 1,
+                  height: CONNECTOR_H,
+                  // marginRight = half of DOT_BOX - half of 1px line = 4.5px
+                  marginRight: DOT_BOX / 2 - 0.5,
+                }}
+                animate={{
+                  backgroundColor: isActive
+                    ? "var(--color-accent-light)"
+                    : "var(--color-surface-light)",
+                  opacity: isActive ? 0.5 : 1,
+                }}
+                transition={{ duration: 0.2 }}
+              />
+            )}
+          </div>
         );
       })}
     </nav>

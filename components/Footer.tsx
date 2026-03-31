@@ -63,8 +63,9 @@ export default function Footer() {
                 style={{ fontSize: "clamp(2.6rem, 5vw, 4.5rem)" }}
               >
                 let&apos;s start chatting
-                <span className="whitespace-nowrap text-accent-light">
-                  {" "}── .✦
+                <span className="inline-flex items-center gap-[0.2em] text-accent-light" style={{ verticalAlign: "middle", marginLeft: "0.25em" }}>
+                  <span style={{ display: "inline-block", width: "1.6em", height: "2px", backgroundColor: "currentColor", borderRadius: "1px", flexShrink: 0 }} aria-hidden="true" />
+                  <span aria-hidden="true">.✦</span>
                 </span>
               </h2>
 

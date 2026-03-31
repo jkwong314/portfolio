@@ -48,19 +48,18 @@ export default function Hero() {
       {/* ── Main content ── */}
       <div className="relative z-10 mx-auto max-w-5xl text-center">
 
-        {/* ── SECONDARY: frosted credential chip + role ── */}
+        {/* ── SECONDARY: frosted credential chip + role + company ── */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-3 flex flex-wrap items-center justify-center gap-2.5"
+          className="mb-10 flex flex-wrap items-center justify-center gap-2.5"
         >
           {/* Name chip with live availability pulse */}
           <div
             className="flex items-center gap-2 rounded-full border border-surface-light bg-surface px-3.5 py-1.5"
             aria-label="Jamie — available"
           >
-            {/* Pulsing dot — purely decorative */}
             <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -75,18 +74,12 @@ export default function Hero() {
           <span className="text-sm font-medium tracking-tight text-text-secondary">
             UX/UI Designer
           </span>
-        </motion.div>
 
-        {/* ── TERTIARY: company ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-          className="mb-10"
-        >
-          <p className="text-[11px] uppercase tracking-[0.28em] text-text-secondary">
+          <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
+
+          <span className="text-[11px] uppercase tracking-[0.22em] text-text-secondary">
             ALDO Group
-          </p>
+          </span>
         </motion.div>
 
         {/* ── PRIMARY: statement ── */}
@@ -100,7 +93,7 @@ export default function Hero() {
           >
             <span
               className="text-text-primary"
-              style={{ fontSize: "clamp(2.75rem, 6vw, 5rem)" }}
+              style={{ fontSize: "clamp(1.9rem, 3.8vw, 3.25rem)" }}
             >
               {STATEMENT.text}
             </span>
@@ -111,7 +104,7 @@ export default function Hero() {
               className="block bg-clip-text text-transparent"
               style={{
                 backgroundImage: gradient,
-                fontSize: "clamp(3.2rem, 7.5vw, 6.25rem)",
+                fontSize: "clamp(3.4rem, 8vw, 7rem)",
               }}
             >
               {STATEMENT.accent}

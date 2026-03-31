@@ -58,7 +58,7 @@ export default function Hero() {
         >
           {/* Name chip with live availability pulse */}
           <div
-            className="flex items-center gap-2 rounded-full border border-surface-light bg-surface px-3.5 py-1.5"
+            className="flex items-center gap-2 rounded-full border border-text-muted/40 bg-surface px-3.5 py-1.5"
             aria-label="Jamie — available"
           >
             <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
@@ -73,10 +73,10 @@ export default function Hero() {
           <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
 
           <span className="text-xs font-medium uppercase tracking-[0.18em] text-text-secondary">
-            UX/UI Designer
+            Product Designer
           </span>
 
-          <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
+          <span className="text-text-muted" aria-hidden="true">·</span>
 
           <span className="text-xs font-medium uppercase tracking-[0.18em] text-text-secondary">
             ALDO Group
@@ -105,7 +105,7 @@ export default function Hero() {
               className="block bg-clip-text text-transparent"
               style={{
                 backgroundImage: gradient,
-                fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
+                fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
                 lineHeight: 1.05,
               }}
             >

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
+import PixelSparkles, { StarPixel, CrossPixel, DotPixel } from "@/components/PixelSparkles";
 
 const STATEMENT = {
   text: "Design that moves people forward.",
@@ -28,6 +29,7 @@ export default function Hero() {
       className="relative flex min-h-[75vh] flex-col justify-center px-6 py-20 md:min-h-screen md:px-12 md:py-32"
     >
       <ClickBlobs boundaryRef={sectionRef} />
+      <PixelSparkles />
 
       {/* ── Dot grid texture ── */}
       <div
@@ -98,21 +100,55 @@ export default function Hero() {
             >
               {STATEMENT.text}
             </span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
-              className="block bg-clip-text text-transparent"
-              style={{
-                backgroundImage: gradient,
-                fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
-                lineHeight: 1.05,
-              }}
-            >
-              {STATEMENT.accentLine1}
-              <br />
-              {STATEMENT.accentLine2}
-            </motion.span>
+
+            {/* Accent block with pixel sparkle decoration */}
+            <span className="relative block">
+              {/* Top-left sparkle */}
+              <motion.span
+                className="text-accent-light absolute -top-5 -left-1 hidden md:block"
+                initial={{ opacity: 0 }} animate={{ opacity: 0.55 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                aria-hidden="true"
+              >
+                <StarPixel size={14} />
+              </motion.span>
+
+              {/* Top-right dot */}
+              <motion.span
+                className="text-accent-light absolute -top-3 -right-2 hidden md:block"
+                initial={{ opacity: 0 }} animate={{ opacity: 0.40 }}
+                transition={{ delay: 1.1, duration: 0.6 }}
+                aria-hidden="true"
+              >
+                <DotPixel size={5} />
+              </motion.span>
+
+              {/* Bottom-right cross */}
+              <motion.span
+                className="text-accent-light absolute -bottom-4 -right-1 hidden md:block"
+                initial={{ opacity: 0 }} animate={{ opacity: 0.45 }}
+                transition={{ delay: 1.3, duration: 0.6 }}
+                aria-hidden="true"
+              >
+                <CrossPixel size={11} />
+              </motion.span>
+
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.45 }}
+                className="block bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: gradient,
+                  fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
+                  lineHeight: 1.05,
+                }}
+              >
+                {STATEMENT.accentLine1}
+                <br />
+                {STATEMENT.accentLine2}
+              </motion.span>
+            </span>
           </motion.h1>
         </div>
 

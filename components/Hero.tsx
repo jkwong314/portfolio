@@ -38,46 +38,22 @@ export default function Hero() {
             : "radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           maskImage:
-            "radial-gradient(ellipse 70% 70% at 30% 40%, transparent 25%, black 75%)",
+            "radial-gradient(ellipse 70% 70% at 50% 40%, transparent 25%, black 75%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 70% 70% at 30% 40%, transparent 25%, black 75%)",
+            "radial-gradient(ellipse 70% 70% at 50% 40%, transparent 25%, black 75%)",
           opacity: isDark ? 0.35 : 0.5,
         }}
       />
 
       {/* ── Main content ── */}
-      <div className="relative z-10 max-w-5xl">
-        {/* ── PRIMARY: statement ── */}
-        <div className="mb-12">
-          <motion.h1
-            className="font-display font-black leading-[1.08]"
-            style={{
-              fontSize: "clamp(2.75rem, 6vw, 5rem)",
-              letterSpacing: "-0.035em",
-            }}
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="text-text-primary">{STATEMENT.text} </span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: gradient }}
-            >
-              {STATEMENT.accent}
-            </motion.span>
-          </motion.h1>
-        </div>
+      <div className="relative z-10 mx-auto max-w-5xl text-center">
 
         {/* ── SECONDARY: frosted credential chip + role ── */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-3 flex flex-wrap items-center gap-2.5"
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-3 flex flex-wrap items-center justify-center gap-2.5"
         >
           {/* Name chip with live availability pulse */}
           <div
@@ -105,17 +81,47 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="mb-14"
+          transition={{ duration: 0.7, delay: 0.35 }}
+          className="mb-10"
         >
           <p className="text-[11px] uppercase tracking-[0.28em] text-text-secondary">
             ALDO Group
           </p>
         </motion.div>
 
+        {/* ── PRIMARY: statement ── */}
+        <div className="mb-12">
+          <motion.h1
+            className="font-display font-black leading-[1.08]"
+            style={{ letterSpacing: "-0.035em" }}
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span
+              className="text-text-primary"
+              style={{ fontSize: "clamp(2.75rem, 6vw, 5rem)" }}
+            >
+              {STATEMENT.text}
+            </span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="block bg-clip-text text-transparent"
+              style={{
+                backgroundImage: gradient,
+                fontSize: "clamp(3.2rem, 7.5vw, 6.25rem)",
+              }}
+            >
+              {STATEMENT.accent}
+            </motion.span>
+          </motion.h1>
+        </div>
+
         {/* ── CTAs ── */}
         <motion.div
-          className="flex items-center gap-8"
+          className="flex items-center justify-center gap-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.65 }}

@@ -54,7 +54,7 @@ export default function Footer() {
           {/* Left — CTA copy */}
           <ScrollReveal>
             <div className="flex flex-col">
-              <p className="mb-5 text-sm uppercase tracking-[0.22em] text-text-muted">
+              <p className="mb-5 text-sm uppercase tracking-[0.22em] text-text-secondary">
                 Like what you see?
               </p>
 

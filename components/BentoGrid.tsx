@@ -7,6 +7,7 @@ export interface BentoItem {
   icon: React.ReactNode;
   text: string;
   size?: "sm" | "md" | "lg";
+  image?: string;
 }
 
 function BentoCard({
@@ -64,6 +65,14 @@ function BentoCard({
           } as React.CSSProperties
         }
       >
+        {/* Background image */}
+        {item.image && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-500 group-hover:opacity-30"
+            style={{ backgroundImage: `url(${item.image})` }}
+          />
+        )}
+
         {/* Spotlight radial gradient on hover */}
         <div
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -74,7 +83,7 @@ function BentoCard({
         />
 
         {/* Content */}
-        <div className="relative z-10 flex h-full flex-col justify-center">
+        <div className="relative z-10 flex h-full flex-col justify-end">
           <div className="text-text-muted transition-colors duration-300 group-hover:text-accent-light">
             {item.icon}
           </div>

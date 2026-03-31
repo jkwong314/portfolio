@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 import FlipWords from "@/components/FlipWords";
 import Timeline from "@/components/Timeline";
@@ -70,6 +71,7 @@ const funFacts: BentoItem[] = [
     ),
     text: "Lifelong maker — never afraid to get my hands dirty to see a project through to the end",
     size: "lg",
+    image: "/images/about-design.jpg",
   },
   {
     icon: (
@@ -79,6 +81,7 @@ const funFacts: BentoItem[] = [
     ),
     text: "New hobby collector — currently obsessed with the problem-solving nature of bouldering",
     size: "sm",
+    image: "/images/about-bouldering.jpg",
   },
   {
     icon: (
@@ -104,6 +107,7 @@ const funFacts: BentoItem[] = [
     ),
     text: "Early 2000s karaoke queen — my go-to strategy for team bonding",
     size: "md",
+    image: "/images/about-karaoke.jpg",
   },
   {
     icon: (
@@ -116,6 +120,7 @@ const funFacts: BentoItem[] = [
     ),
     text: "Valorant, League of Legends & Monster Hunter World player",
     size: "sm",
+    image: "/images/about-gaming.jpg",
   },
   {
     icon: (
@@ -151,17 +156,21 @@ export default function AboutPage() {
             <div
               className="relative h-72 w-72 overflow-hidden rounded-2xl md:h-80 md:w-80"
               style={{
-                background: "linear-gradient(135deg, var(--color-accent-glow) 0%, var(--color-surface-light) 50%, var(--color-gold-glow) 100%)",
                 boxShadow: "0 0 60px var(--color-accent-glow)",
               }}
             >
+              <Image
+                src="/images/about-portrait.jpg"
+                alt="Design workspace"
+                fill
+                className="object-cover"
+                sizes="320px"
+                priority
+              />
               <div
                 className="absolute inset-0"
-                style={{ background: "radial-gradient(circle at 30% 40%, var(--color-accent-glow) 0%, transparent 60%)" }}
+                style={{ background: "linear-gradient(135deg, var(--color-accent-glow) 0%, transparent 50%, var(--color-gold-glow) 100%)" }}
               />
-              <span className="absolute inset-0 flex items-center justify-center text-sm text-text-muted">
-                [Your photo here]
-              </span>
             </div>
           </ScrollReveal>
 

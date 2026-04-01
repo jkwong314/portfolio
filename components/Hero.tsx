@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
-import PixelSparkles, { StarPixel, CrossPixel, DotPixel } from "@/components/PixelSparkles";
+import PixelSparkles, { Star4, Star4Small, DotPixel } from "@/components/PixelSparkles";
 
 const STATEMENT = {
   text: "Design that moves people forward.",
@@ -110,7 +110,7 @@ export default function Hero() {
                 transition={{ delay: 0.9, duration: 0.6 }}
                 aria-hidden="true"
               >
-                <StarPixel size={14} />
+                <Star4 size={14} />
               </motion.span>
 
               {/* Top-right dot */}
@@ -123,14 +123,14 @@ export default function Hero() {
                 <DotPixel size={5} />
               </motion.span>
 
-              {/* Bottom-right cross */}
+              {/* Bottom-right star */}
               <motion.span
                 className="text-accent-light absolute -bottom-4 -right-1 hidden md:block"
                 initial={{ opacity: 0 }} animate={{ opacity: 0.45 }}
                 transition={{ delay: 1.3, duration: 0.6 }}
                 aria-hidden="true"
               >
-                <CrossPixel size={11} />
+                <Star4Small size={11} />
               </motion.span>
 
               <motion.span

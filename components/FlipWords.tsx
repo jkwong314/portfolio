@@ -30,7 +30,7 @@ export default function FlipWords({
   return (
     <span
       ref={containerRef}
-      className={`relative inline-flex items-center justify-center overflow-hidden ${className}`}
+      className={`relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap ${className}`}
       style={{ minWidth: "2ch" }}
     >
       <AnimatePresence mode="wait">

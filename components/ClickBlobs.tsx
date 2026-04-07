@@ -180,7 +180,7 @@ export default function ClickBlobs({ boundaryRef }: Props) {
               willChange: "opacity",
             }}
             initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 0.5, scale: 1, transition: { duration: 0.9, ease: "easeOut" } }}
+            animate={{ opacity: 0.85, scale: 1, transition: { duration: 0.9, ease: "easeOut" } }}
             exit={{ opacity: 0, scale: 1.1, transition: { duration: 0.7, ease: "easeIn" } }}
           />
         ))}

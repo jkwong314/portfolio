@@ -6,6 +6,7 @@ import { useRef } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
 import PixelSparkles, { Star4, Star4Small, DotPixel } from "@/components/PixelSparkles";
+import ClickWord from "@/components/ClickWord";
 
 const STATEMENT = {
   text: "Design that moves people forward.",
@@ -146,7 +147,7 @@ export default function Hero() {
               >
                 {STATEMENT.accentLine1}
                 <br />
-                {STATEMENT.accentLine2}
+                {"one "}<ClickWord>click</ClickWord>{" at a time."}
               </motion.span>
             </span>
           </motion.h1>

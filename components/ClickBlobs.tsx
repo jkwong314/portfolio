@@ -12,35 +12,22 @@ interface Blob {
   size: number;
 }
 
+// pink, purple, blue, teal, yellow
 const DARK_GRADIENTS = [
-  "radial-gradient(circle, rgba(0,185,178,0.85) 0%, rgba(0,185,178,0.4) 18%, rgba(0,185,178,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(168,204,0,0.82) 0%, rgba(168,204,0,0.38) 18%, rgba(168,204,0,0.09) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(249,115,22,0.85) 0%, rgba(249,115,22,0.4) 18%, rgba(249,115,22,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(236,72,153,0.88) 0%, rgba(236,72,153,0.42) 18%, rgba(236,72,153,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(124,58,237,0.85) 0%, rgba(124,58,237,0.38) 18%, rgba(124,58,237,0.09) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(6,182,212,0.85) 0%, rgba(6,182,212,0.4) 18%, rgba(6,182,212,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(201,168,76,0.88) 0%, rgba(201,168,76,0.42) 18%, rgba(201,168,76,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(239,68,68,0.82) 0%, rgba(239,68,68,0.38) 18%, rgba(239,68,68,0.09) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(34,197,94,0.8) 0%, rgba(34,197,94,0.36) 18%, rgba(34,197,94,0.08) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(99,102,241,0.85) 0%, rgba(99,102,241,0.38) 18%, rgba(99,102,241,0.09) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(251,191,36,0.4) 18%, rgba(251,191,36,0.1) 40%, transparent 75%)",
-  "radial-gradient(circle, rgba(20,184,166,0.85) 0%, rgba(20,184,166,0.38) 18%, rgba(20,184,166,0.09) 40%, transparent 75%)",
+  "radial-gradient(circle, rgba(236,72,153,0.88) 0%, rgba(236,72,153,0.42) 18%, rgba(236,72,153,0.1) 40%, transparent 75%)",  // pink
+  "radial-gradient(circle, rgba(124,58,237,0.85) 0%, rgba(124,58,237,0.38) 18%, rgba(124,58,237,0.09) 40%, transparent 75%)", // purple
+  "radial-gradient(circle, rgba(59,130,246,0.85) 0%, rgba(59,130,246,0.4) 18%, rgba(59,130,246,0.1) 40%, transparent 75%)",   // blue
+  "radial-gradient(circle, rgba(20,184,166,0.85) 0%, rgba(20,184,166,0.38) 18%, rgba(20,184,166,0.09) 40%, transparent 75%)", // teal
+  "radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(251,191,36,0.4) 18%, rgba(251,191,36,0.1) 40%, transparent 75%)",   // yellow
 ];
 
-// Light mode: bright, saturated, pastel-leaning colors — screen blend keeps them vibrant
+// Light mode — pink, purple, blue, teal, yellow
 const LIGHT_GRADIENTS = [
-  "radial-gradient(circle, rgba(255,80,160,0.55) 0%, rgba(255,120,180,0.28) 20%, rgba(255,160,200,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(80,140,255,0.55) 0%, rgba(120,170,255,0.28) 20%, rgba(160,200,255,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(0,200,255,0.5) 0%, rgba(80,220,255,0.25) 20%, rgba(140,235,255,0.07) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(160,100,255,0.55) 0%, rgba(190,140,255,0.28) 20%, rgba(210,180,255,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(255,120,50,0.55) 0%, rgba(255,160,100,0.28) 20%, rgba(255,190,140,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(80,220,120,0.5) 0%, rgba(120,235,160,0.25) 20%, rgba(160,245,190,0.07) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(255,200,40,0.55) 0%, rgba(255,215,100,0.28) 20%, rgba(255,230,150,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(255,60,180,0.55) 0%, rgba(255,110,200,0.28) 20%, rgba(255,160,220,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(0,210,180,0.5) 0%, rgba(60,225,200,0.25) 20%, rgba(120,240,220,0.07) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(120,100,255,0.55) 0%, rgba(160,140,255,0.28) 20%, rgba(200,185,255,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(255,160,20,0.55) 0%, rgba(255,185,80,0.28) 20%, rgba(255,210,140,0.08) 45%, transparent 75%)",
-  "radial-gradient(circle, rgba(40,200,160,0.5) 0%, rgba(90,220,185,0.25) 20%, rgba(140,235,210,0.07) 45%, transparent 75%)",
+  "radial-gradient(circle, rgba(255,80,160,0.55) 0%, rgba(255,120,190,0.28) 20%, rgba(255,170,215,0.08) 45%, transparent 75%)",  // pink
+  "radial-gradient(circle, rgba(160,100,255,0.55) 0%, rgba(190,145,255,0.28) 20%, rgba(215,185,255,0.08) 45%, transparent 75%)", // purple
+  "radial-gradient(circle, rgba(80,140,255,0.55) 0%, rgba(120,175,255,0.28) 20%, rgba(165,205,255,0.08) 45%, transparent 75%)",  // blue
+  "radial-gradient(circle, rgba(0,210,190,0.5) 0%, rgba(60,225,210,0.25) 20%, rgba(120,240,225,0.07) 45%, transparent 75%)",    // teal
+  "radial-gradient(circle, rgba(255,200,30,0.55) 0%, rgba(255,218,100,0.28) 20%, rgba(255,232,155,0.08) 45%, transparent 75%)", // yellow
 ];
 
 let counter = 0;

@@ -48,17 +48,26 @@ const MAX_BLOBS = 8;
 const BLOB_LIFETIME = 800;
 const TRAIL_SPACING = 40;
 
+// Ambient blob config
+const AMBIENT_SIZES = [150, 300, 480];
+const AMBIENT_LIFETIME = 4000;
+const AMBIENT_INTERVAL_MIN = 1600;
+const AMBIENT_INTERVAL_MAX = 3200;
+
 interface Props {
   boundaryRef: React.RefObject<HTMLElement | null>;
 }
 
 export default function ClickBlobs({ boundaryRef }: Props) {
   const [blobs, setBlobs] = useState<Blob[]>([]);
+  const [ambientBlobs, setAmbientBlobs] = useState<Blob[]>([]);
   const [isPointer, setIsPointer] = useState(false);
   const { theme } = useTheme();
   const isDown = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
   const accumulated = useRef(0);
+  const ambientGradIdx = useRef(0);
+  const ambientSizeIdx = useRef(0);
 
   useEffect(() => {
     setIsPointer(window.matchMedia("(pointer: fine)").matches);
@@ -130,9 +139,68 @@ export default function ClickBlobs({ boundaryRef }: Props) {
     };
   }, [spawnBlob, isInBounds]);
 
+  // Ambient blobs — auto-spawn at random positions in the hero section
+  useEffect(() => {
+    const pool = theme === "dark" ? DARK_GRADIENTS : LIGHT_GRADIENTS;
+    let timerId: ReturnType<typeof setTimeout>;
+
+    const spawn = () => {
+      const el = boundaryRef.current;
+      if (el) {
+        const xPct = 5 + Math.random() * 90;
+        const yPct = 5 + Math.random() * 90;
+        const gradient = pool[ambientGradIdx.current % pool.length];
+        const size = AMBIENT_SIZES[ambientSizeIdx.current % AMBIENT_SIZES.length];
+        ambientGradIdx.current += 1;
+        ambientSizeIdx.current += 1;
+        const id = counter++;
+
+        setAmbientBlobs((prev) => [...prev, { id, x: xPct, y: yPct, gradient, size }]);
+        setTimeout(() => setAmbientBlobs((prev) => prev.filter((b) => b.id !== id)), AMBIENT_LIFETIME);
+      }
+      const delay = AMBIENT_INTERVAL_MIN + Math.random() * (AMBIENT_INTERVAL_MAX - AMBIENT_INTERVAL_MIN);
+      timerId = setTimeout(spawn, delay);
+    };
+
+    const initialDelay = AMBIENT_INTERVAL_MIN + Math.random() * (AMBIENT_INTERVAL_MAX - AMBIENT_INTERVAL_MIN);
+    timerId = setTimeout(spawn, initialDelay);
+    return () => clearTimeout(timerId);
+  }, [boundaryRef, theme]);
+
   if (!isPointer) return null;
 
   return (
+    <>
+    {/* Ambient blobs — absolute within hero section */}
+    <div
+      className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
+      aria-hidden="true"
+    >
+      <AnimatePresence>
+        {ambientBlobs.map((blob) => (
+          <motion.div
+            key={blob.id}
+            className="absolute rounded-full"
+            style={{
+              left: `${blob.x}%`,
+              top: `${blob.y}%`,
+              width: blob.size,
+              height: blob.size,
+              marginLeft: -blob.size / 2,
+              marginTop: -blob.size / 2,
+              background: blob.gradient,
+              mixBlendMode: theme === "dark" ? "screen" : "multiply",
+              willChange: "opacity",
+            }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 0.55, scale: 1, transition: { duration: 1.2, ease: "easeOut" } }}
+            exit={{ opacity: 0, scale: 1.15, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+
+    {/* Click blobs — fixed, viewport-relative */}
     <div
       className="pointer-events-none fixed inset-0 z-[2] overflow-hidden"
       aria-hidden="true"
@@ -178,5 +246,6 @@ export default function ClickBlobs({ boundaryRef }: Props) {
         ))}
       </AnimatePresence>
     </div>
+    </>
   );
 }

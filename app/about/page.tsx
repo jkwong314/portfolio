@@ -146,7 +146,7 @@ export default function AboutPage() {
             style={{ fontSize: "clamp(3rem, 7vw, 5.5rem)", letterSpacing: "-0.04em" }}
           >
             <span className="text-text-primary">I am a </span>
-            <FlipWords words={["designer", "creator", "problem-solver", "maker"]} />
+            <FlipWords words={["designer", "creator", "builder", "maker"]} />
           </h1>
         </ScrollReveal>
 

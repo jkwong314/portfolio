@@ -21,7 +21,7 @@ export default function FlipWords({
   const { theme } = useTheme();
   const gradient = theme === "dark"
     ? "linear-gradient(to right, #A78BFA, #C9A84C, #7C3AED)"
-    : "linear-gradient(to right, #7C3AED, #92670A, #6D28D9)";
+    : "linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)";
 
   const next = useCallback(() => {
     setIndex((i) => (i + 1) % words.length);

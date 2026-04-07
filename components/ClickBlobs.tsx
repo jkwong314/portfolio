@@ -49,7 +49,7 @@ const BLOB_LIFETIME = 800;
 const TRAIL_SPACING = 40;
 
 // Ambient blob config
-const AMBIENT_SIZES = [120, 200, 300];
+const AMBIENT_SIZES = [120, 200, 480];
 const AMBIENT_LIFETIME = 3000;
 const AMBIENT_INTERVAL_MIN = 1600;
 const AMBIENT_INTERVAL_MAX = 3200;

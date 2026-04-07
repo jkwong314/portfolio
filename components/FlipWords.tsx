@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface FlipWordsProps {
   words: string[];
@@ -17,6 +18,10 @@ export default function FlipWords({
   const [index, setIndex] = useState(0);
   const prefersReduced = useReducedMotion();
   const containerRef = useRef<HTMLSpanElement>(null);
+  const { theme } = useTheme();
+  const gradient = theme === "dark"
+    ? "linear-gradient(to right, #A78BFA, #C9A84C, #7C3AED)"
+    : "linear-gradient(to right, #7C3AED, #92670A, #6D28D9)";
 
   const next = useCallback(() => {
     setIndex((i) => (i + 1) % words.length);
@@ -51,7 +56,8 @@ export default function FlipWords({
             duration: prefersReduced ? 0 : 0.4,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="inline-block bg-gradient-to-r from-accent-light via-gold to-accent bg-clip-text text-transparent"
+          className="inline-block bg-clip-text text-transparent"
+          style={{ backgroundImage: gradient }}
         >
           {words[index]}
         </motion.span>

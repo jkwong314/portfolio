@@ -13,34 +13,34 @@ interface Blob {
 }
 
 const DARK_GRADIENTS = [
-  "radial-gradient(circle, rgba(0,185,178,0.85) 0%, rgba(0,185,178,0.5) 25%, rgba(0,185,178,0.18) 55%, rgba(0,185,178,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(168,204,0,0.82) 0%, rgba(168,204,0,0.46) 25%, rgba(168,204,0,0.16) 55%, rgba(168,204,0,0.03) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(249,115,22,0.85) 0%, rgba(249,115,22,0.5) 25%, rgba(249,115,22,0.18) 55%, rgba(249,115,22,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(236,72,153,0.88) 0%, rgba(236,72,153,0.52) 25%, rgba(236,72,153,0.18) 55%, rgba(236,72,153,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(124,58,237,0.85) 0%, rgba(124,58,237,0.48) 25%, rgba(124,58,237,0.16) 55%, rgba(124,58,237,0.03) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(6,182,212,0.85) 0%, rgba(6,182,212,0.5) 25%, rgba(6,182,212,0.18) 55%, rgba(6,182,212,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(201,168,76,0.88) 0%, rgba(201,168,76,0.52) 25%, rgba(201,168,76,0.18) 55%, rgba(201,168,76,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(239,68,68,0.82) 0%, rgba(239,68,68,0.46) 25%, rgba(239,68,68,0.15) 55%, rgba(239,68,68,0.03) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(34,197,94,0.8) 0%, rgba(34,197,94,0.44) 25%, rgba(34,197,94,0.14) 55%, rgba(34,197,94,0.03) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(99,102,241,0.85) 0%, rgba(99,102,241,0.48) 25%, rgba(99,102,241,0.16) 55%, rgba(99,102,241,0.03) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(251,191,36,0.5) 25%, rgba(251,191,36,0.17) 55%, rgba(251,191,36,0.04) 75%, transparent 90%)",
-  "radial-gradient(circle, rgba(20,184,166,0.85) 0%, rgba(20,184,166,0.48) 25%, rgba(20,184,166,0.16) 55%, rgba(20,184,166,0.03) 75%, transparent 90%)",
+  "radial-gradient(circle, rgba(0,185,178,0.85) 0%, rgba(0,185,178,0.4) 18%, rgba(0,185,178,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(168,204,0,0.82) 0%, rgba(168,204,0,0.38) 18%, rgba(168,204,0,0.09) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(249,115,22,0.85) 0%, rgba(249,115,22,0.4) 18%, rgba(249,115,22,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(236,72,153,0.88) 0%, rgba(236,72,153,0.42) 18%, rgba(236,72,153,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(124,58,237,0.85) 0%, rgba(124,58,237,0.38) 18%, rgba(124,58,237,0.09) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(6,182,212,0.85) 0%, rgba(6,182,212,0.4) 18%, rgba(6,182,212,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(201,168,76,0.88) 0%, rgba(201,168,76,0.42) 18%, rgba(201,168,76,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(239,68,68,0.82) 0%, rgba(239,68,68,0.38) 18%, rgba(239,68,68,0.09) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(34,197,94,0.8) 0%, rgba(34,197,94,0.36) 18%, rgba(34,197,94,0.08) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(99,102,241,0.85) 0%, rgba(99,102,241,0.38) 18%, rgba(99,102,241,0.09) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(251,191,36,0.4) 18%, rgba(251,191,36,0.1) 40%, transparent 65%)",
+  "radial-gradient(circle, rgba(20,184,166,0.85) 0%, rgba(20,184,166,0.38) 18%, rgba(20,184,166,0.09) 40%, transparent 65%)",
 ];
 
 // Light mode: vivid saturated colors + multiply blend so overlaps stay rich, not muddy
 const LIGHT_GRADIENTS = [
-  "radial-gradient(circle, rgba(255,45,120,0.72) 0%, rgba(255,45,120,0.38) 30%, rgba(255,45,120,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(59,130,246,0.72) 0%, rgba(59,130,246,0.38) 30%, rgba(59,130,246,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(0,210,255,0.68) 0%, rgba(0,210,255,0.34) 30%, rgba(0,210,255,0.09) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(139,92,246,0.72) 0%, rgba(139,92,246,0.38) 30%, rgba(139,92,246,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(255,100,40,0.72) 0%, rgba(255,100,40,0.38) 30%, rgba(255,100,40,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(163,230,53,0.65) 0%, rgba(163,230,53,0.32) 30%, rgba(163,230,53,0.08) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(251,191,36,0.72) 0%, rgba(251,191,36,0.38) 30%, rgba(251,191,36,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(236,72,153,0.72) 0%, rgba(236,72,153,0.38) 30%, rgba(236,72,153,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(16,185,129,0.65) 0%, rgba(16,185,129,0.32) 30%, rgba(16,185,129,0.08) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(99,102,241,0.72) 0%, rgba(99,102,241,0.38) 30%, rgba(99,102,241,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(245,158,11,0.72) 0%, rgba(245,158,11,0.38) 30%, rgba(245,158,11,0.1) 60%, transparent 85%)",
-  "radial-gradient(circle, rgba(20,184,166,0.65) 0%, rgba(20,184,166,0.32) 30%, rgba(20,184,166,0.08) 60%, transparent 85%)",
+  "radial-gradient(circle, rgba(255,45,120,0.72) 0%, rgba(255,45,120,0.3) 20%, rgba(255,45,120,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(59,130,246,0.72) 0%, rgba(59,130,246,0.3) 20%, rgba(59,130,246,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(0,210,255,0.68) 0%, rgba(0,210,255,0.28) 20%, rgba(0,210,255,0.06) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(139,92,246,0.72) 0%, rgba(139,92,246,0.3) 20%, rgba(139,92,246,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(255,100,40,0.72) 0%, rgba(255,100,40,0.3) 20%, rgba(255,100,40,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(163,230,53,0.65) 0%, rgba(163,230,53,0.26) 20%, rgba(163,230,53,0.06) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(251,191,36,0.72) 0%, rgba(251,191,36,0.3) 20%, rgba(251,191,36,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(236,72,153,0.72) 0%, rgba(236,72,153,0.3) 20%, rgba(236,72,153,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(16,185,129,0.65) 0%, rgba(16,185,129,0.26) 20%, rgba(16,185,129,0.06) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(99,102,241,0.72) 0%, rgba(99,102,241,0.3) 20%, rgba(99,102,241,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(245,158,11,0.72) 0%, rgba(245,158,11,0.3) 20%, rgba(245,158,11,0.07) 45%, transparent 65%)",
+  "radial-gradient(circle, rgba(20,184,166,0.65) 0%, rgba(20,184,166,0.26) 20%, rgba(20,184,166,0.06) 45%, transparent 65%)",
 ];
 
 let counter = 0;
@@ -49,8 +49,8 @@ const BLOB_LIFETIME = 800;
 const TRAIL_SPACING = 40;
 
 // Ambient blob config
-const AMBIENT_SIZES = [150, 300, 480];
-const AMBIENT_LIFETIME = 4000;
+const AMBIENT_SIZES = [120, 200, 300];
+const AMBIENT_LIFETIME = 3000;
 const AMBIENT_INTERVAL_MIN = 1600;
 const AMBIENT_INTERVAL_MAX = 3200;
 
@@ -193,8 +193,8 @@ export default function ClickBlobs({ boundaryRef }: Props) {
               willChange: "opacity",
             }}
             initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 0.55, scale: 1, transition: { duration: 1.2, ease: "easeOut" } }}
-            exit={{ opacity: 0, scale: 1.15, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }}
+            animate={{ opacity: 0.5, scale: 1, transition: { duration: 0.9, ease: "easeOut" } }}
+            exit={{ opacity: 0, scale: 1.1, transition: { duration: 0.7, ease: "easeIn" } }}
           />
         ))}
       </AnimatePresence>

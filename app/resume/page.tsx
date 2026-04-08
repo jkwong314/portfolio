@@ -74,7 +74,7 @@ export default function ResumePage() {
             <AnimatedButton
               href="/Jamie_Kwong_Resume_2026.pdf"
               download="Jamie_Kwong_Resume_2026.pdf"
-              variant="outlined"
+              variant="outline"
               icon={<DownloadIcon />}
             >
               Download PDF

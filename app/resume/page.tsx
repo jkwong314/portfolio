@@ -81,6 +81,35 @@ export default function ResumePage() {
             </AnimatedButton>
           </div>
         </ScrollReveal>
+
+        {/* PDF preview */}
+        <ScrollReveal delay={0.2}>
+          <div className="mt-12 hidden md:block">
+            <div className="overflow-hidden rounded-2xl border border-surface-light bg-surface">
+              <object
+                data="/Jamie_Kwong_Resume_2026.pdf"
+                type="application/pdf"
+                width="100%"
+                className="h-[85vh] w-full"
+                title="Jamie Kwong Resume 2026"
+              >
+                <div className="flex h-[60vh] flex-col items-center justify-center gap-4 p-8 text-center">
+                  <p className="text-text-secondary">
+                    Unable to display PDF inline. Use the buttons above to view or download.
+                  </p>
+                </div>
+              </object>
+            </div>
+          </div>
+
+          <div className="mt-8 md:hidden">
+            <div className="rounded-xl border border-surface-light bg-surface p-6 text-center">
+              <p className="text-text-secondary">
+                View on desktop for inline preview, or use the buttons above.
+              </p>
+            </div>
+          </div>
+        </ScrollReveal>
       </section>
     </div>
   );

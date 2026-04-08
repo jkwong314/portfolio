@@ -44,6 +44,7 @@ function Logo() {
 const navLinks = [
   { href: "/#work", label: "Work" },
   { href: "/about", label: "About" },
+  { href: "/album", label: "Album" },
 ];
 
 export default function Nav() {

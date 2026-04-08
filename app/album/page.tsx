@@ -45,7 +45,6 @@ export default function AlbumPage() {
         damping: 30,
         duration: 1.2,
       });
-      setCenterIdx(0);
     }, 800);
     return () => clearTimeout(timer);
   }, [rawOffset]);
@@ -63,7 +62,6 @@ export default function AlbumPage() {
         stiffness: 300,
         damping: 40,
       });
-      setCenterIdx(clamped);
     },
     [rawOffset]
   );

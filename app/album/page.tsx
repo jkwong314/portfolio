@@ -5,10 +5,11 @@ import { useMotionValue, useSpring, animate } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/components/ThemeProvider";
 
-// ── Album images ──────────────────────────────────────────────────────────
-const IMAGES = Array.from({ length: 30 }, (_, i) => ({
+// ── Album images (album-04 moved to end) ─────────────────────────────────
+const IMAGE_ORDER = [1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,4];
+const IMAGES = IMAGE_ORDER.map((n, i) => ({
   id: i,
-  src: `/images/album-${String(i + 1).padStart(2, "0")}.jpg`,
+  src: `/images/album-${String(n).padStart(2, "0")}.jpg`,
   alt: `Photo ${i + 1}`,
 }));
 

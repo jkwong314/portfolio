@@ -47,7 +47,6 @@ interface Props {
 
 export default function ClickBlobs({ boundaryRef }: Props) {
   const [blobs, setBlobs] = useState<Blob[]>([]);
-  const [ambientBlobs, setAmbientBlobs] = useState<Blob[]>([]);
   const [isPointer, setIsPointer] = useState(false);
   const { theme } = useTheme();
   const isDown = useRef(false);
@@ -126,67 +125,71 @@ export default function ClickBlobs({ boundaryRef }: Props) {
     };
   }, [spawnBlob, isInBounds]);
 
-  // Ambient blobs — auto-spawn at random positions in the hero section
+  // Optimization 3: Ambient blobs — pure DOM + CSS animation, no React re-renders
   useEffect(() => {
+    const container = boundaryRef.current;
+    if (!container) return;
     const pool = theme === "dark" ? DARK_GRADIENTS : LIGHT_GRADIENTS;
     let timerId: ReturnType<typeof setTimeout>;
 
     const spawn = () => {
-      const el = boundaryRef.current;
-      if (el) {
-        const xPct = 5 + Math.random() * 90;
-        const yPct = 5 + Math.random() * 90;
-        const gradient = pool[ambientGradIdx.current % pool.length];
-        const size = AMBIENT_SIZES[ambientSizeIdx.current % AMBIENT_SIZES.length];
-        ambientGradIdx.current += 1;
-        ambientSizeIdx.current += 1;
-        const id = counter++;
+      const xPct = 5 + Math.random() * 90;
+      const yPct = 5 + Math.random() * 90;
+      const gradient = pool[ambientGradIdx.current % pool.length];
+      const size = AMBIENT_SIZES[ambientSizeIdx.current % AMBIENT_SIZES.length];
+      ambientGradIdx.current += 1;
+      ambientSizeIdx.current += 1;
 
-        setAmbientBlobs((prev) => [...prev, { id, x: xPct, y: yPct, gradient, size }]);
-        setTimeout(() => setAmbientBlobs((prev) => prev.filter((b) => b.id !== id)), AMBIENT_LIFETIME);
+      // Create blob element directly in the DOM — no state, no re-render
+      const el = document.createElement("div");
+      el.style.cssText = `
+        position: absolute;
+        left: ${xPct}%;
+        top: ${yPct}%;
+        width: ${size}px;
+        height: ${size}px;
+        margin-left: ${-size / 2}px;
+        margin-top: ${-size / 2}px;
+        border-radius: 9999px;
+        background: ${gradient};
+        mix-blend-mode: screen;
+        pointer-events: none;
+        animation: ambientBlob ${AMBIENT_LIFETIME}ms ease-out forwards;
+        will-change: opacity, transform;
+      `;
+
+      // Get or create the ambient container (avoid re-querying)
+      let ambientContainer = container.querySelector<HTMLElement>("[data-ambient]");
+      if (!ambientContainer) {
+        ambientContainer = document.createElement("div");
+        ambientContainer.setAttribute("data-ambient", "true");
+        ambientContainer.setAttribute("aria-hidden", "true");
+        ambientContainer.style.cssText =
+          "position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;";
+        container.prepend(ambientContainer);
       }
+      ambientContainer.appendChild(el);
+
+      // Remove from DOM after animation completes
+      setTimeout(() => el.remove(), AMBIENT_LIFETIME + 50);
+
       const delay = AMBIENT_INTERVAL_MIN + Math.random() * (AMBIENT_INTERVAL_MAX - AMBIENT_INTERVAL_MIN);
       timerId = setTimeout(spawn, delay);
     };
 
     const initialDelay = AMBIENT_INTERVAL_MIN + Math.random() * (AMBIENT_INTERVAL_MAX - AMBIENT_INTERVAL_MIN);
     timerId = setTimeout(spawn, initialDelay);
-    return () => clearTimeout(timerId);
+    return () => {
+      clearTimeout(timerId);
+      const c = container.querySelector("[data-ambient]");
+      if (c) c.remove();
+    };
   }, [boundaryRef, theme]);
 
   if (!isPointer) return null;
 
   return (
     <>
-    {/* Ambient blobs — absolute within hero section */}
-    <div
-      className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
-      aria-hidden="true"
-    >
-      <AnimatePresence>
-        {ambientBlobs.map((blob) => (
-          <motion.div
-            key={blob.id}
-            className="absolute rounded-full"
-            style={{
-              left: `${blob.x}%`,
-              top: `${blob.y}%`,
-              width: blob.size,
-              height: blob.size,
-              marginLeft: -blob.size / 2,
-              marginTop: -blob.size / 2,
-              background: blob.gradient,
-              mixBlendMode: "screen",
-              willChange: "opacity",
-            }}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 0.85, scale: 1, transition: { duration: 0.9, ease: "easeOut" } }}
-            exit={{ opacity: 0, scale: 1.1, transition: { duration: 0.7, ease: "easeIn" } }}
-          />
-        ))}
-      </AnimatePresence>
-    </div>
-
     {/* Click blobs — fixed, viewport-relative */}
     <div
       className="pointer-events-none fixed inset-0 z-[2] overflow-hidden"

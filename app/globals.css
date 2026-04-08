@@ -254,6 +254,14 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 200% auto;
 }
 
+/* Ambient blob — fade in, hold, fade out (pure CSS, no JS re-renders) */
+@keyframes ambientBlob {
+  0%   { opacity: 0; transform: scale(0.5); }
+  30%  { opacity: 0.85; transform: scale(1); }
+  70%  { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
 /* Gold shimmer */
 @keyframes gold-shimmer {
   0% { opacity: 0.6; }

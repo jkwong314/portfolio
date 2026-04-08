@@ -322,7 +322,7 @@ export default function AlbumPage() {
   );
 }
 
-// ── Individual card ────────────────────────────────────────────────────────
+// ── Individual card (optimized: lazy image + early bail) ──────────────────
 function CarouselCard({
   index,
   src,
@@ -337,35 +337,43 @@ function CarouselCard({
   total: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isNearby, setIsNearby] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const unsub = offset.on("change", (val) => {
-      const pos = index * CARD_GAP + val;
-      const normalized = pos / CARD_GAP;
+      // ── Optimization 2: compute distance first, bail early ──
+      const normalized = (index * CARD_GAP + val) / CARD_GAP;
       const dist = Math.abs(normalized);
+      const cutoff = VISIBLE_RANGE + 1.5;
 
-      if (dist > VISIBLE_RANGE + 1.5) {
+      if (dist > cutoff) {
         el.style.visibility = "hidden";
         return;
       }
+
       el.style.visibility = "visible";
+
+      // ── Optimization 1: load image when within extended range ──
+      if (dist <= VISIBLE_RANGE + 3 && !isNearby) {
+        setIsNearby(true);
+      }
 
       const rotateY = normalized * -12;
       const translateX = normalized * CARD_GAP;
       const translateZ = -dist * 60;
-      const scale = 1 - dist * 0.065;
+      const scale = Math.max(0.5, 1 - dist * 0.065);
       const opacity = Math.max(0, 1 - dist * 0.12);
 
-      el.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${Math.max(0.5, scale)})`;
+      el.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
       el.style.opacity = `${opacity}`;
       el.style.zIndex = `${total - Math.round(dist)}`;
     });
 
     return unsub;
-  }, [index, offset, total]);
+  }, [index, offset, total, isNearby]);
 
   return (
     <div
@@ -377,16 +385,26 @@ function CarouselCard({
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
         backfaceVisibility: "hidden",
+        visibility: "hidden",
       }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover pointer-events-none"
-        sizes={`${CARD_WIDTH}px`}
-        draggable={false}
-      />
+      {/* Optimization 1: only mount Image when card is nearby */}
+      {isNearby ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          loading="lazy"
+          className="object-cover pointer-events-none"
+          sizes={`${CARD_WIDTH}px`}
+          draggable={false}
+        />
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={{ background: "rgba(255,255,255,0.05)" }}
+        />
+      )}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ boxShadow: "inset 0 0 30px rgba(0,0,0,0.15)" }}

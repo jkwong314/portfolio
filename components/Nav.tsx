@@ -35,7 +35,7 @@ function Logo() {
         className="font-display font-black text-text-primary leading-none tracking-tight transition-colors duration-300 group-hover:text-gold"
         style={{ fontSize: "1.1rem", letterSpacing: "-0.04em" }}
       >
-        JK
+        JAMIE
       </span>
     </Link>
   );

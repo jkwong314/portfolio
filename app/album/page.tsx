@@ -267,7 +267,7 @@ export default function AlbumPage() {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col items-center gap-3 -mt-2 pb-6">
+      <div className="flex flex-col items-center gap-3 -mt-2 pb-52">
         {/* Counter */}
         <span
           className="text-sm tabular-nums font-medium tracking-wider"

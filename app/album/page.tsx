@@ -177,30 +177,56 @@ export default function AlbumPage() {
         </p>
       </div>
 
-      {/* Carousel viewport */}
-      <div
-        ref={containerRef}
-        className="relative cursor-grab items-center justify-center overflow-hidden active:cursor-grabbing select-none flex"
-        style={{ perspective: "1200px", height: "clamp(480px, 60vh, 640px)" }}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-      >
-        {IMAGES.map((img, i) => (
-          <CarouselCard
-            key={img.id}
-            index={i}
-            src={img.src}
-            alt={img.alt}
-            offset={offset}
-            total={IMAGES.length}
-          />
-        ))}
+      {/* Carousel viewport + nav arrows */}
+      <div className="relative">
+        {/* Left arrow */}
+        <button
+          onClick={() => snapTo(centerIdx - 1)}
+          disabled={centerIdx <= 0}
+          aria-label="Previous photo"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white/70 transition-all hover:bg-white/20 hover:text-white disabled:opacity-20 disabled:pointer-events-none"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 4L6 10L12 16" />
+          </svg>
+        </button>
+
+        {/* Right arrow */}
+        <button
+          onClick={() => snapTo(centerIdx + 1)}
+          disabled={centerIdx >= IMAGES.length - 1}
+          aria-label="Next photo"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white/70 transition-all hover:bg-white/20 hover:text-white disabled:opacity-20 disabled:pointer-events-none"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 4L14 10L8 16" />
+          </svg>
+        </button>
+
+        <div
+          ref={containerRef}
+          className="relative cursor-grab items-center justify-center overflow-hidden active:cursor-grabbing select-none flex"
+          style={{ perspective: "1200px", height: "clamp(480px, 60vh, 640px)" }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+        >
+          {IMAGES.map((img, i) => (
+            <CarouselCard
+              key={img.id}
+              index={i}
+              src={img.src}
+              alt={img.alt}
+              offset={offset}
+              total={IMAGES.length}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col items-center gap-3 py-6">
+      <div className="flex flex-col items-center gap-3 -mt-2 pb-6">
         {/* Counter */}
         <span className="text-sm tabular-nums text-white/50 font-medium tracking-wider">
           <span className="text-white/90">{String(centerIdx + 1).padStart(2, "0")}</span>

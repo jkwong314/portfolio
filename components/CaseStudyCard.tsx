@@ -21,7 +21,6 @@ const aspectMap = {
   full: "aspect-[4/3] md:aspect-[21/8]",
 };
 
-// Unique gradient per card — inline CSS so they always resolve regardless of Tailwind purging
 const darkGradients = [
   "linear-gradient(135deg, rgba(76,29,149,0.4) 0%, #1C1C1C 50%, rgba(109,40,217,0.2) 100%)",
   "linear-gradient(135deg, rgba(41,37,36,0.6) 0%, #1C1C1C 50%, rgba(120,53,15,0.2) 100%)",
@@ -73,6 +72,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
 
   const gradients = theme === "dark" ? darkGradients : lightGradients;
   const gradient = gradients[(index - 1) % gradients.length];
+  const isLarge = size === "large";
 
   return (
     <Link href={`/work/${study.slug}`} className="block h-full">
@@ -85,7 +85,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Image area */}
+        {/* ── Image ── */}
         <div className={`${aspectMap[size]} relative w-full flex-shrink-0 overflow-hidden`}>
           <motion.div
             className="absolute inset-[-12px]"
@@ -95,60 +95,78 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
               src={study.thumbnail}
               alt={study.title}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.6 }} />
+            {/* Lighter overlay so thumbnails actually show */}
+            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.28 }} />
           </motion.div>
 
-          {/* Index number — editorial touch */}
+          {/* Category pill */}
+          <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-base/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-text-secondary backdrop-blur-md">
+            {study.category}
+          </span>
+
+          {/* Ghost index — bottom right of image, decorative */}
           <span
-            className="absolute bottom-4 right-4 font-display text-6xl font-black leading-none text-text-primary/5"
+            className="absolute bottom-3 right-4 font-display text-[5rem] font-black leading-none text-text-primary/[0.04] select-none"
             aria-hidden="true"
           >
             {String(index).padStart(2, "0")}
           </span>
 
-          {/* Category tag */}
-          <span className="absolute left-4 top-4 rounded-sm bg-base/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] text-text-secondary backdrop-blur-sm">
-            {study.category}
-          </span>
-
-          {/* Hover overlay with arrow */}
-          <div className="absolute inset-0 flex items-center justify-center bg-accent/0 transition-all duration-300 group-hover:bg-accent/8">
+          {/* Hover scrim + arrow */}
+          <div className="absolute inset-0 flex items-center justify-center bg-accent/0 transition-all duration-300 group-hover:bg-base/20">
             <motion.div
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-text-primary/20 bg-base/40 backdrop-blur-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-base/50 backdrop-blur-sm"
               initial={{ scale: 0, opacity: 0 }}
               whileHover={{ scale: 1.1 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.25 }}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-text-primary rotate-45">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" className="text-text-primary -rotate-45">
                 <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </motion.div>
           </div>
         </div>
 
-        {/* Card info */}
-        <div className="flex flex-1 flex-col justify-between p-5">
-          <div>
-            <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-text-primary transition-colors group-hover:text-accent-light" style={{ letterSpacing: "-0.02em" }}>
+        {/* ── Card body ── */}
+        <div className="flex flex-1 flex-col gap-5 p-6">
+
+          {/* Title + subtitle — primary hierarchy */}
+          <div className="flex-1 space-y-2">
+            <h3
+              className="font-display font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent-light"
+              style={{
+                fontSize: isLarge ? "clamp(1.25rem, 2vw, 1.6rem)" : "1.15rem",
+                letterSpacing: "-0.025em",
+              }}
+            >
               {study.title}
             </h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-text-secondary line-clamp-2">
+            <p className="text-sm leading-relaxed text-text-secondary/80 line-clamp-2">
               {study.subtitle}
             </p>
           </div>
-          <div className="mt-4 flex items-center justify-between">
-            <span className="text-xs text-text-muted">{study.year}</span>
-            <span className="text-[10px] uppercase tracking-[0.15em] text-gold">
-              View Case Study →
+
+          {/* Meta row — tertiary */}
+          <div className="flex items-center justify-between border-t border-surface-light pt-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-text-muted">{study.role}</span>
+              <span className="text-text-muted/30" aria-hidden="true">·</span>
+              <span className="text-xs text-text-muted">{study.year}</span>
+            </div>
+            <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-gold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              View
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="-rotate-45" aria-hidden="true">
+                <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </span>
           </div>
         </div>
 
-        {/* Bottom border accent on hover */}
+        {/* Bottom accent bar on hover */}
         <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-accent to-gold transition-all duration-500 group-hover:w-full" />
       </motion.article>
     </Link>

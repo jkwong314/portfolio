@@ -132,10 +132,10 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
         </div>
 
         {/* ── Card body ── */}
-        <div className="flex flex-1 flex-col gap-5 p-6">
+        <div className="flex flex-col gap-3 p-5">
 
           {/* Title + subtitle — primary hierarchy */}
-          <div className="flex-1 space-y-2">
+          <div className="space-y-2">
             <h3
               className="font-display font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent-light"
               style={{

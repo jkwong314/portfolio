@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useMotionValue, useSpring, animate } from "framer-motion";
 import Image from "next/image";
+import { useTheme } from "@/components/ThemeProvider";
 
 // ── 50 placeholder images (portrait ratio) ────────────────────────────────
 const IMAGES = Array.from({ length: 50 }, (_, i) => ({
@@ -17,6 +18,8 @@ const CARD_GAP = 72;
 const VISIBLE_RANGE = 5;
 
 export default function AlbumPage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
@@ -143,48 +146,64 @@ export default function AlbumPage() {
   }, [rawOffset, getCenter, snapTo]);
 
   return (
-    <div className="relative flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
-      {/* Glow edges — purple → pink gradient on both sides */}
-      <div
-        className="pointer-events-none fixed top-0 left-0 h-full z-20"
-        style={{
-          width: "clamp(160px, 22vw, 400px)",
-          background:
-            "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.35) 0%, rgba(124,58,237,0.1) 50%, transparent 85%), " +
-            "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0.08) 50%, transparent 85%)",
-        }}
-      />
-      <div
-        className="pointer-events-none fixed top-0 right-0 h-full z-20"
-        style={{
-          width: "clamp(160px, 22vw, 400px)",
-          background:
-            "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.35) 0%, rgba(236,72,153,0.1) 50%, transparent 85%), " +
-            "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 50%, transparent 85%)",
-        }}
-      />
-
+    <div
+      className="relative flex flex-col"
+      style={{ minHeight: "100vh", background: isDark ? "#0a0a0a" : "#F4F4F5" }}
+    >
       {/* Title */}
       <div className="pt-52 pb-2 text-center">
         <h1
-          className="font-display font-black text-white/90 leading-tight"
-          style={{ fontSize: "clamp(1.8rem, 4.5vw, 3rem)", letterSpacing: "-0.04em" }}
+          className="font-display font-black leading-tight"
+          style={{
+            fontSize: "clamp(1.8rem, 4.5vw, 3rem)",
+            letterSpacing: "-0.04em",
+            color: isDark ? "rgba(255,255,255,0.9)" : "rgba(24,24,27,0.9)",
+          }}
         >
           A life in frames
         </h1>
-        <p className="mt-2 text-sm text-white/35 tracking-wide">
+        <p
+          className="mt-2 text-sm tracking-wide"
+          style={{ color: isDark ? "rgba(255,255,255,0.35)" : "rgba(24,24,27,0.4)" }}
+        >
           Drag or use arrow keys to browse
         </p>
       </div>
 
-      {/* Carousel viewport + nav arrows */}
+      {/* Carousel viewport + nav arrows + glow edges (scoped here, not fixed) */}
       <div className="relative">
+        {/* Glow edges — scoped to carousel area */}
+        <div
+          className="pointer-events-none absolute top-0 left-0 h-full z-20"
+          style={{
+            width: "clamp(160px, 22vw, 400px)",
+            background: isDark
+              ? "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.35) 0%, rgba(124,58,237,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0.08) 50%, transparent 85%)"
+              : "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.15) 0%, rgba(124,58,237,0.05) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.12) 0%, rgba(236,72,153,0.04) 50%, transparent 85%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute top-0 right-0 h-full z-20"
+          style={{
+            width: "clamp(160px, 22vw, 400px)",
+            background: isDark
+              ? "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.35) 0%, rgba(236,72,153,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 50%, transparent 85%)"
+              : "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.15) 0%, rgba(236,72,153,0.05) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0.04) 50%, transparent 85%)",
+          }}
+        />
+
         {/* Left arrow */}
         <button
           onClick={() => snapTo(centerIdx - 1)}
           disabled={centerIdx <= 0}
           aria-label="Previous photo"
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white/70 transition-all hover:bg-white/20 hover:text-white disabled:opacity-20 disabled:pointer-events-none"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm transition-all disabled:opacity-20 disabled:pointer-events-none"
+          style={{
+            background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)",
+            borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+            borderWidth: 1,
+            color: isDark ? "rgba(255,255,255,0.7)" : "rgba(24,24,27,0.6)",
+          }}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 4L6 10L12 16" />
@@ -196,7 +215,13 @@ export default function AlbumPage() {
           onClick={() => snapTo(centerIdx + 1)}
           disabled={centerIdx >= IMAGES.length - 1}
           aria-label="Next photo"
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white/70 transition-all hover:bg-white/20 hover:text-white disabled:opacity-20 disabled:pointer-events-none"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm transition-all disabled:opacity-20 disabled:pointer-events-none"
+          style={{
+            background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)",
+            borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+            borderWidth: 1,
+            color: isDark ? "rgba(255,255,255,0.7)" : "rgba(24,24,27,0.6)",
+          }}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M8 4L14 10L8 16" />
@@ -228,19 +253,29 @@ export default function AlbumPage() {
       {/* Pagination */}
       <div className="flex flex-col items-center gap-3 -mt-2 pb-6">
         {/* Counter */}
-        <span className="text-sm tabular-nums text-white/50 font-medium tracking-wider">
-          <span className="text-white/90">{String(centerIdx + 1).padStart(2, "0")}</span>
-          <span className="mx-1.5 text-white/25">/</span>
+        <span
+          className="text-sm tabular-nums font-medium tracking-wider"
+          style={{ color: isDark ? "rgba(255,255,255,0.5)" : "rgba(24,24,27,0.4)" }}
+        >
+          <span style={{ color: isDark ? "rgba(255,255,255,0.9)" : "rgba(24,24,27,0.85)" }}>
+            {String(centerIdx + 1).padStart(2, "0")}
+          </span>
+          <span className="mx-1.5" style={{ color: isDark ? "rgba(255,255,255,0.25)" : "rgba(24,24,27,0.2)" }}>/</span>
           {String(IMAGES.length).padStart(2, "0")}
         </span>
 
         {/* Progress bar */}
-        <div className="relative h-0.5 w-48 overflow-hidden rounded-full bg-white/10">
+        <div
+          className="relative h-0.5 w-48 overflow-hidden rounded-full"
+          style={{ background: isDark ? "rgba(255,255,255,0.1)" : "rgba(24,24,27,0.1)" }}
+        >
           <div
             className="absolute inset-y-0 left-0 rounded-full transition-all duration-300 ease-out"
             style={{
               width: `${((centerIdx + 1) / IMAGES.length) * 100}%`,
-              background: "linear-gradient(to right, #A78BFA, #C9A84C)",
+              background: isDark
+                ? "linear-gradient(to right, #A78BFA, #C9A84C)"
+                : "linear-gradient(to right, #7C3AED, #EC4899)",
             }}
           />
         </div>
@@ -261,8 +296,12 @@ export default function AlbumPage() {
                   height: size,
                   opacity,
                   background: i === centerIdx
-                    ? "linear-gradient(135deg, #A78BFA, #C9A84C)"
-                    : "rgba(255,255,255,0.6)",
+                    ? isDark
+                      ? "linear-gradient(135deg, #A78BFA, #C9A84C)"
+                      : "linear-gradient(135deg, #7C3AED, #EC4899)"
+                    : isDark
+                      ? "rgba(255,255,255,0.6)"
+                      : "rgba(24,24,27,0.35)",
                 }}
                 onClick={() => snapTo(i)}
                 aria-label={`Go to photo ${i + 1}`}

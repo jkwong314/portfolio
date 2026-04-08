@@ -12,6 +12,9 @@ interface AnimatedButtonProps {
   type?: "button" | "submit";
   disabled?: boolean;
   icon?: React.ReactNode;
+  target?: string;
+  rel?: string;
+  download?: string;
 }
 
 export default function AnimatedButton({
@@ -23,6 +26,9 @@ export default function AnimatedButton({
   type = "button",
   disabled = false,
   icon,
+  target,
+  rel,
+  download,
 }: AnimatedButtonProps) {
   const isFilled = variant === "filled";
 
@@ -53,6 +59,13 @@ export default function AnimatedButton({
   );
 
   if (href) {
+    if (target || download) {
+      return (
+        <a href={href} target={target} rel={rel} download={download} className="inline-block">
+          {content}
+        </a>
+      );
+    }
     return (
       <Link href={href} className="inline-block">
         {content}

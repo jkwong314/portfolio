@@ -27,6 +27,26 @@ function DownloadIcon() {
   );
 }
 
+function ExternalIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
+}
+
 export default function ResumePage() {
   return (
     <div className="pt-28">
@@ -36,58 +56,30 @@ export default function ResumePage() {
             Resume
           </h1>
           <p className="mt-4 text-lg text-text-secondary">
-            Download or view my full resume below.
+            View or download my resume.
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
           <div className="mt-8 flex flex-wrap gap-4">
             <AnimatedButton
-              href="/resume.pdf"
+              href="/Jamie_Kwong_Resume_2026.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               variant="filled"
+              icon={<ExternalIcon />}
+            >
+              View Full Screen
+            </AnimatedButton>
+            <AnimatedButton
+              href="/Jamie_Kwong_Resume_2026.pdf"
+              download="Jamie_Kwong_Resume_2026.pdf"
+              variant="outlined"
               icon={<DownloadIcon />}
             >
               Download PDF
             </AnimatedButton>
           </div>
-        </ScrollReveal>
-
-        {/* PDF Embed — desktop only */}
-        <ScrollReveal delay={0.2}>
-          <div className="mt-12 hidden md:block">
-            <div className="overflow-hidden rounded-2xl border border-surface-light bg-surface">
-              <object
-                data="/resume.pdf"
-                type="application/pdf"
-                width="100%"
-                className="h-[80vh] w-full"
-                title="Jamie's Resume"
-              >
-                {/* Fallback if PDF can't be displayed */}
-                <div className="flex h-[60vh] flex-col items-center justify-center gap-4 p-8 text-center">
-                  <div className="rounded-xl bg-surface-light p-8">
-                    <p className="text-text-secondary">
-                      Unable to display PDF inline.
-                    </p>
-                    <p className="mt-2 text-sm text-text-secondary/70">
-                      Use the download button above to view the resume.
-                    </p>
-                  </div>
-                </div>
-              </object>
-            </div>
-          </div>
-
-          {/* Mobile note */}
-          <div className="mt-8 md:hidden">
-            <div className="rounded-xl border border-surface-light bg-surface p-6 text-center">
-              <p className="text-text-secondary">
-                View on desktop for inline preview, or use the download button
-                above.
-              </p>
-            </div>
-          </div>
-
         </ScrollReveal>
       </section>
     </div>

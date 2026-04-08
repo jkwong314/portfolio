@@ -40,7 +40,7 @@ export default function AmbientBackground() {
       {/* Left edge glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-0 h-full"
+        className="pointer-events-none fixed left-0 top-0 z-20 h-full"
         style={{
           width: "clamp(160px, 22vw, 380px)",
           background: isDark
@@ -60,7 +60,7 @@ export default function AmbientBackground() {
       {/* Right edge glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed right-0 top-0 z-0 h-full"
+        className="pointer-events-none fixed right-0 top-0 z-20 h-full"
         style={{
           width: "clamp(160px, 22vw, 380px)",
           background: isDark

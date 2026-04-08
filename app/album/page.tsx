@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useMotionValue, useSpring, animate } from "framer-motion";
+import { useMotionValue, useSpring, animate } from "framer-motion";
 import Image from "next/image";
 
-// ── 20 placeholder images (portrait ratio) ────────────────────────────────
-const IMAGES = Array.from({ length: 20 }, (_, i) => ({
+// ── 50 placeholder images (portrait ratio) ────────────────────────────────
+const IMAGES = Array.from({ length: 50 }, (_, i) => ({
   id: i,
   src: `https://picsum.photos/seed/album${i + 1}/480/640`,
   alt: `Photo ${i + 1}`,
@@ -13,8 +13,8 @@ const IMAGES = Array.from({ length: 20 }, (_, i) => ({
 
 const CARD_WIDTH = 320;
 const CARD_HEIGHT = 440;
-const CARD_GAP = 72;        // overlap spacing
-const VISIBLE_RANGE = 5;    // cards visible on each side
+const CARD_GAP = 72;
+const VISIBLE_RANGE = 5;
 
 export default function AlbumPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,20 +22,16 @@ export default function AlbumPage() {
   const dragStartX = useRef(0);
   const dragStartOffset = useRef(0);
 
-  // The raw offset in px — represents how far the strip has scrolled
   const rawOffset = useMotionValue(0);
   const offset = useSpring(rawOffset, { stiffness: 300, damping: 40 });
 
-  // Track current center index for keyboard nav
   const [centerIdx, setCenterIdx] = useState(0);
 
-  // Convert offset → center index
   const getCenter = useCallback(
     (off: number) => Math.round(-off / CARD_GAP),
     []
   );
 
-  // Snap to nearest card
   const snapTo = useCallback(
     (idx: number) => {
       const clamped = Math.max(0, Math.min(IMAGES.length - 1, idx));
@@ -65,7 +61,6 @@ export default function AlbumPage() {
       if (!isDragging.current) return;
       const dx = e.clientX - dragStartX.current;
       const next = dragStartOffset.current + dx;
-      // Clamp so we can't scroll past the edges (with some rubber-band)
       const min = -(IMAGES.length - 1) * CARD_GAP;
       const clamped = Math.max(min - 100, Math.min(100, next));
       rawOffset.set(clamped);
@@ -79,6 +74,16 @@ export default function AlbumPage() {
     const idx = getCenter(rawOffset.get());
     snapTo(idx);
   }, [rawOffset, getCenter, snapTo]);
+
+  // Keep centerIdx in sync during drag
+  useEffect(() => {
+    const unsub = offset.on("change", (val) => {
+      const idx = Math.round(-val / CARD_GAP);
+      const clamped = Math.max(0, Math.min(IMAGES.length - 1, idx));
+      setCenterIdx(clamped);
+    });
+    return unsub;
+  }, [offset]);
 
   // ── Keyboard ─────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -99,7 +104,6 @@ export default function AlbumPage() {
       const next = rawOffset.get() - e.deltaX - e.deltaY * 0.5;
       const min = -(IMAGES.length - 1) * CARD_GAP;
       rawOffset.set(Math.max(min - 100, Math.min(100, next)));
-      // Debounced snap
       clearTimeout((onWheel as any)._t);
       (onWheel as any)._t = setTimeout(() => {
         const idx = getCenter(rawOffset.get());
@@ -111,16 +115,16 @@ export default function AlbumPage() {
   }, [rawOffset, getCenter, snapTo]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#0a0a0a]">
-      {/* Header spacer for nav */}
-      <div className="pt-32 pb-4 text-center">
+    <div className="flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
+      {/* Title — pushed close to carousel */}
+      <div className="pt-24 pb-2 text-center">
         <h1
-          className="font-display font-black text-white/90 leading-none"
-          style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.04em" }}
+          className="font-display font-black text-white/90 leading-tight"
+          style={{ fontSize: "clamp(1.8rem, 4.5vw, 3rem)", letterSpacing: "-0.04em" }}
         >
-          Album
+          Collecting little moments of magic
         </h1>
-        <p className="mt-3 text-sm text-white/40 tracking-wide">
+        <p className="mt-2 text-sm text-white/35 tracking-wide">
           Drag or use arrow keys to browse
         </p>
       </div>
@@ -128,8 +132,8 @@ export default function AlbumPage() {
       {/* Carousel viewport */}
       <div
         ref={containerRef}
-        className="relative flex flex-1 cursor-grab items-center justify-center overflow-hidden active:cursor-grabbing select-none"
-        style={{ perspective: "1200px" }}
+        className="relative cursor-grab items-center justify-center overflow-hidden active:cursor-grabbing select-none flex"
+        style={{ perspective: "1200px", height: "clamp(480px, 60vh, 640px)" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -145,6 +149,53 @@ export default function AlbumPage() {
             total={IMAGES.length}
           />
         ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex flex-col items-center gap-3 py-6">
+        {/* Counter */}
+        <span className="text-sm tabular-nums text-white/50 font-medium tracking-wider">
+          <span className="text-white/90">{String(centerIdx + 1).padStart(2, "0")}</span>
+          <span className="mx-1.5 text-white/25">/</span>
+          {String(IMAGES.length).padStart(2, "0")}
+        </span>
+
+        {/* Progress bar */}
+        <div className="relative h-0.5 w-48 overflow-hidden rounded-full bg-white/10">
+          <div
+            className="absolute inset-y-0 left-0 rounded-full transition-all duration-300 ease-out"
+            style={{
+              width: `${((centerIdx + 1) / IMAGES.length) * 100}%`,
+              background: "linear-gradient(to right, #A78BFA, #C9A84C)",
+            }}
+          />
+        </div>
+
+        {/* Dot pagination — grouped, showing 9 dots around current */}
+        <div className="flex items-center gap-1 mt-1">
+          {IMAGES.map((_, i) => {
+            const dist = Math.abs(i - centerIdx);
+            if (dist > 4) return null;
+            const size = i === centerIdx ? 8 : dist <= 1 ? 6 : 4;
+            const opacity = i === centerIdx ? 1 : dist <= 1 ? 0.5 : 0.2;
+            return (
+              <button
+                key={i}
+                className="shrink-0 rounded-full transition-all duration-300"
+                style={{
+                  width: size,
+                  height: size,
+                  opacity,
+                  background: i === centerIdx
+                    ? "linear-gradient(135deg, #A78BFA, #C9A84C)"
+                    : "rgba(255,255,255,0.6)",
+                }}
+                onClick={() => snapTo(i)}
+                aria-label={`Go to photo ${i + 1}`}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -166,31 +217,26 @@ function CarouselCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Subscribe to offset changes and update transforms imperatively for perf
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const unsub = offset.on("change", (val) => {
-      const pos = index * CARD_GAP + val; // px from center
-      const normalized = pos / CARD_GAP;  // card-units from center
-
-      // Distance from center (0 = center)
+      const pos = index * CARD_GAP + val;
+      const normalized = pos / CARD_GAP;
       const dist = Math.abs(normalized);
 
-      // Only render cards within visible range
       if (dist > VISIBLE_RANGE + 1.5) {
         el.style.visibility = "hidden";
         return;
       }
       el.style.visibility = "visible";
 
-      // Transform calculations
-      const rotateY = normalized * -12;                          // max ~60° at edges
-      const translateX = normalized * CARD_GAP;                  // horizontal spread
-      const translateZ = -dist * 60;                             // push sides back
-      const scale = 1 - dist * 0.065;                           // shrink at edges
-      const opacity = Math.max(0, 1 - dist * 0.12);             // dim at edges
+      const rotateY = normalized * -12;
+      const translateX = normalized * CARD_GAP;
+      const translateZ = -dist * 60;
+      const scale = 1 - dist * 0.065;
+      const opacity = Math.max(0, 1 - dist * 0.12);
 
       el.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${Math.max(0.5, scale)})`;
       el.style.opacity = `${opacity}`;
@@ -220,12 +266,9 @@ function CarouselCard({
         sizes={`${CARD_WIDTH}px`}
         draggable={false}
       />
-      {/* Subtle edge vignette on cards */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          boxShadow: "inset 0 0 30px rgba(0,0,0,0.15)",
-        }}
+        style={{ boxShadow: "inset 0 0 30px rgba(0,0,0,0.15)" }}
       />
     </div>
   );

@@ -95,14 +95,23 @@ export default function AlbumPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [centerIdx, snapTo]);
 
-  // ── Wheel ────────────────────────────────────────────────────────────────
+  // ── Wheel — capture when carousel has room, pass-through at edges ──────
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+    const min = -(IMAGES.length - 1) * CARD_GAP;
+
     const onWheel = (e: WheelEvent) => {
+      const cur = rawOffset.get();
+      const delta = -e.deltaX - e.deltaY * 0.5;
+      const atStart = cur >= 0 && delta > 0;
+      const atEnd = cur <= min && delta < 0;
+
+      // At edges → let the page scroll naturally to footer / back up
+      if (atStart || atEnd) return;
+
       e.preventDefault();
-      const next = rawOffset.get() - e.deltaX - e.deltaY * 0.5;
-      const min = -(IMAGES.length - 1) * CARD_GAP;
+      const next = cur + delta;
       rawOffset.set(Math.max(min - 100, Math.min(100, next)));
       clearTimeout((onWheel as any)._t);
       (onWheel as any)._t = setTimeout(() => {
@@ -116,8 +125,8 @@ export default function AlbumPage() {
 
   return (
     <div className="flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
-      {/* Title — pushed close to carousel */}
-      <div className="pt-24 pb-2 text-center">
+      {/* Title */}
+      <div className="pt-40 pb-2 text-center">
         <h1
           className="font-display font-black text-white/90 leading-tight"
           style={{ fontSize: "clamp(1.8rem, 4.5vw, 3rem)", letterSpacing: "-0.04em" }}

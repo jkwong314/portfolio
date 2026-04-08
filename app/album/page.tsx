@@ -5,10 +5,10 @@ import { useMotionValue, useSpring, animate } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/components/ThemeProvider";
 
-// ── 50 placeholder images (portrait ratio) ────────────────────────────────
-const IMAGES = Array.from({ length: 50 }, (_, i) => ({
+// ── Album images ──────────────────────────────────────────────────────────
+const IMAGES = Array.from({ length: 30 }, (_, i) => ({
   id: i,
-  src: `https://picsum.photos/seed/album${i + 1}/480/640`,
+  src: `/images/album-${String(i + 1).padStart(2, "0")}.jpg`,
   alt: `Photo ${i + 1}`,
 }));
 

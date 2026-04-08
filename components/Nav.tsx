@@ -139,7 +139,9 @@ export default function Nav() {
         }}
       >
         {/* Logo */}
-        <Logo />
+        <div className="flex-1 flex items-center">
+          <Logo />
+        </div>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-1">
@@ -167,7 +169,7 @@ export default function Nav() {
         </div>
 
         {/* Desktop right — theme toggle + CTA */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex flex-1 items-center justify-end gap-2">
           <ThemeToggle />
           <AnimatedButton href="/resume" variant="filled">
             Resume

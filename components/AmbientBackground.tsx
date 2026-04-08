@@ -45,12 +45,12 @@ export default function AmbientBackground() {
           width: "clamp(160px, 22vw, 380px)",
           background: isDark
             ? [
-                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.38) 0%, rgba(124,58,237,0.10) 55%, transparent 85%)",
-                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.30) 0%, rgba(236,72,153,0.08) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.20) 0%, rgba(124,58,237,0.05) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.15) 0%, rgba(236,72,153,0.04) 55%, transparent 85%)",
               ].join(", ")
             : [
-                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(109,40,217,0.16) 0%, rgba(109,40,217,0.05) 55%, transparent 85%)",
-                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.13) 0%, rgba(236,72,153,0.04) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(109,40,217,0.09) 0%, rgba(109,40,217,0.03) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.07) 0%, rgba(236,72,153,0.02) 55%, transparent 85%)",
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
@@ -65,12 +65,12 @@ export default function AmbientBackground() {
           width: "clamp(160px, 22vw, 380px)",
           background: isDark
             ? [
-                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.38) 0%, rgba(236,72,153,0.10) 55%, transparent 85%)",
-                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.30) 0%, rgba(124,58,237,0.08) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.20) 0%, rgba(236,72,153,0.05) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.15) 0%, rgba(124,58,237,0.04) 55%, transparent 85%)",
               ].join(", ")
             : [
-                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.16) 0%, rgba(236,72,153,0.05) 55%, transparent 85%)",
-                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(109,40,217,0.13) 0%, rgba(109,40,217,0.04) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.09) 0%, rgba(236,72,153,0.03) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(109,40,217,0.07) 0%, rgba(109,40,217,0.02) 55%, transparent 85%)",
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,

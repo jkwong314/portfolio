@@ -176,23 +176,27 @@ export default function AlbumPage() {
         <div
           className="pointer-events-none absolute left-0 z-20"
           style={{
-            top: "-12rem",
-            height: "calc(100% + 12rem)",
+            top: 0,
+            height: "100%",
             width: "clamp(160px, 22vw, 400px)",
             background: isDark
               ? "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.35) 0%, rgba(124,58,237,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0.08) 50%, transparent 85%)"
               : "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.15) 0%, rgba(124,58,237,0.05) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.12) 0%, rgba(236,72,153,0.04) 50%, transparent 85%)",
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
           }}
         />
         <div
           className="pointer-events-none absolute right-0 z-20"
           style={{
-            top: "-12rem",
-            height: "calc(100% + 12rem)",
+            top: 0,
+            height: "100%",
             width: "clamp(160px, 22vw, 400px)",
             background: isDark
               ? "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.35) 0%, rgba(236,72,153,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 50%, transparent 85%)"
               : "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.15) 0%, rgba(236,72,153,0.05) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0.04) 50%, transparent 85%)",
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
           }}
         />
 

@@ -124,14 +124,30 @@ export default function AlbumPage() {
   }, [rawOffset, getCenter, snapTo]);
 
   return (
-    <div className="flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
+    <div className="relative flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
+      {/* Glow edges */}
+      <div
+        className="pointer-events-none fixed top-0 left-0 h-full z-20"
+        style={{
+          width: "clamp(120px, 18vw, 320px)",
+          background: "radial-gradient(ellipse 80% 50% at 0% 50%, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.06) 40%, transparent 80%)",
+        }}
+      />
+      <div
+        className="pointer-events-none fixed top-0 right-0 h-full z-20"
+        style={{
+          width: "clamp(120px, 18vw, 320px)",
+          background: "radial-gradient(ellipse 80% 50% at 100% 50%, rgba(236,72,153,0.18) 0%, rgba(236,72,153,0.06) 40%, transparent 80%)",
+        }}
+      />
+
       {/* Title */}
-      <div className="pt-40 pb-2 text-center">
+      <div className="pt-52 pb-2 text-center">
         <h1
           className="font-display font-black text-white/90 leading-tight"
           style={{ fontSize: "clamp(1.8rem, 4.5vw, 3rem)", letterSpacing: "-0.04em" }}
         >
-          Collecting little moments of magic
+          A life in frames
         </h1>
         <p className="mt-2 text-sm text-white/35 tracking-wide">
           Drag or use arrow keys to browse

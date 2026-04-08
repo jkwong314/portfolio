@@ -156,7 +156,7 @@ export default function AboutPage() {
             <ParallaxImage
               src="/images/about-portrait.jpg"
               alt="Jamie Kwong"
-              sizes="320px"
+              sizes="(max-width: 768px) 288px, 320px"
               priority
               className="relative h-72 w-72 rounded-2xl md:h-80 md:w-80"
               containerStyle={{ boxShadow: "0 0 60px var(--color-accent-glow)" }}

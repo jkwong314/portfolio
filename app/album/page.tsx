@@ -174,9 +174,10 @@ export default function AlbumPage() {
       <div className="relative">
         {/* Glow edges — covers title + carousel + pagination, not footer */}
         <div
-          className="pointer-events-none absolute top-0 left-0 z-20"
-          style={{ height: "calc(100% + 12rem)", top: "-12rem" }}
+          className="pointer-events-none absolute left-0 z-20"
           style={{
+            top: "-12rem",
+            height: "calc(100% + 12rem)",
             width: "clamp(160px, 22vw, 400px)",
             background: isDark
               ? "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.35) 0%, rgba(124,58,237,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0.08) 50%, transparent 85%)"
@@ -185,8 +186,9 @@ export default function AlbumPage() {
         />
         <div
           className="pointer-events-none absolute right-0 z-20"
-          style={{ height: "calc(100% + 12rem)", top: "-12rem" }}
           style={{
+            top: "-12rem",
+            height: "calc(100% + 12rem)",
             width: "clamp(160px, 22vw, 400px)",
             background: isDark
               ? "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.35) 0%, rgba(236,72,153,0.1) 50%, transparent 85%), radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 50%, transparent 85%)"

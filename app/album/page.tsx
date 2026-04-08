@@ -22,10 +22,29 @@ export default function AlbumPage() {
   const dragStartX = useRef(0);
   const dragStartOffset = useRef(0);
 
-  const rawOffset = useMotionValue(0);
+  // Start offset so ~4 cards are visible to the right, hinting it's a carousel
+  const INITIAL_OFFSET = -3 * CARD_GAP;
+  const rawOffset = useMotionValue(INITIAL_OFFSET);
   const offset = useSpring(rawOffset, { stiffness: 300, damping: 40 });
 
-  const [centerIdx, setCenterIdx] = useState(0);
+  const [centerIdx, setCenterIdx] = useState(3);
+
+  // On mount, animate from the offset view back to card 0
+  const hasAnimated = useRef(false);
+  useEffect(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+    const timer = setTimeout(() => {
+      animate(rawOffset, 0, {
+        type: "spring",
+        stiffness: 120,
+        damping: 30,
+        duration: 1.2,
+      });
+      setCenterIdx(0);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [rawOffset]);
 
   const getCenter = useCallback(
     (off: number) => Math.round(-off / CARD_GAP),
@@ -125,19 +144,23 @@ export default function AlbumPage() {
 
   return (
     <div className="relative flex flex-col bg-[#0a0a0a]" style={{ minHeight: "100vh" }}>
-      {/* Glow edges */}
+      {/* Glow edges — purple → pink gradient on both sides */}
       <div
         className="pointer-events-none fixed top-0 left-0 h-full z-20"
         style={{
-          width: "clamp(120px, 18vw, 320px)",
-          background: "radial-gradient(ellipse 80% 50% at 0% 50%, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.06) 40%, transparent 80%)",
+          width: "clamp(160px, 22vw, 400px)",
+          background:
+            "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.35) 0%, rgba(124,58,237,0.1) 50%, transparent 85%), " +
+            "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0.08) 50%, transparent 85%)",
         }}
       />
       <div
         className="pointer-events-none fixed top-0 right-0 h-full z-20"
         style={{
-          width: "clamp(120px, 18vw, 320px)",
-          background: "radial-gradient(ellipse 80% 50% at 100% 50%, rgba(236,72,153,0.18) 0%, rgba(236,72,153,0.06) 40%, transparent 80%)",
+          width: "clamp(160px, 22vw, 400px)",
+          background:
+            "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.35) 0%, rgba(236,72,153,0.1) 50%, transparent 85%), " +
+            "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 50%, transparent 85%)",
         }}
       />
 

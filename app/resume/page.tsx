@@ -88,10 +88,6 @@ export default function ResumePage() {
             </div>
           </div>
 
-          {/* Placeholder notice */}
-          <p className="mt-4 text-center text-sm text-text-secondary/50">
-            [Upload your resume PDF to public/resume.pdf]
-          </p>
         </ScrollReveal>
       </section>
     </div>

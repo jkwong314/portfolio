@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import type { CaseStudy } from "@/data/types";
 
 interface CaseStudyHeroProps {
@@ -6,18 +10,30 @@ interface CaseStudyHeroProps {
 }
 
 export default function CaseStudyHero({ study }: CaseStudyHeroProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+
   return (
-    <section className="relative">
-      {/* Hero image */}
+    <section ref={sectionRef} className="relative">
+      {/* Hero image with parallax */}
       <div className="relative h-[50vh] w-full overflow-hidden md:h-[60vh]">
-        <Image
-          src={study.heroImage}
-          alt={study.title}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
+        <motion.div
+          className="absolute inset-0"
+          style={{ y: imageY, scale: 1.15 }}
+        >
+          <Image
+            src={study.heroImage}
+            alt={study.title}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-surface-light/30 to-accent-hot/10" />
       </div>
 

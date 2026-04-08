@@ -1,6 +1,6 @@
-import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 import FlipWords from "@/components/FlipWords";
+import ParallaxImage from "@/components/ParallaxImage";
 import Timeline from "@/components/Timeline";
 import type { TimelineItem } from "@/components/Timeline";
 import BentoGrid from "@/components/BentoGrid";
@@ -153,25 +153,14 @@ export default function AboutPage() {
         <div className="mt-12 flex flex-col gap-12 md:flex-row md:items-start">
           {/* Photo placeholder */}
           <ScrollReveal delay={0.1} className="flex-shrink-0">
-            <div
-              className="relative h-72 w-72 overflow-hidden rounded-2xl md:h-80 md:w-80"
-              style={{
-                boxShadow: "0 0 60px var(--color-accent-glow)",
-              }}
-            >
-              <Image
-                src="/images/about-portrait.jpg"
-                alt="Design workspace"
-                fill
-                className="object-cover"
-                sizes="320px"
-                priority
-              />
-              <div
-                className="absolute inset-0"
-                style={{ background: "linear-gradient(135deg, var(--color-accent-glow) 0%, transparent 50%, var(--color-gold-glow) 100%)" }}
-              />
-            </div>
+            <ParallaxImage
+              src="/images/about-portrait.jpg"
+              alt="Jamie Kwong"
+              sizes="320px"
+              priority
+              className="relative h-72 w-72 rounded-2xl md:h-80 md:w-80"
+              containerStyle={{ boxShadow: "0 0 60px var(--color-accent-glow)" }}
+            />
           </ScrollReveal>
 
           {/* Intro text */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useRef } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
@@ -19,6 +19,13 @@ export default function Hero() {
   const isDark = theme === "dark";
   const shouldReduceMotion = useReducedMotion();
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -70]);
+  const bgY     = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -35]);
+
   const gradient = isDark
     ? "linear-gradient(135deg, #A78BFA 0%, #C9A84C 100%)"
     : "linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)";
@@ -32,10 +39,11 @@ export default function Hero() {
       <PixelSparkles />
 
       {/* ── Dot grid texture ── */}
-      <div
+      <motion.div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
+          y: bgY,
           backgroundImage: isDark
             ? "radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px)"
             : "radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)",
@@ -49,7 +57,7 @@ export default function Hero() {
       />
 
       {/* ── Main content ── */}
-      <div className="relative z-10 mx-auto max-w-5xl text-center">
+      <motion.div className="relative z-10 mx-auto max-w-5xl text-center" style={{ y: contentY }}>
 
         {/* ── SECONDARY: frosted credential chip + role + company ── */}
         <motion.div
@@ -177,7 +185,7 @@ export default function Hero() {
             About Me
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator — aria-hidden, purely decorative */}
       <motion.div

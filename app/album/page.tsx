@@ -172,9 +172,10 @@ export default function AlbumPage() {
 
       {/* Carousel viewport + nav arrows + glow edges (scoped here, not fixed) */}
       <div className="relative">
-        {/* Glow edges — scoped to carousel area */}
+        {/* Glow edges — covers title + carousel + pagination, not footer */}
         <div
-          className="pointer-events-none absolute top-0 left-0 h-full z-20"
+          className="pointer-events-none absolute top-0 left-0 z-20"
+          style={{ height: "calc(100% + 12rem)", top: "-12rem" }}
           style={{
             width: "clamp(160px, 22vw, 400px)",
             background: isDark
@@ -183,7 +184,8 @@ export default function AlbumPage() {
           }}
         />
         <div
-          className="pointer-events-none absolute top-0 right-0 h-full z-20"
+          className="pointer-events-none absolute right-0 z-20"
+          style={{ height: "calc(100% + 12rem)", top: "-12rem" }}
           style={{
             width: "clamp(160px, 22vw, 400px)",
             background: isDark

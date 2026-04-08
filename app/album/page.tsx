@@ -24,6 +24,7 @@ export default function AlbumPage() {
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragStartOffset = useRef(0);
+  const mouseXFromCenter = useRef(0);
 
   // Start offset so ~4 cards are visible to the right, hinting it's a carousel
   const INITIAL_OFFSET = -3 * CARD_GAP;
@@ -124,6 +125,10 @@ export default function AlbumPage() {
     const min = -(IMAGES.length - 1) * CARD_GAP;
 
     const onWheel = (e: WheelEvent) => {
+      // Only handle wheel when cursor is over the card stack, not the side gutters
+      const HITBOX = CARD_GAP * VISIBLE_RANGE + CARD_WIDTH / 2;
+      if (Math.abs(mouseXFromCenter.current) > HITBOX) return;
+
       const cur = rawOffset.get();
       const delta = -e.deltaX - e.deltaY * 0.5;
       const atStart = cur >= 0 && delta > 0;
@@ -244,6 +249,10 @@ export default function AlbumPage() {
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
+          onMouseMove={(e) => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (rect) mouseXFromCenter.current = e.clientX - (rect.left + rect.width / 2);
+          }}
         >
           {IMAGES.map((img, i) => (
             <CarouselCard

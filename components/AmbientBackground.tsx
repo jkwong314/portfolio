@@ -42,15 +42,15 @@ export default function AmbientBackground() {
         aria-hidden="true"
         className="pointer-events-none fixed left-0 top-0 z-0 h-full"
         style={{
-          width: "clamp(100px, 16vw, 260px)",
+          width: "clamp(160px, 22vw, 380px)",
           background: isDark
             ? [
-                "radial-gradient(ellipse 100% 38% at 0% 32%, rgba(124,58,237,0.16) 0%, transparent 80%)",
-                "radial-gradient(ellipse 100% 38% at 0% 68%, rgba(236,72,153,0.12) 0%, transparent 80%)",
+                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(124,58,237,0.38) 0%, rgba(124,58,237,0.10) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.30) 0%, rgba(236,72,153,0.08) 55%, transparent 85%)",
               ].join(", ")
             : [
-                "radial-gradient(ellipse 100% 38% at 0% 32%, rgba(109,40,217,0.07) 0%, transparent 80%)",
-                "radial-gradient(ellipse 100% 38% at 0% 68%, rgba(236,72,153,0.05) 0%, transparent 80%)",
+                "radial-gradient(ellipse 100% 45% at 0% 30%, rgba(109,40,217,0.16) 0%, rgba(109,40,217,0.05) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 0% 70%, rgba(236,72,153,0.13) 0%, rgba(236,72,153,0.04) 55%, transparent 85%)",
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
@@ -62,15 +62,15 @@ export default function AmbientBackground() {
         aria-hidden="true"
         className="pointer-events-none fixed right-0 top-0 z-0 h-full"
         style={{
-          width: "clamp(100px, 16vw, 260px)",
+          width: "clamp(160px, 22vw, 380px)",
           background: isDark
             ? [
-                "radial-gradient(ellipse 100% 38% at 100% 32%, rgba(236,72,153,0.16) 0%, transparent 80%)",
-                "radial-gradient(ellipse 100% 38% at 100% 68%, rgba(124,58,237,0.12) 0%, transparent 80%)",
+                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.38) 0%, rgba(236,72,153,0.10) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(124,58,237,0.30) 0%, rgba(124,58,237,0.08) 55%, transparent 85%)",
               ].join(", ")
             : [
-                "radial-gradient(ellipse 100% 38% at 100% 32%, rgba(236,72,153,0.07) 0%, transparent 80%)",
-                "radial-gradient(ellipse 100% 38% at 100% 68%, rgba(109,40,217,0.05) 0%, transparent 80%)",
+                "radial-gradient(ellipse 100% 45% at 100% 30%, rgba(236,72,153,0.16) 0%, rgba(236,72,153,0.05) 55%, transparent 85%)",
+                "radial-gradient(ellipse 100% 45% at 100% 70%, rgba(109,40,217,0.13) 0%, rgba(109,40,217,0.04) 55%, transparent 85%)",
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,

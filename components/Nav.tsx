@@ -61,8 +61,9 @@ export default function Nav() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 50);
         ticking = false;
+        const next = window.scrollY > 50;
+        setScrolled(prev => prev === next ? prev : next);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });

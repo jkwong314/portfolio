@@ -23,16 +23,31 @@ export default function CustomCursor() {
     setIsMobile(!hasPointer);
     if (!hasPointer) return;
 
-    const onMove  = (e: MouseEvent) => { mx.set(e.clientX); my.set(e.clientY); };
+    // Batch position updates to one per animation frame
+    let rafId: number | null = null;
+    const onMove = (e: MouseEvent) => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        mx.set(e.clientX);
+        my.set(e.clientY);
+        rafId = null;
+      });
+    };
     const onDown  = () => setS("press");
     const onUp    = () => setState(s => s === "press" ? "default" : s);
     const onLeave = () => setHidden(true);
     const onEnter = () => setHidden(false);
 
+    // Throttle selector matching — only check once per frame
     const SELECTOR = "a, button, [role='button'], input, textarea, select";
+    let overRaf: number | null = null;
     const onOver = (e: Event) => {
-      const t = e.target as HTMLElement;
-      if (t.matches && t.matches(SELECTOR)) setS("hover");
+      if (overRaf !== null) return;
+      overRaf = requestAnimationFrame(() => {
+        overRaf = null;
+        const t = e.target as HTMLElement;
+        if (t.matches && t.matches(SELECTOR)) setS("hover");
+      });
     };
     const onOut = (e: Event) => {
       const t = e.target as HTMLElement;
@@ -49,6 +64,8 @@ export default function CustomCursor() {
     document.addEventListener("pointerout",   onOut);
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (overRaf !== null) cancelAnimationFrame(overRaf);
       window.removeEventListener("mousemove",  onMove);
       window.removeEventListener("mousedown",  onDown);
       window.removeEventListener("mouseup",    onUp);

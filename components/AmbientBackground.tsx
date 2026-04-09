@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
 /**
@@ -11,8 +12,10 @@ export default function AmbientBackground() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const edgeMask =
-    "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)";
+  const edgeMask = useMemo(
+    () => "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+    []
+  );
 
   return (
     <>

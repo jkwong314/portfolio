@@ -155,7 +155,7 @@ export default function AlbumPage() {
       style={{ minHeight: "100vh", background: isDark ? "#0a0a0a" : "#F4F4F5" }}
     >
       {/* Title */}
-      <div className="pt-32 pb-2 text-center">
+      <div className="pt-40 pb-2 text-center">
         <h1
           className="font-display font-black leading-tight"
           style={{

@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import ClickBlobs from "@/components/ClickBlobs";
 import { useTheme } from "@/components/ThemeProvider";
 import PixelSparkles, { Star4, Star4Small, DotPixel } from "@/components/PixelSparkles";
@@ -19,12 +19,18 @@ export default function Hero() {
   const isDark = theme === "dark";
   const shouldReduceMotion = useReducedMotion();
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -70]);
-  const bgY     = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -35]);
+  const noParallax = shouldReduceMotion || isMobile;
+  const contentY = useTransform(scrollYProgress, [0, 1], noParallax ? [0, 0] : [0, -70]);
+  const bgY      = useTransform(scrollYProgress, [0, 1], noParallax ? [0, 0] : [0, -35]);
 
   const gradient = isDark
     ? "linear-gradient(135deg, #A78BFA 0%, #C9A84C 100%)"

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 // ── Pixel star shapes from reference ─────────────────────────────────────────
 // Top-left ref: 4-point star with hollow centre + spikes
@@ -214,12 +214,6 @@ const SPARKLES: SP[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function PixelSparkles() {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
-  if (isMobile) return null;
-
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       {SPARKLES.map(({ Shape, size, style, opacity, delay, duration, blink }, i) => (

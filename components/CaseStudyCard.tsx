@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import type { CaseStudy } from "@/data/types";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -40,36 +40,6 @@ const lightGradients = [
 export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardProps) {
   const { theme } = useTheme();
   const cardRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
-  const imgX = useMotionValue(0);
-  const imgY = useMotionValue(0);
-  const springImgX = useSpring(imgX, { stiffness: 150, damping: 30 });
-  const springImgY = useSpring(imgY, { stiffness: 150, damping: 30 });
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (rafRef.current !== null) return;
-      const cx = e.clientX;
-      const cy = e.clientY;
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = null;
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        imgX.set(-(cx - (rect.left + rect.width / 2)) * 0.018);
-        imgY.set(-(cy - (rect.top + rect.height / 2)) * 0.018);
-      });
-    },
-    [imgX, imgY]
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    }
-    imgX.set(0);
-    imgY.set(0);
-  }, [imgX, imgY]);
 
   const gradients = theme === "dark" ? darkGradients : lightGradients;
   const gradient = gradients[(index - 1) % gradients.length];
@@ -83,15 +53,10 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
         data-cursor="view"
         whileHover={{ y: -4 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
       >
         {/* ── Image ── */}
         <div className={`${aspectMap[size]} relative w-full flex-shrink-0 overflow-hidden`}>
-          <motion.div
-            className="absolute inset-[-12px]"
-            style={{ x: springImgX, y: springImgY }}
-          >
+          <div className="absolute inset-0">
             <Image
               src={study.thumbnail}
               alt={study.title}
@@ -99,9 +64,9 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            {/* Lighter overlay so thumbnails actually show */}
-            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.28 }} />
-          </motion.div>
+            {/* Overlay */}
+            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.18 }} />
+          </div>
 
           {/* Category pill */}
           <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-base/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-text-secondary backdrop-blur-md">
@@ -115,21 +80,6 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
           >
             {String(index).padStart(2, "0")}
           </span>
-
-          {/* Hover scrim + arrow */}
-          <div className="absolute inset-0 flex items-center justify-center bg-accent/0 transition-all duration-300 group-hover:bg-base/20">
-            <motion.div
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-base/50 backdrop-blur-sm"
-              initial={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1.1 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.25 }}
-            >
-              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" className="text-text-primary -rotate-45">
-                <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </motion.div>
-          </div>
         </div>
 
         {/* ── Card body ── */}

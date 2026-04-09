@@ -33,7 +33,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen flex-col justify-center px-6 pt-28 pb-20 md:min-h-screen md:px-12 md:pt-32 md:pb-32"
+      className="relative flex min-h-screen flex-col justify-center px-6 pt-20 pb-20 md:min-h-screen md:px-12 md:pt-32 md:pb-32"
     >
       <ClickBlobs boundaryRef={sectionRef} />
       <PixelSparkles />

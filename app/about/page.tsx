@@ -201,6 +201,22 @@ export default function AboutPage() {
         </ScrollReveal>
       </section>
 
+      {/* Career Journey Timeline */}
+      <section className="mx-auto max-w-4xl px-6 py-20">
+        <ScrollReveal>
+          <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl" style={{ letterSpacing: "-0.03em" }}>
+            The Journey
+          </h2>
+          <p className="mt-3 text-text-secondary">
+            From freelance roots to leading design at a global brand.
+          </p>
+        </ScrollReveal>
+
+        <div className="mt-12 ml-2.5">
+          <Timeline items={careerTimeline} />
+        </div>
+      </section>
+
       {/* Design Philosophy */}
       <section className="mx-auto max-w-4xl px-6 py-20">
         <ScrollReveal>
@@ -230,22 +246,6 @@ export default function AboutPage() {
             </div>
           </div>
         </ScrollReveal>
-      </section>
-
-      {/* Career Journey Timeline */}
-      <section className="mx-auto max-w-4xl px-6 py-20">
-        <ScrollReveal>
-          <h2 className="font-display text-3xl font-bold text-text-primary md:text-4xl" style={{ letterSpacing: "-0.03em" }}>
-            The Journey
-          </h2>
-          <p className="mt-3 text-text-secondary">
-            From freelance roots to leading design at a global brand.
-          </p>
-        </ScrollReveal>
-
-        <div className="mt-12 ml-2.5">
-          <Timeline items={careerTimeline} />
-        </div>
       </section>
 
       {/* Fun Facts — Bento Grid */}

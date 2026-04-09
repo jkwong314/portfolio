@@ -32,9 +32,9 @@ export default function Home() {
         {/* Editorial grid */}
         <div className="flex flex-col gap-4">
           {/* Row 1: featured large + tall */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-[5fr_3fr]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <ScrollReveal delay={0.05}>
-              <CaseStudyCard study={caseStudies[0]} size="large" index={1} />
+              <CaseStudyCard study={caseStudies[0]} size="tall" index={1} />
             </ScrollReveal>
             <ScrollReveal delay={0.15}>
               <CaseStudyCard study={caseStudies[1]} size="tall" index={2} />

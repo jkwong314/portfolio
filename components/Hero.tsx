@@ -33,7 +33,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[75vh] flex-col justify-center px-6 py-20 md:min-h-screen md:px-12 md:py-32"
+      className="relative flex min-h-screen flex-col justify-center px-6 pt-28 pb-20 md:min-h-screen md:px-12 md:pt-32 md:pb-32"
     >
       <ClickBlobs boundaryRef={sectionRef} />
       <PixelSparkles />
@@ -66,21 +66,6 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10 flex flex-wrap items-center justify-center gap-2.5"
         >
-          {/* Name chip with live availability pulse */}
-          <div
-            className="flex items-center gap-2 rounded-full border border-text-muted/40 bg-surface px-3.5 py-1.5"
-            aria-label="Jamie — available"
-          >
-            <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
-            <span className="text-sm font-semibold tracking-tight text-text-primary">
-              Jamie
-            </span>
-          </div>
-
-          <span className="h-4 w-px bg-surface-light" aria-hidden="true" />
 
           <span className="text-xs font-medium uppercase tracking-[0.18em] text-text-secondary">
             Product Designer

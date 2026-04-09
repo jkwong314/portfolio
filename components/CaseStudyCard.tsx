@@ -22,27 +22,11 @@ const aspectMap = {
   full:    "aspect-[4/3] md:aspect-[21/8]",
 };
 
-const darkGradients = [
-  "linear-gradient(135deg, rgba(76,29,149,0.4) 0%, #1C1C1C 50%, rgba(109,40,217,0.2) 100%)",
-  "linear-gradient(135deg, rgba(41,37,36,0.6) 0%, #1C1C1C 50%, rgba(120,53,15,0.2) 100%)",
-  "linear-gradient(135deg, rgba(30,27,75,0.4) 0%, #1C1C1C 50%, #111111 100%)",
-  "linear-gradient(135deg, #111111 0%, #1C1C1C 100%)",
-  "linear-gradient(135deg, rgba(39,39,42,0.4) 0%, #1C1C1C 50%, rgba(76,29,149,0.2) 100%)",
-];
-const lightGradients = [
-  "linear-gradient(135deg, rgba(139,92,246,0.28) 0%, rgba(255,255,255,0.9) 55%, rgba(0,210,255,0.22) 100%)",
-  "linear-gradient(135deg, rgba(255,45,120,0.26) 0%, rgba(255,255,255,0.9) 55%, rgba(255,100,40,0.22) 100%)",
-  "linear-gradient(135deg, rgba(59,130,246,0.26) 0%, rgba(255,255,255,0.9) 55%, rgba(139,92,246,0.22) 100%)",
-  "linear-gradient(135deg, rgba(16,185,129,0.22) 0%, rgba(255,255,255,0.92) 55%, rgba(0,210,255,0.18) 100%)",
-  "linear-gradient(135deg, rgba(251,191,36,0.26) 0%, rgba(255,255,255,0.9) 55%, rgba(236,72,153,0.22) 100%)",
-];
 
 export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardProps) {
   const { theme } = useTheme();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const gradients = theme === "dark" ? darkGradients : lightGradients;
-  const gradient = gradients[(index - 1) % gradients.length];
   const isLarge = size === "large";
 
   return (
@@ -64,8 +48,6 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            {/* Overlay */}
-            <div className="absolute inset-0" style={{ background: gradient, opacity: 0.18 }} />
           </div>
 
           {/* Category pill */}

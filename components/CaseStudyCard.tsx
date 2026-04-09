@@ -51,7 +51,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
           </div>
 
           {/* Category pill */}
-          <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-base/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-text-secondary backdrop-blur-md">
+          <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-white backdrop-blur-sm">
             {study.category}
           </span>
 

@@ -34,10 +34,10 @@ export default function Home() {
           {/* Row 1: featured large + tall */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <ScrollReveal delay={0.05}>
-              <CaseStudyCard study={caseStudies[0]} size="square" index={1} />
+              <CaseStudyCard study={caseStudies[0]} size="compact" index={1} />
             </ScrollReveal>
             <ScrollReveal delay={0.15}>
-              <CaseStudyCard study={caseStudies[1]} size="square" index={2} />
+              <CaseStudyCard study={caseStudies[1]} size="compact" index={2} />
             </ScrollReveal>
           </div>
 

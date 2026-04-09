@@ -9,16 +9,17 @@ import { useTheme } from "@/components/ThemeProvider";
 
 interface CaseStudyCardProps {
   study: CaseStudy;
-  size: "large" | "tall" | "square" | "medium" | "full";
+  size: "large" | "tall" | "square" | "medium" | "full" | "compact";
   index?: number;
 }
 
 const aspectMap = {
-  large: "aspect-[4/3] md:aspect-[16/9]",
-  tall: "aspect-[4/3] md:aspect-[3/4]",
-  square: "aspect-[4/3] md:aspect-square",
-  medium: "aspect-[4/3]",
-  full: "aspect-[4/3] md:aspect-[21/8]",
+  large:   "aspect-[4/3] md:aspect-[16/9]",
+  tall:    "aspect-[4/3] md:aspect-[3/4]",
+  square:  "aspect-[4/3] md:aspect-square",
+  compact: "aspect-[4/3] md:aspect-[5/3]",
+  medium:  "aspect-[4/3]",
+  full:    "aspect-[4/3] md:aspect-[21/8]",
 };
 
 const darkGradients = [

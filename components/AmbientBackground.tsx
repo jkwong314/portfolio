@@ -23,6 +23,7 @@ export default function AmbientBackground() {
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0"
+        style={{ transform: "translateZ(0)", willChange: "opacity" }}
         style={{
           backgroundImage: isDark
             ? [
@@ -57,6 +58,8 @@ export default function AmbientBackground() {
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
+          transform: "translateZ(0)",
+          willChange: "opacity" as const,
         }}
       />
 
@@ -77,6 +80,8 @@ export default function AmbientBackground() {
               ].join(", "),
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
+          transform: "translateZ(0)",
+          willChange: "opacity",
         }}
       />
     </>

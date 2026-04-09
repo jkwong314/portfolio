@@ -142,7 +142,6 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
   font-size: var(--text-body);
   line-height: 1.65;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Ambient gradients now live in a fixed-position layer (AmbientBackground component)
@@ -167,7 +166,7 @@ body {
   border-color: rgba(109, 40, 217, 0.35);
 }
 
-/* Global grain texture */
+/* Global grain texture — promoted to its own GPU layer to prevent scroll repaints */
 body::after {
   content: "";
   position: fixed;
@@ -178,6 +177,8 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
   background-repeat: repeat;
+  transform: translateZ(0);
+  will-change: opacity;
 }
 
 h1, h2, h3, h4, h5, h6 {

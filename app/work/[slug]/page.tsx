@@ -5,6 +5,7 @@ import CaseStudySection from "@/components/CaseStudySection";
 import CaseStudyStepper from "@/components/CaseStudyStepper";
 import ProjectNav from "@/components/ProjectNav";
 import SilhouetteCaseStudy from "@/components/SilhouetteCaseStudy";
+import CartCaseStudy from "@/components/CartCaseStudy";
 import type { Metadata } from "next";
 
 function slugify(str: string): string {
@@ -39,6 +40,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   if (study.slug === "project-silhouette") {
     return <SilhouetteCaseStudy />;
+  }
+
+  if (study.slug === "aldo-cart-redesign") {
+    return <CartCaseStudy />;
   }
 
   // Build stepper steps from sections that have headings

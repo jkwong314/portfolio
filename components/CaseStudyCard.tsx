@@ -132,7 +132,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
         </div>
 
         {/* ── Card body ── */}
-        <div className="flex flex-col gap-3 p-5">
+        <div className="flex flex-1 flex-col gap-3 p-5">
 
           {/* Title + subtitle — primary hierarchy */}
           <div className="space-y-2">
@@ -151,7 +151,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
           </div>
 
           {/* Meta row — tertiary */}
-          <div className="flex items-center justify-between border-t border-surface-light pt-4">
+          <div className="mt-auto flex items-center justify-between border-t border-surface-light pt-4">
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-text-muted">{study.role}</span>
               <span className="text-text-muted/30" aria-hidden="true">·</span>

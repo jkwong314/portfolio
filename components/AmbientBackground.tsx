@@ -23,8 +23,9 @@ export default function AmbientBackground() {
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0"
-        style={{ transform: "translateZ(0)", willChange: "opacity" }}
         style={{
+          transform: "translateZ(0)",
+          willChange: "opacity",
           backgroundImage: isDark
             ? [
                 "radial-gradient(ellipse 60% 55% at -5% -8%,  rgba(124,58,237,0.22) 0%, transparent 70%)",
@@ -59,7 +60,7 @@ export default function AmbientBackground() {
           maskImage: edgeMask,
           WebkitMaskImage: edgeMask,
           transform: "translateZ(0)",
-          willChange: "opacity" as const,
+          willChange: "opacity",
         }}
       />
 

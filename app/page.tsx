@@ -45,7 +45,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[2, 3, 4].map((i, idx) => (
               <ScrollReveal key={i} delay={idx * 0.08}>
-                <CaseStudyCard study={caseStudies[i]} size="square" index={i + 1} />
+                <CaseStudyCard study={caseStudies[i]} size="compact" index={i + 1} />
               </ScrollReveal>
             ))}
           </div>

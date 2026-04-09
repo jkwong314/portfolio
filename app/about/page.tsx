@@ -79,7 +79,7 @@ const funFacts: BentoItem[] = [
         <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
       </svg>
     ),
-    text: "New hobby collector — currently obsessed with the problem-solving nature of bouldering",
+    text: "Newest hobby — vibe coding and building things I never thought I could ship",
     size: "sm",
     image: "/images/about-bouldering.jpg",
   },
@@ -91,7 +91,7 @@ const funFacts: BentoItem[] = [
         <circle cx="18" cy="16" r="3" />
       </svg>
     ),
-    text: "Listening to 88Rising, NIKI, Dean & IU on repeat",
+    text: "Listening to Trivecta, Seven Lions, aespa & Jennie on repeat",
     size: "sm",
   },
   {
@@ -118,7 +118,7 @@ const funFacts: BentoItem[] = [
         <path d="M7 12h.01" />
       </svg>
     ),
-    text: "Valorant, League of Legends & Monster Hunter World player",
+    text: "Teamfight Tactics, Hearthstone & Super Auto Pets player",
     size: "sm",
     image: "/images/about-gaming.jpg",
   },

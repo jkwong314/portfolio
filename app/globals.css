@@ -16,7 +16,7 @@
   --color-surface-light: #1C1C1C;
   --color-text-primary: #F5F5F0;
   --color-text-secondary: #9A9A94;
-  --color-text-muted: #6B6B66;
+  --color-text-muted: #848484;
   --color-accent: #7C3AED;
   --color-accent-light: #A78BFA;
   --color-gold: #C9A84C;
@@ -49,10 +49,10 @@
   --color-surface-light: #E4E4E7;
   --color-text-primary: #18181B;
   --color-text-secondary: #52525B;
-  --color-text-muted: #71717A;
+  --color-text-muted: #64646C;
   --color-accent: #6D28D9;
   --color-accent-light: #7C3AED;
-  --color-gold: #92670A;
+  --color-gold: #875F09;
   --color-gold-light: #B8920A;
   --color-accent-glow: rgba(109, 40, 217, 0.12);
   --color-gold-glow: rgba(146, 103, 10, 0.12);
@@ -106,10 +106,10 @@
 [data-theme="light"] .text-text-secondary\/50  { color: rgba(82,82,91,0.50); }
 [data-theme="light"] .text-text-secondary\/60  { color: rgba(82,82,91,0.60); }
 [data-theme="light"] .text-text-secondary\/70  { color: rgba(82,82,91,0.70); }
-[data-theme="light"] .text-text-muted  { color: #71717A; }
+[data-theme="light"] .text-text-muted  { color: #64646C; }
 [data-theme="light"] .text-accent      { color: #6D28D9; }
 [data-theme="light"] .text-accent-light { color: #7C3AED; }
-[data-theme="light"] .text-gold        { color: #92670A; }
+[data-theme="light"] .text-gold        { color: #875F09; }
 [data-theme="light"] .text-gold-light  { color: #B8920A; }
 
 [data-theme="light"] .border-surface-light { border-color: #E4E4E7; }

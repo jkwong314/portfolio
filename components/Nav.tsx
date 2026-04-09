@@ -208,7 +208,7 @@ export default function Nav() {
       </motion.div>
 
       {/* Mobile overlay */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {mobileOpen && (
           <motion.div
             id="mobile-menu"
@@ -216,12 +216,17 @@ export default function Nav() {
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-base/97 md:hidden"
-            style={{ backdropFilter: "blur(24px)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 md:hidden"
+            style={{
+              backgroundColor: "var(--color-base)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              willChange: "opacity",
+            }}
           >
             {/* Close */}
             <button
@@ -241,33 +246,21 @@ export default function Nav() {
               </svg>
             </div>
 
-            {navLinks.map((link, i) => (
-              <motion.div
+            {navLinks.map((link) => (
+              <Link
                 key={link.href}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                href={link.href}
+                className="font-display font-black text-text-primary hover:text-gold transition-colors duration-200"
+                style={{ fontSize: "clamp(2.5rem, 8vw, 4rem)", letterSpacing: "-0.04em" }}
+                onClick={closeMobile}
               >
-                <Link
-                  href={link.href}
-                  className="font-display font-black text-text-primary hover:text-gold transition-colors duration-200"
-                  style={{ fontSize: "clamp(2.5rem, 8vw, 4rem)", letterSpacing: "-0.04em" }}
-                  onClick={closeMobile}
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
+                {link.label}
+              </Link>
             ))}
 
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 + navLinks.length * 0.08 }}
-            >
-              <AnimatedButton href="/resume" variant="filled" className="text-base px-8 py-3">
-                Resume
-              </AnimatedButton>
-            </motion.div>
+            <AnimatedButton href="/resume" variant="filled" className="text-base px-8 py-3">
+              Resume
+            </AnimatedButton>
           </motion.div>
         )}
       </AnimatePresence>

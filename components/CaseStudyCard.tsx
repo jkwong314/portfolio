@@ -55,13 +55,7 @@ export default function CaseStudyCard({ study, size, index = 1 }: CaseStudyCardP
             {study.category}
           </span>
 
-          {/* Ghost index — bottom right of image, decorative */}
-          <span
-            className="absolute bottom-3 right-4 font-display text-[5rem] font-black leading-none text-text-primary/[0.04] select-none"
-            aria-hidden="true"
-          >
-            {String(index).padStart(2, "0")}
-          </span>
+
         </div>
 
         {/* ── Card body ── */}

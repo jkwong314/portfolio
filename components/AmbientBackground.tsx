@@ -3,20 +3,22 @@
 import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
-/**
- * Fixed-position ambient gradient layer — always covers the viewport
- * regardless of scroll position, so no section seams or background lines appear.
- * Also renders subtle left/right edge glows globally.
- */
 export default function AmbientBackground() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [isCoarse, setIsCoarse] = useState(false);
+
   useEffect(() => {
     setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
-  // On mobile, skip edge glows entirely — fixed layers with complex gradients
+  // Always call useMemo — hooks must not be called after conditional returns
+  const edgeMask = useMemo(
+    () => "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+    []
+  );
+
+  // On mobile, skip edge glows — fixed layers with complex gradients
   // cause compositing flashes during momentum scroll on iOS Safari
   if (isCoarse) {
     return (
@@ -32,11 +34,6 @@ export default function AmbientBackground() {
       />
     );
   }
-
-  const edgeMask = useMemo(
-    () => "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
-    []
-  );
 
   return (
     <>

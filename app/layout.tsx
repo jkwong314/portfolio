@@ -48,12 +48,12 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          {/* <AmbientBackground /> */}
+          <AmbientBackground />
           <a href="#main-content" className="skip-link">
             Skip to content
           </a>
-          {/* <LoadingScreen /> */}
-          {/* <CustomCursor /> */}
+          <LoadingScreen />
+          <CustomCursor />
           <Nav />
           <main id="main-content" className="relative z-10 flex-1">
             {children}

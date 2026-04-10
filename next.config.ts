@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   experimental: {
-    optimizeCss: process.env.NODE_ENV === "production",
     optimizePackageImports: ["framer-motion"],
   },
   images: {

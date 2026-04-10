@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
 /**
@@ -11,6 +11,27 @@ import { useTheme } from "@/components/ThemeProvider";
 export default function AmbientBackground() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [isCoarse, setIsCoarse] = useState(false);
+  useEffect(() => {
+    setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  // On mobile, skip edge glows entirely — fixed layers with complex gradients
+  // cause compositing flashes during momentum scroll on iOS Safari
+  if (isCoarse) {
+    return (
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          transform: "translateZ(0)",
+          backgroundImage: isDark
+            ? "radial-gradient(ellipse 60% 55% at -5% -8%, rgba(124,58,237,0.22) 0%, transparent 70%), radial-gradient(ellipse 55% 50% at 108% 108%, rgba(201,168,76,0.18) 0%, transparent 70%)"
+            : "radial-gradient(ellipse 60% 55% at -5% -8%, rgba(109,40,217,0.10) 0%, transparent 70%), radial-gradient(ellipse 55% 50% at 108% 108%, rgba(146,103,10,0.08) 0%, transparent 70%)",
+        }}
+      />
+    );
+  }
 
   const edgeMask = useMemo(
     () => "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",

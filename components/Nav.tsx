@@ -50,10 +50,15 @@ const navLinks = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isCoarse, setIsCoarse] = useState(false);
   const pathname = usePathname();
   const { theme } = useTheme();
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -134,8 +139,8 @@ export default function Nav() {
         }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
+          backdropFilter: isCoarse ? "none" : "blur(20px)",
+          WebkitBackdropFilter: isCoarse ? "none" : "blur(20px)",
           border: "1px solid transparent",
         }}
       >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 
 interface ScrollRevealProps {
@@ -14,8 +14,18 @@ export default function ScrollReveal({
   delay = 0,
   className,
 }: ScrollRevealProps) {
+  const [isCoarse, setIsCoarse] = useState(false);
+  useEffect(() => {
+    setIsCoarse(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  // On mobile skip scroll animations entirely — they cause repaints during scroll
+  if (isCoarse) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

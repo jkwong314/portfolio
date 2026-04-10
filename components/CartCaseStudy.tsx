@@ -19,6 +19,9 @@ function Reveal({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       ref={ref}

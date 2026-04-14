@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 
 /* ── Project data ─────────────────────────────────────────────── */
@@ -13,20 +14,22 @@ interface VibeProject {
   tag: string;
   description: string;
   colors: [string, string, string];
-  visualType: "blobs" | "type" | "grid";
+  visualType: "screenshot" | "type" | "grid";
+  screenshot?: string;
 }
 
 const projects: VibeProject[] = [
   {
     id: 1,
-    name: "Palette Thief",
-    url: "palette-thief.vercel.app",
-    href: "#",
+    name: "LogoForge",
+    url: "logoforge-gamma.vercel.app",
+    href: "https://logoforge-gamma.vercel.app/",
     tag: "Tool",
     description:
-      "Drop any image, steal its soul. Generates accessible color palettes in one click.",
-    colors: ["#FF6B6B", "#FFD93D", "#6BCB77"],
-    visualType: "blobs",
+      "A parametric vector logo generator — tweak symmetry, layers, and color to generate production-ready SVG marks.",
+    colors: ["#D4F53C", "#FF6B00", "#FFFFFF"],
+    visualType: "screenshot",
+    screenshot: "/images/vibe-logoforge.jpg",
   },
   {
     id: 2,
@@ -52,35 +55,16 @@ const projects: VibeProject[] = [
   },
 ];
 
-/* ── Visual content areas (pure CSS, no canvas) ──────────────── */
-function BlobsVisual({ colors }: { colors: [string, string, string] }) {
+/* ── Visual content areas ─────────────────────────────────────── */
+function ScreenshotVisual({ src, name }: { src: string; name: string }) {
   return (
-    <div className="relative h-full w-full overflow-hidden" style={{ background: "#0d0d14" }}>
-      {/* Animated blobs */}
-      {colors.map((color, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: `${55 + i * 15}%`,
-            height: `${55 + i * 15}%`,
-            background: color,
-            opacity: 0.55,
-            filter: "blur(40px)",
-            top: i === 0 ? "-10%" : i === 1 ? "30%" : "55%",
-            left: i === 0 ? "60%" : i === 1 ? "-5%" : "50%",
-            animation: `blob-drift-${i} ${7 + i * 2}s ease-in-out infinite alternate`,
-          }}
-        />
-      ))}
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
+    <div className="relative h-full w-full overflow-hidden">
+      <Image
+        src={src}
+        alt={`${name} screenshot`}
+        fill
+        className="object-cover object-top"
+        sizes="(max-width: 640px) 100vw, 33vw"
       />
     </div>
   );
@@ -92,7 +76,6 @@ function TypeVisual({ colors }: { colors: [string, string, string] }) {
       className="relative flex h-full w-full select-none items-center justify-center overflow-hidden"
       style={{ background: "#0d0d14" }}
     >
-      {/* Big background letter */}
       <span
         className="absolute font-display font-black leading-none"
         style={{
@@ -106,7 +89,6 @@ function TypeVisual({ colors }: { colors: [string, string, string] }) {
       >
         Aa
       </span>
-      {/* Stacked type specimens */}
       <div className="relative z-10 px-5 py-4 text-left w-full">
         <div
           className="font-display font-black leading-none mb-1"
@@ -142,7 +124,6 @@ function TypeVisual({ colors }: { colors: [string, string, string] }) {
 }
 
 function GridVisual({ colors }: { colors: [string, string, string] }) {
-  // Deterministic "highlighted" cells so no hydration mismatch
   const highlighted: [number, number][] = [
     [0, 2], [1, 0], [1, 3], [2, 1], [2, 4], [3, 2], [0, 4], [3, 0],
   ];
@@ -154,7 +135,6 @@ function GridVisual({ colors }: { colors: [string, string, string] }) {
       className="relative h-full w-full overflow-hidden"
       style={{ background: "#0d0d14" }}
     >
-      {/* Grid lines */}
       <div
         className="absolute inset-0"
         style={{
@@ -162,7 +142,6 @@ function GridVisual({ colors }: { colors: [string, string, string] }) {
           backgroundSize: `${100 / COLS}% ${100 / ROWS}%`,
         }}
       />
-      {/* Highlighted cells */}
       {highlighted.map(([row, col], i) => (
         <div
           key={i}
@@ -177,7 +156,6 @@ function GridVisual({ colors }: { colors: [string, string, string] }) {
           }}
         />
       ))}
-      {/* Accent square */}
       <div
         className="absolute rounded-sm"
         style={{
@@ -196,18 +174,15 @@ function GridVisual({ colors }: { colors: [string, string, string] }) {
 /* ── Browser Chrome Card ──────────────────────────────────────── */
 function BrowserCard({
   project,
-  index,
   isCoarse,
 }: {
   project: VibeProject;
-  index: number;
   isCoarse: boolean;
 }) {
   const shouldReduceMotion = useReducedMotion();
   const [hovered, setHovered] = useState(false);
 
   const canHover = !isCoarse && !shouldReduceMotion;
-
   const glowColor = project.colors[0];
 
   return (
@@ -265,7 +240,6 @@ function BrowserCard({
             border: "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          {/* Lock icon */}
           <svg width="9" height="10" viewBox="0 0 9 10" fill="none" style={{ opacity: 0.4 }}>
             <rect x="1" y="4.5" width="7" height="5" rx="1" fill="currentColor" />
             <path d="M2.5 4.5V3a2 2 0 0 1 4 0v1.5" stroke="currentColor" strokeWidth="1.2" fill="none" />
@@ -279,16 +253,17 @@ function BrowserCard({
         </div>
       </div>
 
-      {/* Visual content area */}
-      <div style={{ height: 160 }}>
-        {project.visualType === "blobs" && <BlobsVisual colors={project.colors} />}
+      {/* Visual content area — 16:9 aspect ratio */}
+      <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+        {project.visualType === "screenshot" && project.screenshot && (
+          <ScreenshotVisual src={project.screenshot} name={project.name} />
+        )}
         {project.visualType === "type" && <TypeVisual colors={project.colors} />}
         {project.visualType === "grid" && <GridVisual colors={project.colors} />}
       </div>
 
       {/* Card body */}
       <div className="p-5">
-        {/* Tag + name row */}
         <div className="flex items-center justify-between gap-2 mb-2">
           <span
             className="font-body font-semibold text-text-primary"
@@ -311,11 +286,13 @@ function BrowserCard({
           {project.description}
         </p>
 
-        {/* Arrow — appears on hover */}
         <motion.div
           className="mt-4 flex items-center gap-1.5 font-body font-medium"
           style={{ fontSize: 12, color: project.colors[0] }}
-          animate={{ opacity: canHover ? (hovered ? 1 : 0.4) : 1, x: canHover ? (hovered ? 4 : 0) : 0 }}
+          animate={{
+            opacity: canHover ? (hovered ? 1 : 0.4) : 1,
+            x: canHover ? (hovered ? 4 : 0) : 0,
+          }}
           transition={{ duration: 0.2 }}
         >
           Visit project
@@ -349,17 +326,17 @@ export default function VibeProjects() {
         <div className="mb-12 flex items-end justify-between border-b border-surface-light pb-8">
           <div>
             <p className="mb-2 text-xs uppercase tracking-[0.3em] text-accent-light">
-              Side Quests
+              Personal Projects
             </p>
             <h2
               className="font-display font-black leading-none tracking-tight text-text-primary"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", letterSpacing: "-0.03em" }}
             >
-              Vibe Coded
+              Side Projects
             </h2>
           </div>
           <p className="hidden text-sm text-text-muted md:block">
-            Built for fun
+            {projects.length} Projects
           </p>
         </div>
       </ScrollReveal>
@@ -368,7 +345,7 @@ export default function VibeProjects() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {projects.map((project, idx) => (
           <ScrollReveal key={project.id} delay={idx * 0.1}>
-            <BrowserCard project={project} index={idx} isCoarse={isCoarse} />
+            <BrowserCard project={project} isCoarse={isCoarse} />
           </ScrollReveal>
         ))}
       </div>

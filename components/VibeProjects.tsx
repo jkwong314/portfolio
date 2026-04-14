@@ -326,13 +326,13 @@ export default function VibeProjects() {
         <div className="mb-12 flex items-end justify-between border-b border-surface-light pb-8">
           <div>
             <p className="mb-2 text-xs uppercase tracking-[0.3em] text-accent-light">
-              Personal Projects
+              Built for Fun
             </p>
             <h2
               className="font-display font-black leading-none tracking-tight text-text-primary"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", letterSpacing: "-0.03em" }}
             >
-              Side Projects
+              Passion Projects
             </h2>
           </div>
           <p className="hidden text-sm text-text-muted md:block">

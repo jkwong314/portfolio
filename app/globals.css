@@ -263,6 +263,20 @@ h1, h2, h3, h4, h5, h6 {
   100% { opacity: 0; transform: scale(1.1); }
 }
 
+/* Vibe project blob drift animations */
+@keyframes blob-drift-0 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  100% { transform: translate(-12%, 8%) scale(1.08); }
+}
+@keyframes blob-drift-1 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  100% { transform: translate(10%, -10%) scale(0.95); }
+}
+@keyframes blob-drift-2 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  100% { transform: translate(-8%, -6%) scale(1.06); }
+}
+
 /* Gold shimmer */
 @keyframes gold-shimmer {
   0% { opacity: 0.6; }

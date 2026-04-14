@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import CaseStudyCard from "@/components/CaseStudyCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import VibeProjects from "@/components/VibeProjects";
 import { caseStudies } from "@/data/caseStudies";
 
 export default function Home() {
@@ -41,16 +42,10 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          {/* Row 2: three equal */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {[2, 3, 4].map((i, idx) => (
-              <ScrollReveal key={i} delay={idx * 0.08}>
-                <CaseStudyCard study={caseStudies[i]} size="compact" index={i + 1} />
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
       </section>
+
+      <VibeProjects />
     </>
   );
 }
